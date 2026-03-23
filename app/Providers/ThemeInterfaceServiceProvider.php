@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Services\HomeEcommerceDataService;
 use App\Traits\SanitizesCustomizerValues;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
@@ -417,6 +418,217 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			'section' => 'flux_home_section',
 			'type'    => 'checkbox',
 		]);
+
+		$this->registerHomeEcommerceCustomizerSettings($wp_customize);
+	}
+
+	/**
+	 * Registrar ajustes del Home Ecommerce Builder.
+	 */
+	protected function registerHomeEcommerceCustomizerSettings(\WP_Customize_Manager $wp_customize): void
+	{
+		$wp_customize->add_section('flux_home_ecommerce_section', [
+			'title'       => __('Flux Press: Home Ecommerce', 'flux-press'),
+			'description' => __('Configura orden, visibilidad y contenido dinamico del Home ecommerce.', 'flux-press'),
+			'priority'    => 33,
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_section_order', [
+			'default'           => config('theme-interface.home.ecommerce.section_order', implode(',', HomeEcommerceDataService::SECTION_KEYS)),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceSectionOrder'],
+			'transport'         => 'refresh',
+		]);
+
+		$wp_customize->add_control('home_ecommerce_section_order', [
+			'label'       => __('Orden de secciones (CSV)', 'flux-press'),
+			'description' => __('Usa: hero,categories,best_sellers,top_rated,brands,promos,newsletter,blog', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'text',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_content_mode', [
+			'default'           => config('theme-interface.home.ecommerce.content_mode', 'hybrid'),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceContentMode'],
+			'transport'         => 'refresh',
+		]);
+
+		$wp_customize->add_control('home_ecommerce_content_mode', [
+			'label'       => __('Modo de contenido Home Ecommerce', 'flux-press'),
+			'description' => __('Builder: solo secciones del tema. Hibrido: bloques del editor + builder. Editor: solo Gutenberg/Elementor.', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'select',
+			'choices'     => [
+				'builder' => __('Builder del tema', 'flux-press'),
+				'hybrid'  => __('Hibrido (editor + builder)', 'flux-press'),
+				'editor'  => __('Solo editor de bloques/Elementor', 'flux-press'),
+			],
+		]);
+
+		$sectionLabels = [
+			'hero'         => __('Mostrar Hero dinamico', 'flux-press'),
+			'categories'   => __('Mostrar categorias', 'flux-press'),
+			'best_sellers' => __('Mostrar mas vendidos', 'flux-press'),
+			'top_rated'    => __('Mostrar mejor valorados', 'flux-press'),
+			'brands'       => __('Mostrar marcas', 'flux-press'),
+			'promos'       => __('Mostrar promociones', 'flux-press'),
+			'newsletter'   => __('Mostrar newsletter', 'flux-press'),
+			'blog'         => __('Mostrar blog', 'flux-press'),
+		];
+
+		foreach ($sectionLabels as $sectionKey => $label) {
+			$settingKey = "home_ecommerce_show_{$sectionKey}";
+			$wp_customize->add_setting($settingKey, [
+				'default'           => config("theme-interface.home.ecommerce.sections.show_{$sectionKey}", true),
+				'sanitize_callback' => [$this, 'sanitizeBoolean'],
+				'transport'         => 'refresh',
+			]);
+
+			$wp_customize->add_control($settingKey, [
+				'label'   => $label,
+				'section' => 'flux_home_ecommerce_section',
+				'type'    => 'checkbox',
+			]);
+		}
+
+		$wp_customize->add_setting('home_ecommerce_hero_limit', [
+			'default'           => config('theme-interface.home.ecommerce.limits.hero', 3),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 1, 8, 3),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_hero_limit', [
+			'label'       => __('Cantidad de productos Hero', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 1, 'max' => 8, 'step' => 1],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_categories_limit', [
+			'default'           => config('theme-interface.home.ecommerce.limits.categories', 8),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 1, 18, 8),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_categories_limit', [
+			'label'       => __('Cantidad de categorias', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 1, 'max' => 18, 'step' => 1],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_products_limit', [
+			'default'           => config('theme-interface.home.ecommerce.limits.products', 8),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 1, 24, 8),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_products_limit', [
+			'label'       => __('Cantidad de productos por grid', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 1, 'max' => 24, 'step' => 1],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_brands_limit', [
+			'default'           => config('theme-interface.home.ecommerce.limits.brands', 8),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 1, 18, 8),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_brands_limit', [
+			'label'       => __('Cantidad de marcas', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 1, 'max' => 18, 'step' => 1],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_blog_limit', [
+			'default'           => config('theme-interface.home.ecommerce.limits.blog', 6),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 1, 12, 6),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_blog_limit', [
+			'label'       => __('Cantidad de entradas blog', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 1, 'max' => 12, 'step' => 1],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_hero_autoplay', [
+			'default'           => config('theme-interface.home.ecommerce.hero.autoplay', true),
+			'sanitize_callback' => [$this, 'sanitizeBoolean'],
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_hero_autoplay', [
+			'label'   => __('Autoplay del carrusel Hero', 'flux-press'),
+			'section' => 'flux_home_ecommerce_section',
+			'type'    => 'checkbox',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_hero_interval_ms', [
+			'default'           => config('theme-interface.home.ecommerce.hero.interval_ms', 6500),
+			'sanitize_callback' => fn ($value): int => $this->sanitizeNumericRange($value, 2500, 20000, 6500),
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_hero_interval_ms', [
+			'label'       => __('Intervalo del carrusel (ms)', 'flux-press'),
+			'description' => __('Rango recomendado: 3500 - 9000', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'number',
+			'input_attrs' => ['min' => 2500, 'max' => 20000, 'step' => 100],
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_hero_slides_json', [
+			'default'           => config('theme-interface.home.ecommerce.hero.slides_json', '[]'),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceHeroSlidesJson'],
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_hero_slides_json', [
+			'label'       => __('Slides del Hero (JSON)', 'flux-press'),
+			'description' => __('Campos por slide: title, subtitle, content_html, image_url, badge, primary_label, primary_url, secondary_label, secondary_url', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'textarea',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_newsletter_title', [
+			'default'           => config('theme-interface.home.ecommerce.newsletter.title', 'Recibe novedades en tu correo'),
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_newsletter_title', [
+			'label'   => __('Titulo newsletter', 'flux-press'),
+			'section' => 'flux_home_ecommerce_section',
+			'type'    => 'text',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_newsletter_text', [
+			'default'           => config('theme-interface.home.ecommerce.newsletter.text', 'Configura este bloque desde el personalizador y capta suscriptores de forma continua.'),
+			'sanitize_callback' => 'sanitize_textarea_field',
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_newsletter_text', [
+			'label'   => __('Texto newsletter', 'flux-press'),
+			'section' => 'flux_home_ecommerce_section',
+			'type'    => 'textarea',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_newsletter_button_label', [
+			'default'           => config('theme-interface.home.ecommerce.newsletter.button_label', 'Suscribirme'),
+			'sanitize_callback' => 'sanitize_text_field',
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_newsletter_button_label', [
+			'label'   => __('Etiqueta boton newsletter', 'flux-press'),
+			'section' => 'flux_home_ecommerce_section',
+			'type'    => 'text',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_newsletter_button_url', [
+			'default'           => config('theme-interface.home.ecommerce.newsletter.button_url', '#'),
+			'sanitize_callback' => 'esc_url_raw',
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_newsletter_button_url', [
+			'label'   => __('URL boton newsletter', 'flux-press'),
+			'section' => 'flux_home_ecommerce_section',
+			'type'    => 'url',
+		]);
 	}
 
 	/**
@@ -443,6 +655,99 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		}
 
 		return min($limit, 12);
+	}
+
+	/**
+	 * Sanitizar orden de secciones ecommerce en formato CSV.
+	 */
+	public function sanitizeHomeEcommerceSectionOrder($value): string
+	{
+		$raw = strtolower((string) $value);
+		$parts = array_map('trim', explode(',', $raw));
+		$allowed = HomeEcommerceDataService::SECTION_KEYS;
+		$resolved = [];
+
+		foreach ($parts as $part) {
+			if ($part === '' || ! in_array($part, $allowed, true) || in_array($part, $resolved, true)) {
+				continue;
+			}
+
+			$resolved[] = $part;
+		}
+
+		foreach ($allowed as $fallback) {
+			if (! in_array($fallback, $resolved, true)) {
+				$resolved[] = $fallback;
+			}
+		}
+
+		return implode(',', $resolved);
+	}
+
+	/**
+	 * Sanitizar modo de contenido para home ecommerce.
+	 *
+	 * @param mixed $value
+	 */
+	public function sanitizeHomeEcommerceContentMode($value): string
+	{
+		$mode = sanitize_key((string) $value);
+		$allowed = ['builder', 'hybrid', 'editor'];
+
+		if (in_array($mode, $allowed, true)) {
+			return $mode;
+		}
+
+		$default = (string) config('theme-interface.home.ecommerce.content_mode', 'hybrid');
+
+		return in_array($default, $allowed, true) ? $default : 'hybrid';
+	}
+
+	/**
+	 * Sanitizar slides JSON del hero ecommerce.
+	 *
+	 * @param mixed $value
+	 */
+	public function sanitizeHomeEcommerceHeroSlidesJson($value): string
+	{
+		$decoded = json_decode((string) $value, true);
+		if (! is_array($decoded)) {
+			return '[]';
+		}
+
+		$sanitized = [];
+		foreach ($decoded as $slide) {
+			if (! is_array($slide)) {
+				continue;
+			}
+
+			$row = [
+				'title'           => sanitize_text_field((string) ($slide['title'] ?? '')),
+				'subtitle'        => sanitize_text_field((string) ($slide['subtitle'] ?? '')),
+				'content_html'    => wp_kses_post((string) ($slide['content_html'] ?? '')),
+				'image_url'       => esc_url_raw((string) ($slide['image_url'] ?? '')),
+				'badge'           => sanitize_text_field((string) ($slide['badge'] ?? '')),
+				'primary_label'   => sanitize_text_field((string) ($slide['primary_label'] ?? '')),
+				'primary_url'     => esc_url_raw((string) ($slide['primary_url'] ?? '')),
+				'secondary_label' => sanitize_text_field((string) ($slide['secondary_label'] ?? '')),
+				'secondary_url'   => esc_url_raw((string) ($slide['secondary_url'] ?? '')),
+			];
+
+			if (
+				$row['title'] === ''
+				&& $row['subtitle'] === ''
+				&& $row['content_html'] === ''
+				&& $row['image_url'] === ''
+			) {
+				continue;
+			}
+
+			$sanitized[] = $row;
+		}
+
+		$encoded = wp_json_encode($sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+		return is_string($encoded) ? $encoded : '[]';
 	}
 
 	/**
@@ -548,5 +853,20 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		}
 
 		return ! empty($allowed) ? (string) $allowed[0] : '';
+	}
+
+	/**
+	 * Sanitizar entero en rango para settings numericos.
+	 *
+	 * @param mixed $value
+	 */
+	protected function sanitizeNumericRange($value, int $min, int $max, int $fallback): int
+	{
+		$int = absint($value);
+		if ($int < $min || $int > $max) {
+			return $fallback;
+		}
+
+		return $int;
 	}
 }

@@ -169,6 +169,7 @@ new class extends Component
                 'id'     => $product->get_id(),
                 'name'   => $product->get_name(),
                 'url'    => $product->get_permalink(),
+                'image'  => get_the_post_thumbnail_url($product->get_id(), 'thumbnail'),
                 'price'  => $product->get_price_html(),
                 'rating' => (float) $product->get_average_rating(),
             ];
@@ -256,6 +257,7 @@ new class extends Component
                     'id'          => $productId,
                     'name'        => $product->get_name(),
                     'url'         => $product->get_permalink(),
+                    'image'       => get_the_post_thumbnail_url($productId, 'thumbnail'),
                     'price'       => $product->get_price_html(),
                     'total_sales' => (int) $product->get_total_sales(),
                 ];
@@ -295,6 +297,7 @@ new class extends Component
                         'id'          => $productId,
                         'name'        => $product->get_name(),
                         'url'         => $product->get_permalink(),
+                        'image'       => get_the_post_thumbnail_url($productId, 'thumbnail'),
                         'price'       => $product->get_price_html(),
                         'total_sales' => (int) $product->get_total_sales(),
                     ];
@@ -333,6 +336,7 @@ new class extends Component
                         'id'          => $productId,
                         'name'        => $product->get_name(),
                         'url'         => $product->get_permalink(),
+                        'image'       => get_the_post_thumbnail_url($productId, 'thumbnail'),
                         'price'       => $product->get_price_html(),
                         'total_sales' => (int) $product->get_total_sales(),
                     ];
@@ -478,11 +482,20 @@ new class extends Component
                                     <div class="space-y-2">
                                         <h3 class="text-[11px] font-black uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">{{ __('Mejor valorados', 'flux-press') }}</h3>
                                         @foreach($this->topRatedProducts as $product)
-                                            <a href="{{ $product['url'] }}" wire:navigate class="block rounded-lg px-2 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                                <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1">{{ $product['name'] }}</p>
-                                                @if($product['price'] !== '')
-                                                    <p class="text-xs text-accent-600 dark:text-accent-400">{!! $product['price'] !!}</p>
+                                            <a href="{{ $product['url'] }}" wire:navigate class="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                                                @if($product['image'])
+                                                    <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="size-9 rounded-lg object-cover border border-zinc-200/60 dark:border-zinc-700/60" />
+                                                @else
+                                                    <div class="size-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200/60 dark:border-zinc-700/60">
+                                                        <flux:icon.photo class="size-4 text-zinc-400" />
+                                                    </div>
                                                 @endif
+                                                <div class="min-w-0 flex-1">
+                                                    <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1 leading-tight">{{ $product['name'] }}</p>
+                                                    @if($product['price'] !== '')
+                                                        <p class="text-[11px] text-accent-600 dark:text-accent-400 font-bold mt-0.5">{!! $product['price'] !!}</p>
+                                                    @endif
+                                                </div>
                                             </a>
                                         @endforeach
                                     </div>
@@ -493,17 +506,26 @@ new class extends Component
                                         <h3 class="text-[11px] font-black uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">{{ __('Mas vendidos', 'flux-press') }}</h3>
                                         @if(! empty($this->bestSellingProducts))
                                             @foreach($this->bestSellingProducts as $product)
-                                                <a href="{{ $product['url'] }}" wire:navigate class="block rounded-lg px-2 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
-                                                    <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1">{{ $product['name'] }}</p>
-                                                    <div class="flex items-center gap-2">
-                                                        @if($product['price'] !== '')
-                                                            <p class="text-xs text-accent-600 dark:text-accent-400">{!! $product['price'] !!}</p>
-                                                        @endif
-                                                        @if($product['total_sales'] > 0)
-                                                            <span class="text-[11px] text-zinc-500 dark:text-zinc-400">
-                                                                {{ sprintf(_n('%d venta', '%d ventas', $product['total_sales'], 'flux-press'), $product['total_sales']) }}
-                                                            </span>
-                                                        @endif
+                                                <a href="{{ $product['url'] }}" wire:navigate class="flex items-center gap-2.5 rounded-lg px-2 py-1.5 hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors">
+                                                    @if($product['image'])
+                                                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="size-9 rounded-lg object-cover border border-zinc-200/60 dark:border-zinc-700/60" />
+                                                    @else
+                                                        <div class="size-9 rounded-lg bg-zinc-100 dark:bg-zinc-800 flex items-center justify-center border border-zinc-200/60 dark:border-zinc-700/60">
+                                                            <flux:icon.photo class="size-4 text-zinc-400" />
+                                                        </div>
+                                                    @endif
+                                                    <div class="min-w-0 flex-1">
+                                                        <p class="text-sm font-medium text-zinc-900 dark:text-zinc-100 line-clamp-1 leading-tight">{{ $product['name'] }}</p>
+                                                        <div class="flex items-center gap-2 mt-0.5">
+                                                            @if($product['price'] !== '')
+                                                                <p class="text-[11px] text-accent-600 dark:text-accent-400 font-bold">{!! $product['price'] !!}</p>
+                                                            @endif
+                                                            @if($product['total_sales'] > 0)
+                                                                <span class="text-[10px] tabular-nums font-medium text-zinc-500 dark:text-zinc-400">
+                                                                    {{ sprintf(_n('%d venta', '%d ventas', $product['total_sales'], 'flux-press'), $product['total_sales']) }}
+                                                                </span>
+                                                            @endif
+                                                        </div>
                                                     </div>
                                                 </a>
                                             @endforeach

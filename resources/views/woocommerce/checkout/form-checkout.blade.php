@@ -9,7 +9,7 @@
     }
 @endphp
 
-<section class="flux-wc-checkout-page max-w-7xl mx-auto px-4 sm:px-0 py-2 sm:py-4">
+<section class="flux-wc-checkout-page max-w-7xl mx-auto px-4 sm:px-0 py-4 sm:py-6 lg:py-8">
     <div class="mb-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8 shadow-sm">
         <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
@@ -49,7 +49,7 @@
                     @php do_action('woocommerce_checkout_billing'); @endphp
                 </div>
 
-                <div class="col-2 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
+                <div class="col-2 mt-2 sm:mt-3 lg:mt-0 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
                     <div class="mb-5 flex items-center gap-2">
                         <flux:icon.map-pin class="size-5 text-accent-600 dark:text-accent-400" />
                         <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ __('Envio y entrega', 'flux-press') }}</flux:heading>
@@ -63,7 +63,7 @@
 
         @php do_action('woocommerce_checkout_before_order_review_heading'); @endphp
 
-        <div class="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
+        <div class="mt-6 sm:mt-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
             <div class="mb-5 flex items-center gap-2">
                 <flux:icon.clipboard-document-check class="size-5 text-accent-600 dark:text-accent-400" />
                 <h3 id="order_review_heading">{{ esc_html__('Your order', 'woocommerce') }}</h3>

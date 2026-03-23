@@ -134,6 +134,233 @@ class WooCommerceServiceProvider extends ServiceProvider
             $fragments['.flux-cart-count'] = '<span class="flux-cart-count">' . esc_html($count) . '</span>';
             return $fragments;
         });
+
+        $this->registerShopCatalogFiltering();
+    }
+
+    /**
+     * Apply advanced shop archive filters from query args.
+     */
+    protected function registerShopCatalogFiltering(): void
+    {
+        add_action('pre_get_posts', function (\WP_Query $query) {
+            if (is_admin() || ! $query->is_main_query()) {
+                return;
+            }
+
+            if (! $this->isWooCommerceCatalogQuery($query)) {
+                return;
+            }
+
+            $this->applyCatalogTaxonomyFilters($query);
+            $this->applyCatalogMetaFilters($query);
+        }, 20);
+    }
+
+    protected function isWooCommerceCatalogQuery(\WP_Query $query): bool
+    {
+        if ($query->is_post_type_archive('product')) {
+            return true;
+        }
+
+        if ($query->is_tax(['product_cat', 'product_tag', 'product_brand'])) {
+            return true;
+        }
+
+        $vendorTaxonomy = $this->resolveVendorTaxonomy();
+        if ($vendorTaxonomy !== null && $query->is_tax($vendorTaxonomy)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    protected function applyCatalogTaxonomyFilters(\WP_Query $query): void
+    {
+        $selectedCategories = $this->sanitizeSlugArray($_GET['fp_cat'] ?? []);
+        $selectedBrands = $this->sanitizeSlugArray($_GET['fp_brand'] ?? []);
+        $selectedVendors = $this->sanitizeSlugArray($_GET['fp_vendor'] ?? []);
+        $vendorTaxonomy = $this->resolveVendorTaxonomy();
+
+        $taxQuery = $query->get('tax_query');
+        if (! is_array($taxQuery)) {
+            $taxQuery = [];
+        }
+
+        if (! empty($selectedCategories) && ! $query->is_tax('product_cat')) {
+            $taxQuery[] = [
+                'taxonomy' => 'product_cat',
+                'field'    => 'slug',
+                'terms'    => $selectedCategories,
+                'operator' => 'IN',
+            ];
+        }
+
+        if (! empty($selectedBrands) && taxonomy_exists('product_brand') && ! $query->is_tax('product_brand')) {
+            $taxQuery[] = [
+                'taxonomy' => 'product_brand',
+                'field'    => 'slug',
+                'terms'    => $selectedBrands,
+                'operator' => 'IN',
+            ];
+        }
+
+        if (! empty($selectedVendors) && $vendorTaxonomy !== null && ! $query->is_tax($vendorTaxonomy)) {
+            $taxQuery[] = [
+                'taxonomy' => $vendorTaxonomy,
+                'field'    => 'slug',
+                'terms'    => $selectedVendors,
+                'operator' => 'IN',
+            ];
+        }
+
+        if (count($taxQuery) > 1 && ! isset($taxQuery['relation'])) {
+            $taxQuery['relation'] = 'AND';
+        }
+
+        $query->set('tax_query', $taxQuery);
+    }
+
+    protected function applyCatalogMetaFilters(\WP_Query $query): void
+    {
+        $priceRange = isset($_GET['fp_price']) ? sanitize_text_field(wp_unslash((string) $_GET['fp_price'])) : '';
+        [$rangeMin, $rangeMax] = $this->parsePriceRange($priceRange);
+
+        $minPrice = isset($_GET['min_price']) ? (float) wp_unslash((string) $_GET['min_price']) : null;
+        $maxPrice = isset($_GET['max_price']) ? (float) wp_unslash((string) $_GET['max_price']) : null;
+
+        if ($rangeMin !== null) {
+            $minPrice = $rangeMin;
+        }
+
+        if ($rangeMax !== null) {
+            $maxPrice = $rangeMax;
+        }
+
+        $metaQuery = $query->get('meta_query');
+        if (! is_array($metaQuery)) {
+            $metaQuery = [];
+        }
+
+        if ($minPrice !== null || $maxPrice !== null) {
+            $from = $minPrice !== null ? max(0, $minPrice) : 0;
+            $to = $maxPrice !== null ? max($from, $maxPrice) : 99999999;
+
+            $metaQuery[] = [
+                'key'     => '_price',
+                'value'   => [$from, $to],
+                'type'    => 'DECIMAL(10,2)',
+                'compare' => 'BETWEEN',
+            ];
+        }
+
+        $rating = isset($_GET['fp_rating']) ? (int) $_GET['fp_rating'] : 0;
+        if ($rating > 0) {
+            $metaQuery[] = [
+                'key'     => '_wc_average_rating',
+                'value'   => max(1, min(5, $rating)),
+                'type'    => 'DECIMAL(3,2)',
+                'compare' => '>=',
+            ];
+        }
+
+        if (count($metaQuery) > 1 && ! isset($metaQuery['relation'])) {
+            $metaQuery['relation'] = 'AND';
+        }
+        $query->set('meta_query', $metaQuery);
+
+        $onSaleOnly = isset($_GET['on_sale']) && (string) $_GET['on_sale'] === '1';
+        if ($onSaleOnly && function_exists('wc_get_product_ids_on_sale')) {
+            $saleIds = array_map('intval', (array) wc_get_product_ids_on_sale());
+            $saleIds = array_values(array_filter($saleIds));
+
+            if (empty($saleIds)) {
+                $query->set('post__in', [0]);
+
+                return;
+            }
+
+            $existingPostIn = $query->get('post__in');
+            if (is_array($existingPostIn) && ! empty($existingPostIn)) {
+                $existingPostIn = array_map('intval', $existingPostIn);
+                $query->set('post__in', array_values(array_intersect($existingPostIn, $saleIds)));
+
+                return;
+            }
+
+            $query->set('post__in', $saleIds);
+        }
+    }
+
+    /**
+     * @param mixed $raw
+     * @return string[]
+     */
+    protected function sanitizeSlugArray($raw): array
+    {
+        $values = is_array($raw) ? $raw : [$raw];
+        $result = [];
+
+        foreach ($values as $value) {
+            if (! is_scalar($value)) {
+                continue;
+            }
+
+            $slug = sanitize_title(wp_unslash((string) $value));
+            if ($slug === '' || in_array($slug, $result, true)) {
+                continue;
+            }
+
+            $result[] = $slug;
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array{0: ?float, 1: ?float}
+     */
+    protected function parsePriceRange(string $raw): array
+    {
+        if (! preg_match('/^\s*(\d+(?:\.\d+)?)\s*-\s*(\d+(?:\.\d+)?)\s*$/', $raw, $matches)) {
+            return [null, null];
+        }
+
+        $min = (float) $matches[1];
+        $max = (float) $matches[2];
+
+        if ($max <= $min) {
+            return [null, null];
+        }
+
+        return [$min, $max];
+    }
+
+    protected function resolveVendorTaxonomy(): ?string
+    {
+        $configured = config('theme-interface.woocommerce.shop_filters.vendor_taxonomies', []);
+        $candidates = is_array($configured) ? $configured : [];
+
+        if (empty($candidates)) {
+            $candidates = [
+                'product_vendor',
+                'wcpv_product_vendors',
+                'yith_shop_vendor',
+                'dc_vendor_shop',
+            ];
+        }
+
+        foreach ($candidates as $taxonomy) {
+            if (! is_string($taxonomy) || $taxonomy === '') {
+                continue;
+            }
+
+            if (taxonomy_exists($taxonomy)) {
+                return $taxonomy;
+            }
+        }
+
+        return null;
     }
 
     /**
@@ -309,6 +536,157 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
+
+            // Shop banner controls
+            $wp_customize->add_setting('woocommerce_shop_banner_enabled', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.enabled', true),
+                'sanitize_callback' => [$this, 'sanitizeBoolean'],
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_enabled', [
+                'label'   => __('Mostrar banner de tienda', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'checkbox',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_title', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.title', ''),
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_title', [
+                'label'   => __('Titulo del banner', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'text',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_subtitle', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.subtitle', ''),
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_subtitle', [
+                'label'   => __('Subtitulo del banner', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'text',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_content_html', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.content_html', ''),
+                'sanitize_callback' => 'wp_kses_post',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_content_html', [
+                'label'       => __('Contenido HTML del banner', 'flux-press'),
+                'description' => __('Permite texto enriquecido basico.', 'flux-press'),
+                'section'     => 'flux_woocommerce_section',
+                'type'        => 'textarea',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_image_url', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.image_url', ''),
+                'sanitize_callback' => 'esc_url_raw',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_image_url', [
+                'label'   => __('Imagen del banner (URL)', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'url',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_primary_cta_label', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.primary_cta_label', ''),
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_primary_cta_label', [
+                'label'   => __('Texto boton principal', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'text',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_primary_cta_url', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.primary_cta_url', ''),
+                'sanitize_callback' => 'esc_url_raw',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_primary_cta_url', [
+                'label'   => __('URL boton principal', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'url',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_secondary_cta_label', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.secondary_cta_label', ''),
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_secondary_cta_label', [
+                'label'   => __('Texto boton secundario', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'text',
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_banner_secondary_cta_url', [
+                'default'           => config('theme-interface.woocommerce.shop_banner.secondary_cta_url', ''),
+                'sanitize_callback' => 'esc_url_raw',
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_banner_secondary_cta_url', [
+                'label'   => __('URL boton secundario', 'flux-press'),
+                'section' => 'flux_woocommerce_section',
+                'type'    => 'url',
+            ]);
+
+            // Shop filters limits
+            $wp_customize->add_setting('woocommerce_shop_filters_categories_limit', [
+                'default'           => config('theme-interface.woocommerce.shop_filters.categories_limit', 12),
+                'sanitize_callback' => fn ($value): int => $this->sanitizeBoundedInt($value, 1, 30, 12),
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_filters_categories_limit', [
+                'label'       => __('Limite de categorias en filtros', 'flux-press'),
+                'section'     => 'flux_woocommerce_section',
+                'type'        => 'number',
+                'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_filters_brands_limit', [
+                'default'           => config('theme-interface.woocommerce.shop_filters.brands_limit', 12),
+                'sanitize_callback' => fn ($value): int => $this->sanitizeBoundedInt($value, 1, 30, 12),
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_filters_brands_limit', [
+                'label'       => __('Limite de marcas en filtros', 'flux-press'),
+                'section'     => 'flux_woocommerce_section',
+                'type'        => 'number',
+                'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],
+            ]);
+
+            $wp_customize->add_setting('woocommerce_shop_filters_vendors_limit', [
+                'default'           => config('theme-interface.woocommerce.shop_filters.vendors_limit', 12),
+                'sanitize_callback' => fn ($value): int => $this->sanitizeBoundedInt($value, 1, 30, 12),
+                'transport'         => 'refresh',
+            ]);
+            $wp_customize->add_control('woocommerce_shop_filters_vendors_limit', [
+                'label'       => __('Limite de vendedores en filtros', 'flux-press'),
+                'section'     => 'flux_woocommerce_section',
+                'type'        => 'number',
+                'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],
+            ]);
         });
+    }
+
+    /**
+     * @param mixed $value
+     */
+    protected function sanitizeBoundedInt($value, int $min, int $max, int $fallback): int
+    {
+        $int = (int) $value;
+        if ($int < $min || $int > $max) {
+            return $fallback;
+        }
+
+        return $int;
     }
 }

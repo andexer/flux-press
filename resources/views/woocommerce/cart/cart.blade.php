@@ -6,7 +6,7 @@
     $cartSubtotal = WC()->cart ? WC()->cart->get_cart_subtotal() : '';
 @endphp
 
-<section class="flux-wc-cart-page max-w-7xl mx-auto px-4 sm:px-0 py-2 sm:py-4">
+<section class="flux-wc-cart-page max-w-7xl mx-auto px-4 sm:px-0 py-4 sm:py-6 lg:py-8">
     <div class="mb-8 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-6 sm:p-8 shadow-sm">
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -31,8 +31,8 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 xl:grid-cols-[1fr_24rem] gap-8">
-        <div class="min-w-0 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-3 sm:p-5 shadow-sm">
+    <div class="grid grid-cols-1 xl:grid-cols-[1fr_24rem] gap-6 lg:gap-8">
+        <div class="min-w-0">
             <form class="woocommerce-cart-form" action="{{ esc_url(wc_get_cart_url()) }}" method="post">
                 @php do_action('woocommerce_before_cart_table'); @endphp
 
@@ -144,16 +144,20 @@
 
                         <tr>
                             <td colspan="6" class="actions">
-                                @if(wc_coupons_enabled())
-                                    <div class="coupon">
-                                        <label for="coupon_code" class="screen-reader-text">{{ esc_html__('Coupon:', 'woocommerce') }}</label>
-                                        <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="{{ esc_attr__('Coupon code', 'woocommerce') }}" />
-                                        <button type="submit" class="button{{ esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') }}" name="apply_coupon" value="{{ esc_attr__('Apply coupon', 'woocommerce') }}">{{ esc_html__('Apply coupon', 'woocommerce') }}</button>
-                                        @php do_action('woocommerce_cart_coupon'); @endphp
-                                    </div>
-                                @endif
+                                <div class="flux-cart-actions-row">
+                                    @if(wc_coupons_enabled())
+                                        <div class="coupon">
+                                            <label for="coupon_code" class="screen-reader-text">{{ esc_html__('Coupon:', 'woocommerce') }}</label>
+                                            <input type="text" name="coupon_code" class="input-text" id="coupon_code" value="" placeholder="{{ esc_attr__('Coupon code', 'woocommerce') }}" />
+                                            <button type="submit" class="button{{ esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') }}" name="apply_coupon" value="{{ esc_attr__('Apply coupon', 'woocommerce') }}">{{ esc_html__('Apply coupon', 'woocommerce') }}</button>
+                                            @php do_action('woocommerce_cart_coupon'); @endphp
+                                        </div>
+                                    @endif
 
-                                <button type="submit" class="button{{ esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') }}" name="update_cart" value="{{ esc_attr__('Update cart', 'woocommerce') }}">{{ esc_html__('Update cart', 'woocommerce') }}</button>
+                                    <div class="flux-cart-update-wrap">
+                                        <button type="submit" class="button{{ esc_attr(wc_wp_theme_get_element_class_name('button') ? ' ' . wc_wp_theme_get_element_class_name('button') : '') }}" name="update_cart" value="{{ esc_attr__('Update cart', 'woocommerce') }}">{{ esc_html__('Update cart', 'woocommerce') }}</button>
+                                    </div>
+                                </div>
 
                                 @php do_action('woocommerce_cart_actions'); @endphp
 
@@ -169,7 +173,7 @@
             </form>
         </div>
 
-        <aside class="flux-wc-cart-sidebar min-w-0 space-y-6">
+        <aside class="flux-wc-cart-sidebar min-w-0 space-y-5">
             <div class="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-sm">
                 <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3">
                     {{ __('Resumen de compra', 'flux-press') }}

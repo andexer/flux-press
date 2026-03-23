@@ -5,12 +5,6 @@ use Roots\Acorn\Sage\SageServiceProvider;
 
 class ThemeServiceProvider extends SageServiceProvider
 {
-    public function register(): void
-    {
-        parent::register();
-        $this->mergeConfigFrom(__DIR__ . '/../../config/theme.php', 'theme');
-    }
-    
     public function boot(): void
     {
         parent::boot();

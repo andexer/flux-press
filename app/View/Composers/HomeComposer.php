@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Services\HomeEcommerceDataService;
 use Roots\Acorn\View\Composer;
 
 class HomeComposer extends Composer
@@ -16,6 +17,10 @@ class HomeComposer extends Composer
 		'page-home',
 	];
 
+	public function __construct(protected HomeEcommerceDataService $homeEcommerceDataService)
+	{
+	}
+
 	/**
 	 * Data to be passed to home views.
 	 *
@@ -26,18 +31,71 @@ class HomeComposer extends Composer
 		$layout = $this->homeLayout();
 		$postsLimit = $this->homePostsLimit();
 		$showPosts = $this->homeSectionFlag('show_posts', true);
+		$editorContent = $this->homeEditorContent();
+		$contentMode = $this->homeEcommerceContentMode();
 
 		return [
-			'homeLayout'       => $layout,
-			'homeDemoVariant'  => $this->demoVariantForLayout($layout),
-			'homeShowFeatures' => $this->homeSectionFlag('show_features', true),
-			'homeShowStats'    => $this->homeSectionFlag('show_stats', true),
-			'homeShowCta'      => $this->homeSectionFlag('show_cta', true),
-			'homeShowPosts'    => $showPosts,
-			'homeShowWidgets'  => $this->homeSectionFlag('show_widgets', true),
-			'homePostsLimit'   => $postsLimit,
-			'homePosts'        => $showPosts ? $this->latestPosts($postsLimit) : [],
+			'homeLayout'               => $layout,
+			'homeShowFeatures'         => $this->homeSectionFlag('show_features', true),
+			'homeShowStats'            => $this->homeSectionFlag('show_stats', true),
+			'homeShowCta'              => $this->homeSectionFlag('show_cta', true),
+			'homeShowPosts'            => $showPosts,
+			'homeShowWidgets'          => $this->homeSectionFlag('show_widgets', true),
+			'homePostsLimit'           => $postsLimit,
+			'homePosts'                => $showPosts ? $this->homeEcommerceDataService->latestPostsData($postsLimit) : [],
+			'homeEcommerceContentMode' => $contentMode,
+			'homeEditorContent'        => $editorContent,
+			'homeHasEditorContent'     => $editorContent !== '',
 		];
+	}
+
+	protected function homeEcommerceContentMode(): string
+	{
+		$allowed = ['builder', 'hybrid', 'editor'];
+		$default = (string) config('theme-interface.home.ecommerce.content_mode', 'hybrid');
+		$value = (string) get_theme_mod('home_ecommerce_content_mode', $default);
+
+		if (in_array($value, $allowed, true)) {
+			return $value;
+		}
+
+		return in_array($default, $allowed, true) ? $default : 'hybrid';
+	}
+
+	protected function homeEditorContent(): string
+	{
+		$postId = (int) get_queried_object_id();
+		if ($postId <= 0) {
+			return '';
+		}
+
+		$post = get_post($postId);
+		if (! $post instanceof \WP_Post) {
+			return '';
+		}
+
+		$rawContent = trim((string) $post->post_content);
+		if ($rawContent !== '') {
+			return (string) apply_filters('the_content', $rawContent);
+		}
+
+		if (! class_exists('\\Elementor\\Plugin')) {
+			return '';
+		}
+
+		$elementorData = get_post_meta($postId, '_elementor_data', true);
+		if (! is_string($elementorData) || trim($elementorData) === '') {
+			return '';
+		}
+
+		$plugin = \Elementor\Plugin::instance();
+		if (! isset($plugin->frontend) || ! method_exists($plugin->frontend, 'get_builder_content_for_display')) {
+			return '';
+		}
+
+		$rendered = $plugin->frontend->get_builder_content_for_display($postId, true);
+
+		return is_string($rendered) ? $rendered : '';
 	}
 
 	/**
@@ -80,40 +138,5 @@ class HomeComposer extends Composer
 		$value = (int) get_theme_mod('home_posts_limit', $default);
 
 		return max(1, min(12, $value));
-	}
-
-	/**
-	 * Convert layout key to existing demo key for section components.
-	 */
-	protected function demoVariantForLayout(string $layout): string
-	{
-		$map = [
-			'corporate' => 'corporate',
-			'marketing' => 'marketing',
-			'news'      => 'news',
-			'profile'   => 'profile',
-			'ecommerce' => 'ecommerce',
-		];
-
-		return $map[$layout] ?? 'corporate';
-	}
-
-	/**
-	 * Retrieve latest published posts for home section.
-	 *
-	 * @return \WP_Post[]
-	 */
-	protected function latestPosts(int $limit): array
-	{
-		$posts = get_posts([
-			'post_type'           => 'post',
-			'post_status'         => 'publish',
-			'numberposts'         => $limit,
-			'orderby'             => 'date',
-			'order'               => 'DESC',
-			'ignore_sticky_posts' => true,
-		]);
-
-		return is_array($posts) ? $posts : [];
 	}
 }
