@@ -8,23 +8,23 @@
         <div class="max-w-4xl mx-auto">
             <div class="inline-flex items-center space-x-2 bg-white/10 backdrop-blur-md px-4 py-2 rounded-full mb-8 border border-white/20">
                 <span class="flex h-2 w-2 rounded-full bg-red-500 animate-pulse"></span>
-                <span class="text-sm font-semibold tracking-wide uppercase">{{ __('En Vivo Ahora', 'sage') }}</span>
+                <span class="text-sm font-semibold tracking-wide uppercase">{{ __('En Vivo Ahora', 'flux-press') }}</span>
             </div>
             
             <flux:heading size="7xl" class="mb-8 !font-black !text-white tracking-tighter italic">
-                {{ __('CONTENIDO SIN LÍMITES.', 'sage') }}
+                {{ __('CONTENIDO SIN LÍMITES.', 'flux-press') }}
             </flux:heading>
             
             <flux:subheading size="2xl" class="mb-12 text-zinc-400 !font-medium">
-                {{ __('Películas, series y directos exclusivos en la plataforma más rápida.', 'sage') }}
+                {{ __('Películas, series y directos exclusivos en la plataforma más rápida.', 'flux-press') }}
             </flux:subheading>
             
             <div class="flex flex-col sm:flex-row items-center justify-center gap-6">
-                <flux:button variant="primary" size="xl" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-500 text-white rounded-xl shadow-xl shadow-purple-900/40">
-                    {{ __('Empezar Prueba Gratis', 'sage') }}
+                <flux:button variant="primary" size="base" class="w-full sm:w-auto bg-purple-600 hover:bg-purple-500 text-white rounded-xl shadow-xl shadow-purple-900/40">
+                    {{ __('Empezar Prueba Gratis', 'flux-press') }}
                 </flux:button>
-                <flux:button variant="ghost" size="xl" class="w-full sm:w-auto text-white border-white/20 hover:bg-white/5">
-                    {{ __('Ver Tráiler', 'sage') }}
+                <flux:button variant="ghost" size="base" class="w-full sm:w-auto text-white border-white/20 hover:bg-white/5">
+                    {{ __('Ver Tráiler', 'flux-press') }}
                 </flux:button>
             </div>
         </div>

@@ -75,10 +75,10 @@ new class extends Component
                 </flux:subheading>
 
                 <div class="flex flex-col sm:flex-row gap-4 justify-center">
-                    <flux:button variant="primary" size="lg" icon="sparkles" href="{{ $slide['primaryHref'] }}" wire:navigate>
+                    <flux:button variant="primary" size="base" icon="sparkles" href="{{ $slide['primaryHref'] }}" wire:navigate>
                         {{ $slide['primaryCta'] }}
                     </flux:button>
-                    <flux:button variant="ghost" size="lg" icon="play-circle" href="{{ $slide['secondaryHref'] }}" class="!text-white !border-white/20 hover:!bg-white/10" wire:navigate>
+                    <flux:button variant="ghost" size="base" icon="play-circle" href="{{ $slide['secondaryHref'] }}" class="!text-white !border-white/20 hover:!bg-white/10" wire:navigate>
                         {{ $slide['secondaryCta'] }}
                     </flux:button>
                 </div>
@@ -88,15 +88,15 @@ new class extends Component
             <div class="mt-10 flex flex-wrap justify-center items-center gap-6 text-zinc-400 text-sm">
                 <div class="flex items-center gap-2">
                     <flux:icon.shield-check class="size-5 text-green-400" />
-                    {{ __('Seguro & Rápido', 'sage') }}
+                    {{ __('Seguro & Rápido', 'flux-press') }}
                 </div>
                 <div class="flex items-center gap-2">
                     <flux:icon.bolt class="size-5 text-yellow-400" />
-                    {{ __('Alto Rendimiento', 'sage') }}
+                    {{ __('Alto Rendimiento', 'flux-press') }}
                 </div>
                 <div class="flex items-center gap-2">
                     <flux:icon.code-bracket class="size-5 text-accent-400" />
-                    {{ __('Open Source', 'sage') }}
+                    {{ __('Open Source', 'flux-press') }}
                 </div>
             </div>
         </div>

@@ -991,3 +991,66 @@
     @apply bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600;
 }
 
+/* ─── Flux Checkout/Cart UX Polish ────────────────────── */
+.flux-wc-cart-page .woocommerce-cart-form .actions {
+    @apply bg-zinc-50/70 dark:bg-zinc-800/40;
+}
+
+.flux-wc-cart-page .woocommerce-cart-form .actions .coupon {
+    @apply flex flex-col sm:flex-row sm:items-center gap-2 sm:gap-3;
+}
+
+.flux-wc-cart-page .woocommerce-cart-form .actions .button {
+    @apply rounded-xl;
+}
+
+.flux-wc-cart-page .cart-collaterals .cross-sells {
+    @apply mt-0 mb-8;
+}
+
+.flux-wc-cart-sidebar .cart_totals {
+    @apply max-w-none ml-0;
+}
+
+.flux-wc-cart-sidebar .wc-proceed-to-checkout .checkout-button {
+    @apply rounded-xl py-3 text-sm font-semibold;
+}
+
+.flux-wc-checkout-page .woocommerce-form-coupon-toggle,
+.flux-wc-checkout-page .woocommerce-form-login-toggle {
+    @apply mb-5;
+}
+
+.flux-wc-checkout-form .col2-set .col-1,
+.flux-wc-checkout-form .col2-set .col-2 {
+    @apply mb-6 lg:mb-0;
+}
+
+.flux-wc-checkout-form .form-row {
+    @apply mb-4;
+}
+
+.flux-wc-checkout-form .woocommerce-billing-fields__field-wrapper,
+.flux-wc-checkout-form .woocommerce-shipping-fields__field-wrapper {
+    @apply grid gap-3;
+}
+
+.flux-wc-checkout-form #order_review {
+    @apply bg-transparent border-0 rounded-none p-0 shadow-none lg:sticky lg:top-24;
+}
+
+.flux-wc-checkout-form #order_review .woocommerce-checkout-review-order-table {
+    @apply rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800;
+}
+
+.flux-wc-checkout-form #payment {
+    @apply mt-4 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden;
+}
+
+.flux-wc-thankyou-page .woocommerce-order-overview {
+    @apply hidden;
+}
+
+.flux-wc-thankyou-page .woocommerce-order {
+    @apply space-y-4;
+}

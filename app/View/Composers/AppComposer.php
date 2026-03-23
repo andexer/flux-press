@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Services\MenuService;
 use Roots\Acorn\View\Composer;
 
 class AppComposer extends Composer
@@ -25,8 +26,9 @@ class AppComposer extends Composer
     public function with()
     {
         return [
-            'logoUrl'  => $this->logoUrl(),
-            'siteName' => get_bloginfo('name', 'display'),
+            'logoUrl'       => $this->logoUrl(),
+            'siteName'      => get_bloginfo('name', 'display'),
+            'primaryMenu'   => MenuService::items('primary_navigation'),
         ];
     }
 

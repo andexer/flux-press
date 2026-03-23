@@ -53,7 +53,7 @@
 
         {{-- CTA en el drawer --}}
         <flux:button variant="primary" class="w-full" icon="rocket-launch">
-            {{ __('Empezar', 'sage') }}
+            {{ __('Empezar', 'flux-press') }}
         </flux:button>
     </div>
 </flux:modal>

@@ -2,6 +2,7 @@
 
 namespace App\View\Composers;
 
+use App\Services\MenuService;
 use Roots\Acorn\View\Composer;
 
 class HeaderComposer extends Composer
@@ -25,8 +26,10 @@ class HeaderComposer extends Composer
 		return [
 			'variant'   => $this->variant(),
 			'sticky'    => $this->sticky(),
-			'menuItems' => $this->menuItems(),
+			'menuItems' => MenuService::items('primary_navigation'),
             'cta'       => $this->ctaData(),
+            'megaMenuConfig' => $this->megaMenuConfig(),
+            'renderedByHook' => did_action('get_header') > 0,
 		];
 	}
 
@@ -36,7 +39,7 @@ class HeaderComposer extends Composer
     protected function ctaData(): array
     {
         return [
-            'label' => get_theme_mod('header_cta_label', __('Empezar', 'sage')),
+            'label' => get_theme_mod('header_cta_label', __('Empezar', 'flux-press')),
             'url'   => get_theme_mod('header_cta_url', '#'),
             'show'  => (bool) get_theme_mod('header_cta_show', true),
         ];
@@ -47,10 +50,20 @@ class HeaderComposer extends Composer
 	 */
 	protected function variant(): string
 	{
-		$allowed = ['classic', 'centered', 'minimal'];
-		$variant = get_theme_mod('header_style', config('theme-interface.header.default_style', 'classic'));
+		$styles = config('theme-interface.header.styles', []);
+		$allowed = is_array($styles) ? array_keys($styles) : [];
+		$default = (string) config('theme-interface.header.default_style', 'classic');
+		$variant = (string) get_theme_mod('header_style', $default);
 
-		return in_array($variant, $allowed, true) ? $variant : 'classic';
+		if (in_array($variant, $allowed, true)) {
+			return $variant;
+		}
+
+		if (in_array($default, $allowed, true)) {
+			return $default;
+		}
+
+		return ! empty($allowed) ? (string) $allowed[0] : 'classic';
 	}
 
 	/**
@@ -61,25 +74,22 @@ class HeaderComposer extends Composer
 		return (bool) get_theme_mod('header_sticky', config('theme-interface.header.sticky', false));
 	}
 
-	/**
-	 * Obtener los items del menú de navegación principal.
-	 *
-	 * @return array<object>
-	 */
-	protected function menuItems(): array
-	{
-		$locations = get_nav_menu_locations();
-
-		if (empty($locations['primary_navigation'])) {
-			return [];
-		}
-
-		$menu = wp_get_nav_menu_object($locations['primary_navigation']);
-
-		if (! $menu) {
-			return [];
-		}
-
-		return wp_get_nav_menu_items($menu->term_id) ?: [];
-	}
+    /**
+     * Mega menu runtime configuration from Customizer.
+     */
+    protected function megaMenuConfig(): array
+    {
+        return [
+            'enabled'            => (bool) get_theme_mod('header_enable_mega_menu', config('theme-interface.header.mega_menu.enabled', true)),
+            'show_categories'    => (bool) get_theme_mod('header_megamenu_show_categories', config('theme-interface.header.mega_menu.show_categories', true)),
+            'show_top_rated'     => (bool) get_theme_mod('header_megamenu_show_top_rated', config('theme-interface.header.mega_menu.show_top_rated', true)),
+            'show_best_selling'  => (bool) get_theme_mod('header_megamenu_show_best_selling', config('theme-interface.header.mega_menu.show_best_selling', true)),
+            'show_pages'         => (bool) get_theme_mod('header_megamenu_show_pages', config('theme-interface.header.mega_menu.show_pages', true)),
+            'categories_limit'   => max(1, min(20, (int) get_theme_mod('header_megamenu_categories_limit', config('theme-interface.header.mega_menu.categories_limit', 6)))),
+            'top_rated_limit'    => max(1, min(20, (int) get_theme_mod('header_megamenu_top_rated_limit', config('theme-interface.header.mega_menu.top_rated_limit', 4)))),
+            'best_selling_limit' => max(1, min(20, (int) get_theme_mod('header_megamenu_best_selling_limit', config('theme-interface.header.mega_menu.best_selling_limit', 4)))),
+            'pages_limit'        => max(1, min(20, (int) get_theme_mod('header_megamenu_pages_limit', config('theme-interface.header.mega_menu.pages_limit', 6)))),
+            'featured_item_text' => (string) get_theme_mod('header_megamenu_featured_item_text', config('theme-interface.header.mega_menu.featured_item_text', __('Descubrir', 'flux-press'))),
+        ];
+    }
 }

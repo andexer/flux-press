@@ -5,8 +5,8 @@
             <flux:heading size="4xl" class="!text-white font-extrabold tracking-tight">Tu Tienda Online<br>Perfecta</flux:heading>
             <flux:subheading size="lg" class="!text-white/90 mt-6 max-w-lg text-balance">Todo lo que necesitas para vender online con máxima velocidad y conversión asegurada.</flux:subheading>
             <div class="mt-8 flex flex-wrap gap-4">
-                <flux:button size="lg" variant="filled" class="!bg-white !text-emerald-900 border-none hover:!bg-zinc-100 shadow-xl" icon="shopping-cart">Comprar Ahora</flux:button>
-                <flux:button variant="ghost" size="lg" icon="play-circle" class="!text-white hover:!bg-white/10">Ver Catálogo</flux:button>
+                <flux:button size="base" variant="filled" class="!bg-white !text-emerald-900 border-none hover:!bg-zinc-100 shadow-xl" icon="shopping-cart">Comprar Ahora</flux:button>
+                <flux:button variant="ghost" size="base" icon="play-circle" class="!text-white hover:!bg-white/10">Ver Catálogo</flux:button>
             </div>
         </div>
         <div class="grid grid-cols-2 gap-4">

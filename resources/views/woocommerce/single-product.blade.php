@@ -5,7 +5,7 @@
   <div class="mb-6">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item href="{{ home_url('/') }}" icon="home" />
-        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'sage') }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'flux-press') }}</flux:breadcrumbs.item>
         
         @php
            global $post;
@@ -24,7 +24,6 @@
   </div>
 
   @php
-      remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
       do_action('woocommerce_before_main_content');
   @endphp
 

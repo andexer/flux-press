@@ -6,6 +6,17 @@ use Illuminate\Support\ServiceProvider;
 
 class FluxCustomizerServiceProvider extends ServiceProvider
 {
+	/**
+	 * Allowed Tailwind color names for accent color validation.
+	 */
+	protected const ALLOWED_COLORS = [
+		'slate', 'gray', 'zinc', 'neutral', 'stone',
+		'red', 'orange', 'amber', 'yellow', 'lime',
+		'green', 'emerald', 'teal', 'cyan', 'sky',
+		'blue', 'indigo', 'violet', 'purple', 'fuchsia',
+		'pink', 'rose',
+	];
+
 	public function boot(): void
 	{
 		// Inyectamos en el footer con prioridad máxima para ganar la cascada CSS
@@ -34,15 +45,21 @@ class FluxCustomizerServiceProvider extends ServiceProvider
 		$isHex = (bool) preg_match('/^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$/', $accent);
 		$shades = [50, 100, 200, 300, 400, 500, 600, 700, 800, 900, 950];
 
+		// Validate non-hex color names against allowlist to prevent CSS injection
+		if (! $isHex && ! in_array($accent, self::ALLOWED_COLORS, true)) {
+			$accent = 'sky';
+		}
+
 		echo '<style id="flux-dynamic-vars-overrides">';
 		echo ':root, [data-flux-appearance] {';
 
 		if ($isHex) {
+			$safeHex = esc_attr($accent);
 			foreach ($shades as $shade) {
-				echo "--color-accent-{$shade}: {$accent} !important;";
+				echo "--color-accent-{$shade}: {$safeHex} !important;";
 			}
-			echo "--color-accent: {$accent} !important;";
-			echo "--color-accent-content: {$accent} !important;";
+			echo "--color-accent: {$safeHex} !important;";
+			echo "--color-accent-content: {$safeHex} !important;";
 		} else {
 			foreach ($shades as $shade) {
 				echo "--color-accent-{$shade}: var(--color-{$accent}-{$shade}) !important;";

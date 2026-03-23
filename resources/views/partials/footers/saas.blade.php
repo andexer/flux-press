@@ -9,17 +9,17 @@
         
         <div class="relative max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 text-center z-10">
             <flux:heading size="xl" class="!text-white mb-6 tracking-tight !font-bold text-4xl sm:text-5xl lg:text-6xl">
-                {{ __('¿Listo para transformar tu experiencia web?', 'sage') }}
+                {{ __('¿Listo para transformar tu experiencia web?', 'flux-press') }}
             </flux:heading>
             <flux:subheading class="!text-zinc-300/80 mb-10 max-w-2xl mx-auto text-lg text-balance">
-                {{ __('Únete a miles de desarrolladores modernos que ya utilizan toda la potencia de Flux Press y Livewire 4.', 'sage') }}
+                {{ __('Únete a miles de desarrolladores modernos que ya utilizan toda la potencia de Flux Press y Livewire 4.', 'flux-press') }}
             </flux:subheading>
             <div class="flex flex-wrap justify-center gap-4">
                 <flux:button variant="primary" class="!bg-white !text-zinc-900 hover:!bg-zinc-100 font-bold px-8 shadow-xl shadow-white/10 h-14 text-lg" icon="rocket-launch" href="#" wire:navigate>
-                    {{ __('Comenzar Gratis', 'sage') }}
+                    {{ __('Comenzar Gratis', 'flux-press') }}
                 </flux:button>
                 <flux:button variant="ghost" class="!text-white !border-white/20 hover:!bg-white/10 px-8 backdrop-blur-sm shadow-xl h-14 text-lg" icon="play-circle" href="#" wire:navigate>
-                    {{ __('Ver Demo', 'sage') }}
+                    {{ __('Ver Demo', 'flux-press') }}
                 </flux:button>
             </div>
         </div>
@@ -35,7 +35,7 @@
                     <flux:heading size="xl" class="!text-white tracking-tight">{!! $siteName !!}</flux:heading>
                 </a>
                 <flux:text class="text-zinc-400 max-w-sm">
-                    {{ __('Construyendo el futuro de la web, un componente reactivo a la vez. Diseñado para creadores inconformistas.', 'sage') }}
+                    {{ __('Construyendo el futuro de la web, un componente reactivo a la vez. Diseñado para creadores inconformistas.', 'flux-press') }}
                 </flux:text>
                 <div class="flex items-center gap-2">
                     <flux:button variant="ghost" size="sm" icon="globe-alt" href="#" aria-label="Website" class="!text-zinc-400 hover:!text-white" wire:navigate />
@@ -45,34 +45,34 @@
 
             {{-- Columna: Producto --}}
             <div>
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Producto', 'sage') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Producto', 'flux-press') }}</flux:heading>
                 <flux:navlist>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Características', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Precios', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Changelog', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Roadmap', 'sage') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Características', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Precios', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Changelog', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Roadmap', 'flux-press') }}</flux:navlist.item>
                 </flux:navlist>
             </div>
 
             {{-- Columna: Compañía --}}
             <div>
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Compañía', 'sage') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Compañía', 'flux-press') }}</flux:heading>
                 <flux:navlist>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Acerca de', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Blog', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Careers', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Contacto', 'sage') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Acerca de', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Blog', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Careers', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Contacto', 'flux-press') }}</flux:navlist.item>
                 </flux:navlist>
             </div>
 
             {{-- Columna: Legal --}}
             <div>
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Legal', 'sage') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Legal', 'flux-press') }}</flux:heading>
                 <flux:navlist>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Privacidad', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Términos', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Cookies', 'sage') }}</flux:navlist.item>
-                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('GDPR', 'sage') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Privacidad', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Términos', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Cookies', 'flux-press') }}</flux:navlist.item>
+                    <flux:navlist.item href="#" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('GDPR', 'flux-press') }}</flux:navlist.item>
                 </flux:navlist>
             </div>
         </div>
@@ -90,10 +90,10 @@
     <div class="bg-black/30 border-t border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 text-center sm:text-left flex flex-col sm:flex-row justify-between items-center gap-4">
             <flux:text class="text-zinc-500">
-                &copy; {{ $currentYear }} <span class="text-zinc-300">{!! $siteName !!}</span>. {{ __('Creado con precisión.', 'sage') }}
+                &copy; {{ $currentYear }} <span class="text-zinc-300">{!! $siteName !!}</span>. {{ __('Creado con precisión.', 'flux-press') }}
             </flux:text>
             <flux:text class="text-zinc-500 flex items-center justify-center gap-1.5">
-                {{ __('Hecho con', 'sage') }} <flux:icon.heart class="size-4 text-rose-500 drop-shadow-sm" />
+                {{ __('Hecho con', 'flux-press') }} <flux:icon.heart class="size-4 text-rose-500 drop-shadow-sm" />
             </flux:text>
         </div>
     </div>

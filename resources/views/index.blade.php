@@ -5,8 +5,8 @@
 
   @if (! have_posts())
     <flux:callout color="amber" icon="exclamation-triangle" class="mb-6">
-      <flux:callout.heading>{{ __('Sin resultados', 'sage') }}</flux:callout.heading>
-      <flux:callout.text>{!! __('No se encontraron resultados.', 'sage') !!}</flux:callout.text>
+      <flux:callout.heading>{{ __('Sin resultados', 'flux-press') }}</flux:callout.heading>
+      <flux:callout.text>{!! __('No se encontraron resultados.', 'flux-press') !!}</flux:callout.text>
     </flux:callout>
 
     {!! get_search_form(false) !!}

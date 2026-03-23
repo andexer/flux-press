@@ -11,8 +11,8 @@
                 Lleva tu presencia web al siguiente nivel con nuestro constructor reactivo de última generación en tiempo real.
             </flux:subheading>
             <div class="flex flex-wrap gap-4">
-                <flux:button size="lg" variant="primary" icon="rocket-launch">Empezar Ahora</flux:button>
-                <flux:button size="lg" variant="subtle" icon="book-open">Leer Documentación</flux:button>
+                <flux:button size="base" variant="primary" icon="rocket-launch">Empezar Ahora</flux:button>
+                <flux:button size="base" variant="subtle" icon="book-open">Leer Documentación</flux:button>
             </div>
         </div>
     </div>

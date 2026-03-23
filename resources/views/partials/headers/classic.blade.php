@@ -1,82 +1,102 @@
-{{-- Header Variant: Classic — Logo izquierda, navegación centro, CTA derecha --}}
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <flux:navbar class="py-4">
-        {{-- Logo / Brand --}}
-        <flux:navbar.item href="{{ home_url('/') }}" class="!font-bold !text-lg tracking-tight" wire:navigate>
-            <flux:icon.bolt class="size-6 text-accent-500 mr-1" />
-            {!! $siteName !!}
-        </flux:navbar.item>
+@php
+    $isAccountSidebarContext = class_exists('WooCommerce') && is_account_page() && is_user_logged_in();
+    $megaMenuOptions = isset($megaMenuConfig) && is_array($megaMenuConfig) ? $megaMenuConfig : [];
+    $megaMenuEnabled = (bool) ($megaMenuOptions['enabled'] ?? true);
+    $topMenuItems = [];
 
-        <flux:spacer />
+    if (isset($menuItems) && is_array($menuItems)) {
+        foreach ($menuItems as $item) {
+            if (is_object($item) && empty($item->menu_item_parent)) {
+                $topMenuItems[] = $item;
+            }
+        }
+    }
+@endphp
 
-        {{-- Navegación principal --}}
-        @forelse ($menuItems as $item)
-            <flux:navbar.item
-                href="{{ $item->url }}"
-                wire:navigate
-                :current="url()->current() === $item->url"
-            >
-                {{ $item->title }}
-            </flux:navbar.item>
-        @empty
-            <flux:navbar.item href="{{ home_url('/') }}" :current="true" wire:navigate>Home</flux:navbar.item>
-            <flux:navbar.item href="{{ home_url('/about') }}" wire:navigate>About</flux:navbar.item>
-            <flux:navbar.item href="{{ home_url('/contact') }}" wire:navigate>Contact</flux:navbar.item>
-        @endforelse
+<flux:header class="sticky top-0 z-40 bg-zinc-50/90 dark:bg-zinc-900/85 backdrop-blur border-b border-zinc-200/80 dark:border-zinc-700/80 shadow-[0_1px_0_0_rgba(0,0,0,0.02)]">
+    @if($isAccountSidebarContext)
+        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
+    @endif
 
-        <flux:spacer />
+    <flux:brand
+        href="{{ home_url('/') }}"
+        :name="$siteName ?? get_bloginfo('name')"
+        :logo="$logoUrl ?? null"
+        class="max-lg:hidden dark:hidden"
+    />
+    <flux:brand
+        href="{{ home_url('/') }}"
+        :name="$siteName ?? get_bloginfo('name')"
+        :logo="$logoUrl ?? null"
+        class="max-lg:hidden! hidden dark:flex"
+    />
 
-        {{-- CTA & Settings --}}
-        <div class="flex items-center gap-2">
-            <flux:navbar.item icon="magnifying-glass" href="#" aria-label="Buscar" class="lg:hidden" />
-            
-            @if(class_exists('WooCommerce'))
-                <livewire:cart-icon />
-            @endif
+    @if(! $isAccountSidebarContext && ! empty($topMenuItems))
+        <flux:dropdown position="bottom" align="start" class="lg:hidden">
+            <flux:button variant="ghost" size="sm" icon="bars-3-bottom-left" />
+            <flux:menu class="w-72">
+                @foreach($topMenuItems as $item)
+                    <flux:menu.item href="{{ $item->url }}" wire:navigate>{{ $item->title }}</flux:menu.item>
+                @endforeach
+            </flux:menu>
+        </flux:dropdown>
+    @endif
 
-            <livewire:theme-settings />
-
-            @if(isset($cta['show']) && $cta['show'])
-                <flux:button variant="primary" size="sm" icon="rocket-launch" href="{{ $cta['url'] }}" wire:navigate>
-                    {{ $cta['label'] }}
-                </flux:button>
-            @endif
+    @if($megaMenuEnabled)
+        <div class="max-lg:hidden flex-1 px-2">
+            <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
         </div>
+    @else
+        <flux:navbar class="-mb-px max-lg:hidden">
+            @foreach($topMenuItems as $item)
+                <flux:navbar.item href="{{ $item->url }}" :current="url()->current() === $item->url" wire:navigate>{{ $item->title }}</flux:navbar.item>
+            @endforeach
+        </flux:navbar>
+    @endif
+
+    <flux:spacer />
+
+    <flux:navbar class="me-2 flex items-center gap-1 sm:gap-2">
+        <div class="max-sm:hidden">
+            <livewire:global-search />
+        </div>
+        @if(class_exists('WooCommerce'))
+            <livewire:cart-icon />
+        @endif
+        @if(current_user_can('manage_options'))
+            <livewire:theme-settings />
+        @endif
     </flux:navbar>
 
+    @php $isLoggedIn = is_user_logged_in(); @endphp
 
-    {{-- Menú móvil responsive --}}
-    <div class="lg:hidden" x-data="{ open: false }">
-        <div class="flex items-center justify-between py-3">
-            <a href="{{ home_url('/') }}" class="font-bold text-lg tracking-tight flex items-center gap-1" wire:navigate>
-                <flux:icon.bolt class="size-5 text-accent-500" />
-                {!! $siteName !!}
-            </a>
-            <flux:button variant="ghost" icon="bars-3" x-on:click="open = !open" aria-label="Menú" />
-        </div>
+    @if($isLoggedIn)
+        @php
+            $currentUser = wp_get_current_user();
+            $customPhotoId = (int) get_user_meta($currentUser->ID, 'flux_profile_photo_id', true);
+            $avatarUrl = $customPhotoId
+                ? wp_get_attachment_image_url($customPhotoId, 'thumbnail')
+                : null;
+            $avatarUrl = $avatarUrl ?: get_avatar_url($currentUser->ID, ['size' => 64]);
+        @endphp
+        <flux:dropdown position="bottom" align="end">
+            <flux:profile avatar="{{ $avatarUrl }}" name="{{ $currentUser->display_name }}" />
 
-        <div x-show="open" x-transition x-cloak class="pb-4 space-y-1">
-            @forelse ($menuItems as $item)
-                <flux:navlist.item
-                    href="{{ $item->url }}"
-                    wire:navigate
-                    :current="url()->current() === $item->url"
-                >
-                    {{ $item->title }}
-                </flux:navlist.item>
-            @empty
-                <flux:navlist.item href="{{ home_url('/') }}" :current="true" wire:navigate>Home</flux:navlist.item>
-                <flux:navlist.item href="{{ home_url('/about') }}" wire:navigate>About</flux:navlist.item>
-                <flux:navlist.item href="{{ home_url('/contact') }}" wire:navigate>Contact</flux:navlist.item>
-            @endforelse
-
-            @if(isset($cta['show']) && $cta['show'])
-                <div class="pt-3">
-                    <flux:button variant="primary" class="w-full" icon="rocket-launch" href="{{ $cta['url'] }}" wire:navigate>
-                        {{ $cta['label'] }}
-                    </flux:button>
-                </div>
-            @endif
-        </div>
-    </div>
-</div>
+            <flux:menu class="w-64">
+                <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Admin', 'flux-press') }}</flux:menu.item>
+                @if(class_exists('WooCommerce'))
+                    <flux:menu.item icon="user" href="{{ wc_get_account_endpoint_url('dashboard') }}" wire:navigate>{{ __('Mi Cuenta', 'flux-press') }}</flux:menu.item>
+                @endif
+                <flux:menu.separator />
+                <flux:menu.item icon="arrow-right-start-on-rectangle" variant="danger" href="{{ wp_logout_url(home_url('/')) }}">
+                    {{ __('Cerrar Sesion', 'flux-press') }}
+                </flux:menu.item>
+            </flux:menu>
+        </flux:dropdown>
+    @else
+        @php
+            $loginUrl = class_exists('WooCommerce') ? wc_get_account_endpoint_url('dashboard') : wp_login_url();
+        @endphp
+        <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">{{ __('Acceder', 'flux-press') }}</flux:button>
+    @endif
+</flux:header>

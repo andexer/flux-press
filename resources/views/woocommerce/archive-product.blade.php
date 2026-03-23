@@ -20,7 +20,7 @@
         @if(is_shop())
             <flux:breadcrumbs.item>{{ woocommerce_page_title(false) }}</flux:breadcrumbs.item>
         @elseif(is_product_category() || is_product_tag())
-            <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'sage') }}</flux:breadcrumbs.item>
+            <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'flux-press') }}</flux:breadcrumbs.item>
             <flux:breadcrumbs.item>{{ single_term_title('', false) }}</flux:breadcrumbs.item>
         @else
             <flux:breadcrumbs.item>{{ woocommerce_page_title(false) }}</flux:breadcrumbs.item>
@@ -29,7 +29,6 @@
   </div>
 
   @php
-      remove_action('woocommerce_before_main_content', 'woocommerce_breadcrumb', 20);
       do_action('woocommerce_before_main_content');
   @endphp
 

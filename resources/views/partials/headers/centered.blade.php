@@ -40,7 +40,7 @@
     <div class="lg:hidden" x-data="{ open: false }">
         <div class="flex justify-center py-3">
             <flux:button variant="ghost" icon="bars-3" x-on:click="open = !open" aria-label="Menú">
-                {{ __('Menú', 'sage') }}
+                {{ __('Menú', 'flux-press') }}
             </flux:button>
         </div>
 

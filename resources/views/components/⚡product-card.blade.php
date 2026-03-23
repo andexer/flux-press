@@ -30,7 +30,7 @@ new class extends Component
             $product = $this->product;
             
             if (!$product || !$product->is_in_stock()) {
-                \Flux::toast(__('This product is currently out of stock.', 'sage'), variant: 'danger');
+                \Flux::toast(__('This product is currently out of stock.', 'flux-press'), variant: 'danger');
                 return;
             }
 
@@ -45,9 +45,9 @@ new class extends Component
             // Tell other components (like cart-icon) to refresh
             $this->dispatch('cart-updated');
             
-            \Flux::toast(sprintf(__('%s has been added to your cart.', 'sage'), $product->get_name()), variant: 'success');
+            \Flux::toast(sprintf(__('%s has been added to your cart.', 'flux-press'), $product->get_name()), variant: 'success');
         } catch (\Exception $e) {
-            \Flux::toast(__('Unable to add product to cart.', 'sage'), variant: 'danger');
+            \Flux::toast(__('Unable to add product to cart.', 'flux-press'), variant: 'danger');
             Log::error('WooCommerce Add to Cart error: ' . $e->getMessage());
         }
     }
@@ -59,7 +59,7 @@ new class extends Component
         <a href="{{ $this->product->get_permalink() }}" wire:navigate class="block relative aspect-square bg-zinc-50 dark:bg-zinc-800 overflow-hidden">
             @if ($this->product->is_on_sale())
                 <span class="absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-3 py-1 rounded-full shadow-sm">
-                    {{ __('Sale!', 'sage') }}
+                    {{ __('Sale!', 'flux-press') }}
                 </span>
             @endif
             
@@ -75,7 +75,7 @@ new class extends Component
                 @else
                     <img
                         src="{{ wc_placeholder_img_src('woocommerce_thumbnail') }}"
-                        alt="{{ __('Placeholder', 'sage') }}"
+                        alt="{{ __('Placeholder', 'flux-press') }}"
                         class="w-full h-full object-cover opacity-50"
                     />
                 @endif
@@ -109,18 +109,18 @@ new class extends Component
             @if ($this->product->is_in_stock())
                 @if($this->product->is_type('variable'))
                     <flux:button variant="filled" href="{{ $this->product->get_permalink() }}" class="w-full justify-center" wire:navigate>
-                        {{ __('Select options', 'sage') }}
+                        {{ __('Select options', 'flux-press') }}
                     </flux:button>
                 @else
                     {{-- Reactive Add to cart button --}}
                     <flux:button wire:click="addToCart" variant="primary" class="w-full justify-center" icon="shopping-bag" wire:loading.attr="disabled">
-                        <span wire:loading.remove wire:target="addToCart">{{ __('Add to cart', 'sage') }}</span>
-                        <span wire:loading wire:target="addToCart">{{ __('Adding...', 'sage') }}</span>
+                        <span wire:loading.remove wire:target="addToCart">{{ __('Add to cart', 'flux-press') }}</span>
+                        <span wire:loading wire:target="addToCart">{{ __('Adding...', 'flux-press') }}</span>
                     </flux:button>
                 @endif
             @else
                 <flux:button disabled variant="ghost" class="w-full justify-center bg-zinc-100 dark:bg-zinc-800 text-zinc-500 dark:text-zinc-400 cursor-not-allowed border border-zinc-200 dark:border-zinc-700">
-                    {{ __('Out of stock', 'sage') }}
+                    {{ __('Out of stock', 'flux-press') }}
                 </flux:button>
             @endif
         </div>

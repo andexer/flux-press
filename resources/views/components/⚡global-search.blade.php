@@ -73,8 +73,8 @@ new class extends Component
             wire:model.live.debounce.300ms="query"
             type="search" 
             name="s" 
-            placeholder="{!! esc_attr_x('Search &hellip;', 'placeholder', 'sage') !!}" 
-            aria-label="{{ _x('Search for:', 'label', 'sage') }}" 
+            placeholder="{!! esc_attr_x('Search &hellip;', 'placeholder', 'flux-press') !!}" 
+            aria-label="{{ _x('Search for:', 'label', 'flux-press') }}" 
             class="flex-1"
             autocomplete="off"
             @focus="open = true"
@@ -82,7 +82,7 @@ new class extends Component
         />
 
         <flux:button type="submit" variant="primary">
-            {{ _x('Search', 'submit button', 'sage') }}
+            {{ _x('Search', 'submit button', 'flux-press') }}
         </flux:button>
     </form>
 
@@ -115,7 +115,7 @@ new class extends Component
                 </ul>
                 <div class="p-2 border-t border-zinc-100 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 text-center">
                     <button type="button" wire:click="submitSearch" class="w-full text-center text-sm text-accent-600 dark:text-accent-400 hover:text-accent-700 font-medium py-1">
-                        {{ __('View all results', 'sage') }}
+                        {{ __('View all results', 'flux-press') }}
                     </button>
                 </div>
             @else
@@ -123,7 +123,7 @@ new class extends Component
                     <svg class="w-8 h-8 text-zinc-300 dark:text-zinc-600 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <span>{{ __('No results found for', 'sage') }} "<span class="font-medium text-zinc-900 dark:text-zinc-100">{{ $query }}</span>"</span>
+                    <span>{{ __('No results found for', 'flux-press') }} "<span class="font-medium text-zinc-900 dark:text-zinc-100">{{ $query }}</span>"</span>
                 </div>
             @endif
         </div>

@@ -71,6 +71,15 @@ add_filter('should_load_separate_core_block_assets', '__return_false');
  * @return void
  */
 add_action('after_setup_theme', function () {
+    load_theme_textdomain('flux-press', get_theme_file_path('/resources/lang'));
+}, 0);
+
+/**
+ * Register the initial theme setup.
+ *
+ * @return void
+ */
+add_action('after_setup_theme', function () {
     /**
      * Disable full-site editing support.
      *
@@ -84,9 +93,9 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation'   => __('Primary Navigation', 'sage'),
-        'footer_navigation'    => __('Footer Navigation', 'sage'),
-        'footer_navigation_2'  => __('Footer Navigation 2', 'sage'),
+        'primary_navigation'   => __('Primary Navigation', 'flux-press'),
+        'footer_navigation'    => __('Footer Navigation', 'flux-press'),
+        'footer_navigation_2'  => __('Footer Navigation 2', 'flux-press'),
     ]);
 
     /**
@@ -168,13 +177,19 @@ add_action('widgets_init', function () {
     ];
 
     register_sidebar([
-        'name' => __('Primary', 'sage'),
+        'name' => __('Primary', 'flux-press'),
         'id' => 'sidebar-primary',
     ] + $config);
 
     register_sidebar([
-        'name' => __('Footer', 'sage'),
+        'name' => __('Footer', 'flux-press'),
         'id' => 'sidebar-footer',
+    ] + $config);
+
+    register_sidebar([
+        'name' => __('Home Widgets', 'flux-press'),
+        'id' => 'sidebar-home',
+        'description' => __('Area de widgets para la landing/home dinamica.', 'flux-press'),
     ] + $config);
 });
 /**

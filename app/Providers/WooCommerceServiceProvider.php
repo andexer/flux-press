@@ -2,20 +2,20 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\Facades\Vite;
+use App\Traits\SanitizesCustomizerValues;
+use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
 
 class WooCommerceServiceProvider extends ServiceProvider
 {
+    use SanitizesCustomizerValues;
+
     /**
      * Register any application services.
      */
     public function register(): void
     {
-        $this->mergeConfigFrom(
-            __DIR__ . '/../../config/theme-interface.php',
-            'theme-interface'
-        );
+        // Config is already merged by ThemeInterfaceServiceProvider.
     }
 
     /**
@@ -35,6 +35,9 @@ class WooCommerceServiceProvider extends ServiceProvider
         $this->removeDefaultStyles();
         $this->registerHooks();
         $this->registerCustomizerSettings();
+        $this->registerTemplateOverrides();
+        $this->registerTemplateIncludeOverrides();
+        $this->registerComposers();
     }
 
     /**
@@ -76,9 +79,9 @@ class WooCommerceServiceProvider extends ServiceProvider
     {
         add_action('widgets_init', function () {
             register_sidebar([
-                'name'          => __('Shop Sidebar', 'sage'),
+                'name'          => __('Shop Sidebar', 'flux-press'),
                 'id'            => 'sidebar-shop',
-                'description'   => __('Widget area for WooCommerce shop pages.', 'sage'),
+                'description'   => __('Widget area for WooCommerce shop pages.', 'flux-press'),
                 'before_widget' => '<section class="widget %1$s %2$s">',
                 'after_widget'  => '</section>',
                 'before_title'  => '<h3>',
@@ -93,7 +96,6 @@ class WooCommerceServiceProvider extends ServiceProvider
      */
     protected function removeDefaultStyles(): void
     {
-        // Definitive method: return empty array to prevent WC from enqueuing any styles
         add_filter('woocommerce_enqueue_styles', '__return_empty_array');
     }
 
@@ -132,11 +134,142 @@ class WooCommerceServiceProvider extends ServiceProvider
             $fragments['.flux-cart-count'] = '<span class="flux-cart-count">' . esc_html($count) . '</span>';
             return $fragments;
         });
+    }
 
-        // ── Single product meta: clean output ──
-        add_action('woocommerce_single_product_summary', function () {
-            // Ensure SKU, categories, and tags are displayed
-        }, 40);
+    /**
+     * Register dynamic WooCommerce partial/template overrides from Blade views.
+     *
+     * Any WooCommerce template_name like "myaccount/navigation.php" will be
+     * resolved to "resources/views/woocommerce/myaccount/navigation.blade.php".
+     */
+    protected function registerTemplateOverrides(): void
+    {
+        add_filter('woocommerce_locate_template', function ($template, $template_name, $template_path) {
+            return $this->resolveWooCommerceTemplateBridge($template_name, $template);
+        }, 10, 3);
+
+        add_filter('wc_get_template_part', function ($template, $slug, $name) {
+            $template_name = $name ? "{$slug}-{$name}.php" : "{$slug}.php";
+
+            return $this->resolveWooCommerceTemplateBridge($template_name, $template);
+        }, 10, 3);
+    }
+
+    /**
+     * Register WordPress template_include overrides used by WooCommerce pages.
+     */
+    protected function registerTemplateIncludeOverrides(): void
+    {
+        add_filter('template_include', function ($template) {
+            if (is_account_page() && $this->shouldUseAssignedMyAccountTemplate()) {
+                return $this->findAccountTemplate() ?: $template;
+            }
+
+            if (! function_exists('is_woocommerce') || ! is_woocommerce()) {
+                return $template;
+            }
+
+            $template_name = $this->extractTemplateNameFromPath($template);
+            if (! $template_name) {
+                return $template;
+            }
+
+            $candidate = $this->findWooCommerceBladeTemplate($template_name);
+
+            return $candidate ?: $template;
+        }, 98);
+    }
+
+    private function findAccountTemplate(): ?string
+    {
+        $path = get_theme_file_path('resources/views/my-account.blade.php');
+
+        return file_exists($path) ? $path : null;
+    }
+
+    private function shouldUseAssignedMyAccountTemplate(): bool
+    {
+        $account_page_id = function_exists('wc_get_page_id') ? (int) wc_get_page_id('myaccount') : 0;
+        if ($account_page_id <= 0) {
+            return false;
+        }
+
+        $assigned_slug = (string) get_page_template_slug($account_page_id);
+
+        return basename($assigned_slug) === 'my-account.blade.php';
+    }
+
+    /**
+     * Register WooCommerce View Composers.
+     */
+    protected function registerComposers(): void
+    {
+        View::composer(
+            ['woocommerce.*', 'layouts.app', 'my-account'],
+            \App\View\Composers\WooCommerceComposer::class
+        );
+    }
+
+    /**
+     * Resolve a WooCommerce template_name to a Blade template path.
+     *
+     * Example:
+     * - myaccount/navigation.php -> resources/views/woocommerce/myaccount/navigation.blade.php
+     */
+    private function findWooCommerceBladeTemplate(string $templateName): ?string
+    {
+        $relative = trim(str_replace('\\', '/', $templateName), '/');
+        if ($relative === '' || ! str_ends_with($relative, '.php')) {
+            return null;
+        }
+
+        $bladeRelative = preg_replace('/\.php$/', '.blade.php', $relative);
+        if (! is_string($bladeRelative)) {
+            return null;
+        }
+
+        $path = get_theme_file_path("resources/views/woocommerce/{$bladeRelative}");
+
+        return file_exists($path) ? $path : null;
+    }
+
+    /**
+     * Resolve the WooCommerce bridge template used to render Blade overrides.
+     */
+    private function getWooCommerceBladeBridgeTemplate(): ?string
+    {
+        $bridge = get_theme_file_path('app/WooCommerce/woocommerce-template-bridge.php');
+
+        return file_exists($bridge) ? $bridge : null;
+    }
+
+    /**
+     * Return template name relative to template roots (e.g. archive-product.php).
+     */
+    private function extractTemplateNameFromPath(string $templatePath): ?string
+    {
+        $basename = wp_basename($templatePath);
+
+        return $basename !== '' && str_ends_with($basename, '.php') ? $basename : null;
+    }
+
+    /**
+     * Return bridge template when a Blade override exists for the template name.
+     */
+    private function resolveWooCommerceTemplateBridge(string $templateName, string $fallback): string
+    {
+        if (! $this->findWooCommerceBladeTemplate($templateName)) {
+            return $fallback;
+        }
+
+        $bridge = $this->getWooCommerceBladeBridgeTemplate();
+        if (! $bridge) {
+            return $fallback;
+        }
+
+        $GLOBALS['flux_press_wc_blade_template_name'] = $templateName;
+
+        return $bridge;
     }
 
     /**
@@ -146,8 +279,8 @@ class WooCommerceServiceProvider extends ServiceProvider
     {
         add_action('customize_register', function (\WP_Customize_Manager $wp_customize) {
             $wp_customize->add_section('flux_woocommerce_section', [
-                'title'       => __('Flux Press: WooCommerce', 'sage'),
-                'description' => __('WooCommerce integration settings for the theme.', 'sage'),
+                'title'       => __('Flux Press: WooCommerce', 'flux-press'),
+                'description' => __('WooCommerce integration settings for the theme.', 'flux-press'),
                 'priority'    => 32,
             ]);
 
@@ -159,7 +292,7 @@ class WooCommerceServiceProvider extends ServiceProvider
             ]);
 
             $wp_customize->add_control('woocommerce_show_cart_icon', [
-                'label'   => __('Show cart icon in header', 'sage'),
+                'label'   => __('Show cart icon in header', 'flux-press'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
@@ -172,18 +305,10 @@ class WooCommerceServiceProvider extends ServiceProvider
             ]);
 
             $wp_customize->add_control('woocommerce_show_shop_sidebar', [
-                'label'   => __('Show sidebar on shop pages', 'sage'),
+                'label'   => __('Show sidebar on shop pages', 'flux-press'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
         });
-    }
-
-    /**
-     * Sanitize boolean values from Customizer.
-     */
-    public function sanitizeBoolean($value): bool
-    {
-        return (bool) $value;
     }
 }

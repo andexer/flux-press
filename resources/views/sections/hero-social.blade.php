@@ -17,8 +17,8 @@
         <flux:subheading size="xl" class="!text-white/90 max-w-2xl mx-auto mb-12 text-balance">Conecta, comparte y crece con miles de usuarios activos en tiempo real gracias a la magia de Livewire 4.</flux:subheading>
         
         <div class="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
-            <flux:button size="lg" variant="filled" class="!bg-white !text-purple-900 shadow-xl border-none hover:!bg-zinc-100" icon="user-plus">Registrarse Gratis</flux:button>
-            <flux:button size="lg" variant="ghost" icon="play-circle" class="!text-white hover:!bg-white/10">Ver en Acción</flux:button>
+            <flux:button size="base" variant="filled" class="!bg-white !text-purple-900 shadow-xl border-none hover:!bg-zinc-100" icon="user-plus">Registrarse Gratis</flux:button>
+            <flux:button size="base" variant="ghost" icon="play-circle" class="!text-white hover:!bg-white/10">Ver en Acción</flux:button>
         </div>
     </div>
 </flux:main>

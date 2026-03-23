@@ -134,7 +134,7 @@ new class extends Component
     @if ($this->wooCommerceActive && $this->showCartIcon)
         {{-- Cart Icon Trigger --}}
         <flux:modal.trigger name="cart-flyout">
-            <flux:button variant="ghost" size="sm" class="relative" aria-label="{{ __('Shopping Cart', 'sage') }}">
+            <flux:button variant="ghost" size="sm" class="relative" aria-label="{{ __('Shopping Cart', 'flux-press') }}">
                 <flux:icon.shopping-cart class="size-5" />
                 @if ($this->cartCount > 0)
                     <span class="absolute -top-1 -right-1 inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-[0.65rem] font-bold leading-none text-white bg-accent-600 dark:bg-accent-500 rounded-full">
@@ -147,7 +147,7 @@ new class extends Component
         {{-- Cart Flyout Modal --}}
         <flux:modal name="cart-flyout" flyout variant="floating" class="md:w-lg">
             <div class="space-y-6">
-                <flux:heading size="lg">{{ __('Your Cart', 'sage') }}</flux:heading>
+                <flux:heading size="lg">{{ __('Your Cart', 'flux-press') }}</flux:heading>
 
                 @if (count($this->cartItems) > 0)
                     <div class="divide-y divide-zinc-200 dark:divide-zinc-700">
@@ -171,7 +171,7 @@ new class extends Component
                                             <button 
                                                 wire:click="updateQuantity('{{ $item['key'] }}', {{ $item['quantity'] - 1 }})" 
                                                 class="px-2 py-0.5 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-                                                aria-label="{{ __('Decrease quantity', 'sage') }}"
+                                                aria-label="{{ __('Decrease quantity', 'flux-press') }}"
                                             >
                                                 &minus;
                                             </button>
@@ -181,7 +181,7 @@ new class extends Component
                                             <button 
                                                 wire:click="updateQuantity('{{ $item['key'] }}', {{ $item['quantity'] + 1 }})" 
                                                 class="px-2 py-0.5 text-zinc-500 hover:bg-zinc-100 dark:hover:bg-zinc-700 transition-colors"
-                                                aria-label="{{ __('Increase quantity', 'sage') }}"
+                                                aria-label="{{ __('Increase quantity', 'flux-press') }}"
                                             >
                                                 &plus;
                                             </button>
@@ -199,7 +199,7 @@ new class extends Component
                                     size="sm"
                                     icon="x-mark"
                                     wire:click="removeItem('{{ $item['key'] }}')"
-                                    aria-label="{{ __('Remove item', 'sage') }}"
+                                    aria-label="{{ __('Remove item', 'flux-press') }}"
                                     class="flex-shrink-0 text-zinc-400 hover:text-red-500 dark:hover:text-red-400"
                                 />
                             </div>
@@ -208,14 +208,14 @@ new class extends Component
 
                     {{-- Cart Total --}}
                     <div class="flex items-center justify-between pt-4 border-t border-zinc-200 dark:border-zinc-700">
-                        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ __('Total', 'sage') }}</span>
+                        <span class="text-sm font-medium text-zinc-700 dark:text-zinc-300">{{ __('Total', 'flux-press') }}</span>
                         <span class="text-lg font-bold text-zinc-900 dark:text-zinc-100">{!! $this->cartTotal !!}</span>
                     </div>
                 @else
                     {{-- Empty Cart --}}
                     <div class="text-center py-8">
                         <flux:icon.shopping-cart class="size-12 text-zinc-300 dark:text-zinc-600 mx-auto mb-4" />
-                        <flux:subheading>{{ __('Your cart is empty', 'sage') }}</flux:subheading>
+                        <flux:subheading>{{ __('Your cart is empty', 'flux-press') }}</flux:subheading>
                     </div>
                 @endif
             </div>
@@ -223,11 +223,11 @@ new class extends Component
             @if (count($this->cartItems) > 0)
                 <div class="flex items-center justify-end gap-2 mt-6 pt-4 border-t border-zinc-200 dark:border-zinc-700">
                     <flux:button variant="filled" href="{{ $this->cartUrl }}" wire:navigate>
-                        {{ __('View Cart', 'sage') }}
+                        {{ __('View Cart', 'flux-press') }}
                     </flux:button>
 
                     <flux:button variant="primary" href="{{ $this->checkoutUrl }}" wire:navigate>
-                        {{ __('Checkout', 'sage') }}
+                        {{ __('Checkout', 'flux-press') }}
                     </flux:button>
                 </div>
             @endif
