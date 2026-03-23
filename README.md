@@ -7,6 +7,7 @@
   <a href="https://github.com/roots/sage/actions/workflows/main.yml"><img alt="Estado de Compilación" src="https://img.shields.io/github/actions/workflow/status/roots/sage/main.yml?branch=main&logo=github&label=CI&style=flat-square"></a>
   <a href="https://twitter.com/rootswp"><img alt="Sigue a Roots" src="https://img.shields.io/badge/follow%20@rootswp-1da1f2?logo=twitter&logoColor=ffffff&message=&style=flat-square"></a>
   <a href="https://github.com/sponsors/roots"><img src="https://img.shields.io/badge/sponsor%20roots-525ddc?logo=github&style=flat-square&logoColor=ffffff&message=" alt="Patrocina a Roots"></a>
+<a href="https://deepwiki.com/andexer/flux-press"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
 </p>
 
 # Flux Press
@@ -24,6 +25,15 @@
 Flux Press aporta plantillas PHP adecuadas, herramientas de JavaScript modernas y el poder de Livewire a los temas de WordPress. Escribe código organizado y basado en componentes usando Laravel Blade y Livewire 4, crea interfaces reactivas y escalables con los componentes de Flux UI, disfruta de recarga de CSS y compilaciones instantáneas con Vite, y aprovecha el robusto conjunto de funciones de Laravel a través de Acorn.
 
 https://roots.io/sage/docs/installation/
+
+
+
+#### Documentación
+
+<p align="center">
+    <b> Inteligencia artificial interactiva </b>
+    <a href="https://deepwiki.com/andexer/flux-press"><img src="https://deepwiki.com/badge.svg" alt="Ask DeepWiki"></a>
+</p>
 
 ---
 
