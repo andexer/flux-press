@@ -512,6 +512,154 @@
     @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-6;
 }
 
+/* ─── Edit Account (Social Profile Layout) ─────────────── */
+.woocommerce-account .flux-account-edit {
+    @apply space-y-6 sm:space-y-8;
+}
+
+.woocommerce-account .flux-account-edit-hero {
+    @apply relative overflow-hidden rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-linear-to-br from-zinc-50 via-white to-zinc-100 dark:from-zinc-900 dark:via-zinc-900 dark:to-zinc-800 p-5 sm:p-7 lg:p-8 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6;
+}
+
+.woocommerce-account .flux-account-edit-hero::before,
+.woocommerce-account .flux-account-edit-hero::after {
+    content: "";
+    @apply absolute rounded-full pointer-events-none;
+}
+
+.woocommerce-account .flux-account-edit-hero::before {
+    @apply h-56 w-56 -top-24 -right-16 bg-accent-500/10 blur-3xl;
+}
+
+.woocommerce-account .flux-account-edit-hero::after {
+    @apply h-48 w-48 -bottom-24 -left-16 bg-emerald-500/10 blur-3xl;
+}
+
+.woocommerce-account .flux-account-edit-hero__media,
+.woocommerce-account .flux-account-edit-hero__content {
+    @apply relative z-10;
+}
+
+.woocommerce-account .flux-account-edit-hero__kicker {
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-account-edit-hero__title {
+    @apply mt-2 text-2xl sm:text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce-account .flux-account-edit-hero__subtitle {
+    @apply mt-1 text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-account-edit-hero__chips {
+    @apply mt-4 flex flex-wrap gap-2;
+}
+
+.woocommerce-account .flux-account-edit-hero__chips span {
+    @apply inline-flex items-center rounded-full bg-white/80 dark:bg-zinc-800/80 border border-zinc-200 dark:border-zinc-700 px-3 py-1 text-xs font-semibold text-zinc-600 dark:text-zinc-300;
+}
+
+.woocommerce-account .flux-edit-account-form {
+    @apply p-0 border-0 bg-transparent shadow-none rounded-none;
+}
+
+.woocommerce-account .flux-edit-account-grid {
+    @apply grid grid-cols-1 gap-5 sm:gap-6 xl:grid-cols-[19rem_minmax(0,1fr)] xl:gap-8 items-start;
+}
+
+.woocommerce-account .flux-edit-account-aside {
+    @apply min-w-0 xl:sticky xl:top-24;
+}
+
+.woocommerce-account .flux-edit-account-main {
+    @apply min-w-0 space-y-5 sm:space-y-6;
+}
+
+.woocommerce-account .flux-edit-card {
+    @apply rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-sm;
+}
+
+.woocommerce-account .flux-edit-card--profile {
+    @apply bg-zinc-50/70 dark:bg-zinc-900/70;
+}
+
+.woocommerce-account .flux-edit-card__kicker {
+    @apply text-[11px] font-bold uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-edit-card__title {
+    @apply mt-2 text-lg font-black text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce-account .flux-edit-card__text {
+    @apply mt-1 text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-edit-meta-grid {
+    @apply mt-5 grid grid-cols-2 gap-3;
+}
+
+.woocommerce-account .flux-edit-meta-grid dt {
+    @apply text-[11px] font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-edit-meta-grid dd {
+    @apply mt-1 text-sm font-semibold text-zinc-700 dark:text-zinc-200;
+}
+
+.woocommerce-account .flux-edit-shortcuts {
+    @apply mt-5 grid gap-2;
+}
+
+.woocommerce-account .flux-edit-shortcut-link {
+    @apply inline-flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3.5 py-2.5 text-sm font-semibold text-zinc-700 dark:text-zinc-200 no-underline hover:border-accent-400 dark:hover:border-accent-500/60 hover:text-accent-600 dark:hover:text-accent-400 transition-colors;
+}
+
+.woocommerce-account .flux-edit-card__header {
+    @apply mb-5 flex items-start gap-3 pb-4 border-b border-zinc-200/80 dark:border-zinc-800;
+}
+
+.woocommerce-account .flux-edit-card__header h3 {
+    @apply text-lg font-bold text-zinc-900 dark:text-zinc-100 leading-tight;
+}
+
+.woocommerce-account .flux-edit-card__header p {
+    @apply mt-1 text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-account .flux-edit-row-grid {
+    @apply grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5;
+}
+
+.woocommerce-account .flux-edit-card .form-row {
+    @apply mb-0;
+}
+
+.woocommerce-account .flux-edit-card .woocommerce-form-row + .woocommerce-form-row {
+    @apply mt-4;
+}
+
+.woocommerce-account .flux-edit-row-grid .woocommerce-form-row + .woocommerce-form-row {
+    @apply mt-0;
+}
+
+.woocommerce-account .flux-edit-password-fieldset {
+    @apply mt-0 pt-0 border-0;
+}
+
+.woocommerce-account .flux-edit-password-fieldset legend {
+    @apply sr-only;
+}
+
+.woocommerce-account .flux-edit-account-submit {
+    @apply mt-6 sm:mt-7 flex flex-col-reverse sm:flex-row sm:items-center sm:justify-end gap-3;
+}
+
+.woocommerce-account .flux-edit-account-submit .button {
+    @apply w-full sm:w-auto rounded-xl px-6 py-3 text-sm font-semibold;
+}
+
 /* ─── Widget: Price Filter ─────────────────────────────── */
 .widget_price_filter .price_slider_wrapper {
     @apply py-4;
@@ -1031,6 +1179,26 @@
 
 .flux-wc-cart-page .woocommerce-cart-form__contents td.product-remove a {
     @apply inline-flex h-8 w-8 items-center justify-center rounded-full text-zinc-400 hover:bg-red-50 hover:text-red-500 dark:hover:bg-red-950/30 transition-colors no-underline;
+}
+
+.flux-wc-cart-page .flux-cart-qty-control {
+    @apply inline-flex items-center gap-2;
+}
+
+.flux-wc-cart-page .flux-cart-qty-control .flux-cart-qty-field .quantity {
+    @apply border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 rounded-xl shadow-none;
+}
+
+.flux-wc-cart-page .flux-cart-qty-control .flux-cart-qty-field .quantity .qty {
+    @apply w-11 py-2 text-sm font-semibold;
+}
+
+.flux-wc-cart-page .flux-cart-qty-btn {
+    @apply inline-flex h-10 w-10 items-center justify-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-lg leading-none font-bold text-zinc-700 dark:text-zinc-200 hover:border-accent-400 dark:hover:border-accent-500/70 hover:text-accent-600 dark:hover:text-accent-400 transition-colors;
+}
+
+.flux-wc-cart-page .flux-cart-qty-btn[disabled] {
+    @apply opacity-50 cursor-not-allowed hover:border-zinc-200 dark:hover:border-zinc-700 hover:text-zinc-700 dark:hover:text-zinc-200;
 }
 
 .flux-wc-cart-page .woocommerce-cart-form .actions {

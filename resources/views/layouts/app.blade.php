@@ -39,31 +39,21 @@
     @endphp
 
     @if(($isWooCommerceActive ?? false) && is_account_page() && is_user_logged_in())
-        <flux:sidebar sticky collapsible class="bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
-            <flux:sidebar.header>
-                <flux:sidebar.collapse class="max-lg:hidden in-data-flux-sidebar-on-desktop:not-in-data-flux-sidebar-collapsed-desktop:-mr-2" />
-                <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+        <flux:sidebar sticky collapsible class="flux-account-sidebar bg-zinc-50 dark:bg-zinc-900 border-r border-zinc-200 dark:border-zinc-700">
+            <flux:sidebar.header class="flux-account-sidebar-header">
+                <div class="in-data-flux-sidebar-collapsed-desktop:hidden min-w-0">
+                    <flux:heading size="sm" class="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-widest text-[10px]">
+                        {{ __('Mi cuenta', 'flux-press') }}
+                    </flux:heading>
+                </div>
+
+                <div class="ms-auto flex items-center gap-1">
+                    <flux:sidebar.toggle class="hidden lg:inline-flex" icon="bars-2" />
+                    <flux:sidebar.toggle class="lg:hidden" icon="x-mark" />
+                </div>
             </flux:sidebar.header>
 
-            <flux:sidebar.nav>
-                @if(view()->hasSection('sub_navigation'))
-                    @yield('sub_navigation')
-                    <flux:separator class="my-4" />
-                @endif
-
-                @if(!empty($primaryMenu) && is_array($primaryMenu))
-                    <flux:heading size="sm" class="mb-2 px-2 opacity-50">{{ __('Menú', 'flux-press') }}</flux:heading>
-                    @foreach($primaryMenu as $item)
-                        @if(is_object($item) && empty($item->menu_item_parent))
-                            <flux:sidebar.item href="{{ $item->url }}" wire:navigate>{{ $item->title }}</flux:sidebar.item>
-                        @endif
-                    @endforeach
-                @endif
-            </flux:sidebar.nav>
-
-            <flux:separator class="my-4 opacity-50" />
-
-            <flux:sidebar.nav>
+            <flux:sidebar.nav class="mt-1">
                 <livewire:account-nav />
             </flux:sidebar.nav>
 

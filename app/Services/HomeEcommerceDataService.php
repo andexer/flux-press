@@ -154,7 +154,7 @@ class HomeEcommerceDataService
             return false;
         }
 
-        if ($section === 'brands' && ! taxonomy_exists('product_brand')) {
+        if ($section === 'brands' && $this->resolveBrandTaxonomy() === null) {
             return false;
         }
 
@@ -485,16 +485,18 @@ class HomeEcommerceDataService
      */
     public function productBrands(int $limit): array
     {
-        if (! $this->isWooCommerceActive() || ! taxonomy_exists('product_brand')) {
+        $brandTaxonomy = $this->resolveBrandTaxonomy();
+
+        if (! $this->isWooCommerceActive() || $brandTaxonomy === null) {
             return [];
         }
 
         $limit = max(1, min(24, $limit));
-        $cacheKey = "brands:{$limit}";
+        $cacheKey = "brands:{$brandTaxonomy}:{$limit}";
 
-        $data = $this->remember($cacheKey, function () use ($limit) {
+        $data = $this->remember($cacheKey, function () use ($limit, $brandTaxonomy) {
             $terms = get_terms([
-                'taxonomy'   => 'product_brand',
+                'taxonomy'   => $brandTaxonomy,
                 'hide_empty' => true,
                 'number'     => $limit,
                 'orderby'    => 'count',
@@ -516,14 +518,12 @@ class HomeEcommerceDataService
                     continue;
                 }
 
-                $thumbnailId = (int) get_term_meta($term->term_id, 'thumbnail_id', true);
-
                 $result[] = [
                     'id'    => (int) $term->term_id,
                     'name'  => (string) $term->name,
                     'url'   => (string) $url,
                     'count' => (int) $term->count,
-                    'image' => $thumbnailId > 0 ? (string) wp_get_attachment_image_url($thumbnailId, 'medium') : '',
+                    'image' => $this->resolveBrandTermImage($term),
                 ];
             }
 
@@ -531,6 +531,133 @@ class HomeEcommerceDataService
         });
 
         return is_array($data) ? $data : [];
+    }
+
+    private function resolveBrandTaxonomy(): ?string
+    {
+        $configured = config('theme-interface.home.ecommerce.brand_taxonomies', []);
+        $candidates = is_array($configured) ? $configured : [];
+
+        if (empty($candidates)) {
+            $candidates = [
+                'product_brand',
+                'pwb-brand',
+                'yith_product_brand',
+                'berocket_brand',
+                'product_vendor',
+                'wcpv_product_vendors',
+                'yith_shop_vendor',
+                'dc_vendor_shop',
+            ];
+        }
+
+        $vendorTaxonomies = config('theme-interface.woocommerce.shop_filters.vendor_taxonomies', []);
+        if (is_array($vendorTaxonomies)) {
+            $candidates = array_merge($candidates, $vendorTaxonomies);
+        }
+
+        foreach (array_values(array_unique($candidates)) as $taxonomy) {
+            if (! is_string($taxonomy) || $taxonomy === '') {
+                continue;
+            }
+
+            if (taxonomy_exists($taxonomy)) {
+                return $taxonomy;
+            }
+        }
+
+        return null;
+    }
+
+    private function resolveBrandTermImage(\WP_Term $term): string
+    {
+        $metaKeys = [
+            'thumbnail_id',
+            'brand_image_id',
+            'brand_thumbnail_id',
+            'image_id',
+            'pwb_brand_image',
+            'pwb_brand_image_id',
+            'brand_logo',
+            'brand_logo_id',
+            'image',
+            'thumbnail',
+            'icon',
+        ];
+
+        foreach ($metaKeys as $metaKey) {
+            $imageUrl = $this->termImageFromMeta(get_term_meta($term->term_id, $metaKey, true));
+            if ($imageUrl !== '') {
+                return $imageUrl;
+            }
+        }
+
+        return '';
+    }
+
+    /**
+     * @param mixed $rawMeta
+     */
+    private function termImageFromMeta($rawMeta): string
+    {
+        if (is_numeric($rawMeta)) {
+            $attachmentId = (int) $rawMeta;
+            if ($attachmentId > 0) {
+                $url = (string) wp_get_attachment_image_url($attachmentId, 'medium');
+
+                return $url !== '' ? $url : '';
+            }
+        }
+
+        if (is_string($rawMeta)) {
+            $value = trim($rawMeta);
+            if ($value === '') {
+                return '';
+            }
+
+            if (preg_match('/^\d+$/', $value)) {
+                $attachmentId = (int) $value;
+                if ($attachmentId > 0) {
+                    $url = (string) wp_get_attachment_image_url($attachmentId, 'medium');
+
+                    return $url !== '' ? $url : '';
+                }
+            }
+
+            if (filter_var($value, FILTER_VALIDATE_URL)) {
+                return esc_url_raw($value);
+            }
+
+            return '';
+        }
+
+        if (! is_array($rawMeta)) {
+            return '';
+        }
+
+        foreach (['id', 'attachment_id', 'image_id', 'thumbnail_id'] as $idKey) {
+            if (! isset($rawMeta[$idKey])) {
+                continue;
+            }
+
+            $imageUrl = $this->termImageFromMeta($rawMeta[$idKey]);
+            if ($imageUrl !== '') {
+                return $imageUrl;
+            }
+        }
+
+        foreach (['url', 'src', 'image', 'image_url', 'thumbnail'] as $urlKey) {
+            if (! isset($rawMeta[$urlKey]) || ! is_string($rawMeta[$urlKey])) {
+                continue;
+            }
+
+            $imageUrl = $this->termImageFromMeta($rawMeta[$urlKey]);
+            if ($imageUrl !== '') {
+                return $imageUrl;
+            }
+        }
+
+        return '';
     }
 
     /**

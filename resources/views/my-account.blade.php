@@ -44,7 +44,17 @@
         @endif
 
 
-        <div class="bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 sm:p-12">
+        @php
+            $isEditAccountEndpoint = $current_endpoint === 'edit-account';
+            $contentShellClasses = $isEditAccountEndpoint
+                ? 'p-0'
+                : 'bg-white dark:bg-zinc-900 rounded-3xl shadow-sm border border-zinc-200 dark:border-zinc-800 p-6 sm:p-12';
+            $contentBodyClasses = $isEditAccountEndpoint
+                ? 'max-w-none'
+                : 'prose dark:prose-invert max-w-none';
+        @endphp
+
+        <div class="{{ $contentShellClasses }}">
             {{-- Nav Grid (Only on main Dashboard) --}}
             @if($current_endpoint === 'dashboard' || !$current_endpoint)
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
@@ -65,7 +75,7 @@
                 </div>
             @endif
 
-            <div class="prose dark:prose-invert max-w-none">
+            <div class="{{ $contentBodyClasses }}">
                 @php(the_content())
             </div>
         </div>

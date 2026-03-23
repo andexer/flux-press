@@ -110,6 +110,63 @@ select:focus[data-flux-control] {
 	@apply text-zinc-600 dark:text-zinc-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors;
 }
 
+/* Footer Corporate polish */
+.flux-footer-corporate details > summary {
+	list-style: none;
+}
+
+.flux-footer-corporate details > summary::-webkit-details-marker {
+	display: none;
+}
+
+.flux-footer-corporate .flux-footer-widgets .widget {
+	@apply p-5 rounded-2xl border border-zinc-800 bg-zinc-900/70 shadow-none;
+}
+
+.flux-footer-corporate .flux-footer-widgets .widget-title,
+.flux-footer-corporate .flux-footer-widgets .widget h3 {
+	@apply text-xs font-semibold uppercase tracking-widest text-zinc-400 mb-3 pb-2 border-b border-zinc-800;
+}
+
+.flux-footer-corporate .flux-footer-widgets .widget ul li a {
+	@apply text-zinc-400 hover:text-zinc-100;
+}
+
+/* Account sidebar polish */
+.flux-account-sidebar {
+	@apply transition-all duration-200;
+}
+
+.flux-account-sidebar[data-flux-sidebar-collapsed-desktop] {
+	@apply w-16 px-2;
+}
+
+.flux-account-sidebar[data-flux-sidebar-on-mobile] {
+	@apply w-[18.5rem] max-w-[90vw] px-3 py-3;
+}
+
+.flux-account-sidebar .flux-account-sidebar-header [data-flux-sidebar-toggle] {
+	@apply rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white/80 dark:bg-zinc-800/80 text-zinc-600 dark:text-zinc-300 hover:text-accent-600 dark:hover:text-accent-400 hover:border-accent-400 dark:hover:border-accent-500/60;
+}
+
+.flux-account-sidebar[data-flux-sidebar-collapsed-desktop] .flux-account-sidebar-header {
+	@apply justify-center;
+}
+
+.flux-account-sidebar[data-flux-sidebar-collapsed-desktop] .flux-account-sidebar-header [data-flux-sidebar-toggle] {
+	@apply mx-auto;
+}
+
+.flux-account-sidebar .flux-account-nav-user {
+	@apply overflow-hidden;
+}
+
+@media (max-width: 1023px) {
+	.flux-account-sidebar [data-flux-sidebar-profile] {
+		display: none;
+	}
+}
+
 /* Search form uses Flux UI components via forms/search.blade.php */
 
 /* Post Navigation */

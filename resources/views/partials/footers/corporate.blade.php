@@ -1,91 +1,235 @@
 {{-- Footer Variant: Corporate --}}
-<footer class="relative bg-zinc-950 border-t border-zinc-800 overflow-hidden">
-    {{-- Decorative Glow --}}
-    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[800px] h-[400px] bg-accent-500/10 dark:bg-accent-500/5 blur-[120px] rounded-full pointer-events-none"></div>
+@php
+    $homeUrl = (string) home_url('/');
+    $blogPageId = (int) get_option('page_for_posts');
+    $blogUrl = $blogPageId > 0 ? (string) get_permalink($blogPageId) : $homeUrl;
+    $shopUrl = function_exists('wc_get_page_permalink') ? (string) wc_get_page_permalink('shop') : $homeUrl;
 
-    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 lg:py-20">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 lg:gap-8">
-            {{-- Columna 1: Brand & About --}}
-            <div class="space-y-6">
+    $quickItems = [];
+    foreach ((array) ($quickLinks ?? []) as $item) {
+        if (! is_object($item) || ! isset($item->url, $item->title)) {
+            continue;
+        }
+
+        $quickItems[] = [
+            'title' => (string) $item->title,
+            'url'   => (string) $item->url,
+        ];
+    }
+
+    if (empty($quickItems)) {
+        $quickItems = [
+            ['title' => __('Inicio', 'flux-press'), 'url' => $homeUrl],
+            ['title' => __('Tienda', 'flux-press'), 'url' => $shopUrl],
+            ['title' => __('Blog', 'flux-press'), 'url' => $blogUrl],
+        ];
+    }
+
+    $resourceItems = [];
+    foreach ((array) ($resourcesMenu ?? []) as $item) {
+        if (! is_object($item) || ! isset($item->url, $item->title)) {
+            continue;
+        }
+
+        $resourceItems[] = [
+            'title' => (string) $item->title,
+            'url'   => (string) $item->url,
+        ];
+    }
+
+    if (empty($resourceItems)) {
+        $resourceItems = array_slice($quickItems, 0, 3);
+    }
+
+    $socialItems = array_values(array_filter(
+        (array) ($socialLinks ?? []),
+        static fn ($social): bool => is_array($social) && ! empty($social['url'])
+    ));
+
+    $newsletterAction = (string) apply_filters('flux_footer_newsletter_action', $homeUrl);
+    $newsletterMethod = strtolower((string) apply_filters('flux_footer_newsletter_method', 'post'));
+    if (! in_array($newsletterMethod, ['post', 'get'], true)) {
+        $newsletterMethod = 'post';
+    }
+
+    $privacyUrl = function_exists('get_privacy_policy_url') ? (string) get_privacy_policy_url() : '';
+    if ($privacyUrl === '') {
+        $privacyUrl = (string) apply_filters('flux_footer_privacy_url', $homeUrl);
+    }
+
+    $termsUrl = (string) apply_filters('flux_footer_terms_url', (string) home_url('/terms'));
+    $cookiesUrl = (string) apply_filters('flux_footer_cookies_url', (string) home_url('/cookies'));
+
+    $legalItems = array_values(array_filter([
+        ['label' => __('Privacidad', 'flux-press'), 'url' => $privacyUrl],
+        ['label' => __('Terminos', 'flux-press'), 'url' => $termsUrl],
+        ['label' => __('Cookies', 'flux-press'), 'url' => $cookiesUrl],
+    ], static fn (array $item): bool => (string) ($item['url'] ?? '') !== ''));
+@endphp
+
+<footer class="flux-footer-corporate relative bg-zinc-950 border-t border-zinc-800 overflow-hidden text-zinc-300">
+    <div class="absolute inset-x-0 top-0 h-px bg-linear-to-r from-transparent via-accent-400/50 to-transparent"></div>
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-[860px] h-[420px] bg-accent-500/10 blur-[120px] rounded-full pointer-events-none"></div>
+
+    <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-14 lg:py-16">
+        <div class="grid grid-cols-1 lg:grid-cols-[1.3fr_1fr_1fr_1.2fr] gap-8 lg:gap-10">
+            <div class="min-w-0">
                 <div class="mb-4">
-                    <flux:brand 
-                        href="{{ home_url('/') }}" 
-                        :name="$siteName ?? get_bloginfo('name')" 
-                        :logo="$logoUrl ?? null" 
+                    <flux:brand
+                        href="{{ $homeUrl }}"
+                        :name="$siteName ?? get_bloginfo('name')"
+                        :logo="$logoUrl ?? null"
                         class="!text-white"
                     />
                 </div>
-                <flux:text class="text-zinc-400">
-                    {{ __('Tema premium de alto rendimiento con tecnología Laravel, Livewire y componentes Flux UI.', 'flux-press') }}
+
+                <flux:text class="text-zinc-400 max-w-sm leading-relaxed">
+                    {{ __('Tema premium de alto rendimiento con tecnologia Laravel, Livewire y componentes Flux UI.', 'flux-press') }}
                 </flux:text>
-                <div class="flex items-center gap-2 pt-2">
-                    @foreach($socialLinks as $social)
-                        <flux:button variant="ghost" size="sm" icon="{{ $social['icon'] }}" href="{{ $social['url'] }}" aria-label="{{ $social['label'] }}" class="!text-zinc-400 hover:!text-white" />
+
+                @if(! empty($socialItems))
+                    <div class="mt-5 flex items-center flex-wrap gap-2">
+                        @foreach($socialItems as $social)
+                            <flux:button
+                                variant="ghost"
+                                size="sm"
+                                icon="{{ $social['icon'] ?? 'link' }}"
+                                href="{{ $social['url'] }}"
+                                aria-label="{{ esc_attr((string) ($social['label'] ?? __('Red social', 'flux-press'))) }}"
+                                class="!text-zinc-400 hover:!text-white"
+                            />
+                        @endforeach
+                    </div>
+                @endif
+            </div>
+
+            <div class="hidden lg:block min-w-0">
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Enlaces rapidos', 'flux-press') }}</flux:heading>
+                <ul class="space-y-2.5">
+                    @foreach($quickItems as $item)
+                        <li>
+                            <a href="{{ esc_url($item['url']) }}" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                                {{ $item['title'] }}
+                            </a>
+                        </li>
                     @endforeach
-                </div>
+                </ul>
             </div>
 
-            {{-- Columna 2: Quick Links --}}
-            <div>
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Enlaces Rápidos', 'flux-press') }}</flux:heading>
-                <flux:navlist>
-                    @forelse ($quickLinks as $item)
-                        <flux:navlist.item href="{{ $item->url }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ $item->title }}</flux:navlist.item>
-                    @empty
-                        <flux:navlist.item href="{{ home_url('/') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Inicio', 'flux-press') }}</flux:navlist.item>
-                        <flux:navlist.item href="{{ home_url('/about') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Acerca de', 'flux-press') }}</flux:navlist.item>
-                        <flux:navlist.item href="{{ home_url('/blog') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Blog', 'flux-press') }}</flux:navlist.item>
-                    @endforelse
-                </flux:navlist>
-            </div>
-
-            {{-- Columna 3: Resources --}}
-            <div>
+            <div class="hidden lg:block min-w-0">
                 <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Recursos', 'flux-press') }}</flux:heading>
-                <flux:navlist>
-                    @forelse ($resourcesMenu as $item)
-                        <flux:navlist.item href="{{ $item->url }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ $item->title }}</flux:navlist.item>
-                    @empty
-                        <flux:navlist.item href="{{ home_url('/docs') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Documentación', 'flux-press') }}</flux:navlist.item>
-                        <flux:navlist.item href="{{ home_url('/support') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Soporte', 'flux-press') }}</flux:navlist.item>
-                        <flux:navlist.item href="{{ home_url('/terms') }}" wire:navigate class="!text-zinc-400 hover:!text-white">{{ __('Términos', 'flux-press') }}</flux:navlist.item>
-                    @endforelse
-                </flux:navlist>
+                <ul class="space-y-2.5">
+                    @foreach($resourceItems as $item)
+                        <li>
+                            <a href="{{ esc_url($item['url']) }}" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                                {{ $item['title'] }}
+                            </a>
+                        </li>
+                    @endforeach
+                </ul>
             </div>
 
-            {{-- Columna 4: Newsletter --}}
-            <div>
+            <div class="hidden lg:block min-w-0">
                 <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Newsletter', 'flux-press') }}</flux:heading>
-                <flux:text class="text-zinc-400 mb-4">
-                    {{ __('Suscríbete a nuestro boletín para recibir las últimas novedades.', 'flux-press') }}
+                <flux:text class="text-zinc-400 mb-4 leading-relaxed">
+                    {{ __('Suscribete a nuestro boletin para recibir novedades y lanzamientos.', 'flux-press') }}
                 </flux:text>
-                <form class="flex gap-2" wire:submit.prevent>
-                    <flux:input type="email" placeholder="{{ __('tu@email.com', 'flux-press') }}" class="flex-1" aria-label="Email" required />
-                    <flux:button variant="primary" type="submit" icon="paper-airplane" aria-label="Suscribirse" />
+
+                <form action="{{ esc_url($newsletterAction) }}" method="{{ esc_attr($newsletterMethod) }}" class="flex gap-2">
+                    <label for="footer-newsletter-email-desktop" class="sr-only">{{ __('Correo electronico', 'flux-press') }}</label>
+                    <input
+                        id="footer-newsletter-email-desktop"
+                        name="email"
+                        type="email"
+                        required
+                        placeholder="{{ esc_attr__('tu@email.com', 'flux-press') }}"
+                        class="min-w-0 flex-1 rounded-xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 px-3 py-2.5 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40"
+                    />
+                    <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Suscribirme', 'flux-press') }}" />
                 </form>
+            </div>
+
+            <div class="lg:hidden col-span-full mt-1 border-t border-zinc-800/80 divide-y divide-zinc-800/80">
+                <details class="group py-3" open>
+                    <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
+                        {{ __('Enlaces rapidos', 'flux-press') }}
+                        <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
+                    </summary>
+                    <ul class="mt-3 space-y-2">
+                        @foreach($quickItems as $item)
+                            <li>
+                                <a href="{{ esc_url($item['url']) }}" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                                    {{ $item['title'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </details>
+
+                <details class="group py-3">
+                    <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
+                        {{ __('Recursos', 'flux-press') }}
+                        <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
+                    </summary>
+                    <ul class="mt-3 space-y-2">
+                        @foreach($resourceItems as $item)
+                            <li>
+                                <a href="{{ esc_url($item['url']) }}" class="text-sm text-zinc-400 hover:text-white transition-colors">
+                                    {{ $item['title'] }}
+                                </a>
+                            </li>
+                        @endforeach
+                    </ul>
+                </details>
+
+                <details class="group py-3">
+                    <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
+                        {{ __('Newsletter', 'flux-press') }}
+                        <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
+                    </summary>
+                    <div class="mt-3">
+                        <form action="{{ esc_url($newsletterAction) }}" method="{{ esc_attr($newsletterMethod) }}" class="flex gap-2">
+                            <label for="footer-newsletter-email-mobile" class="sr-only">{{ __('Correo electronico', 'flux-press') }}</label>
+                            <input
+                                id="footer-newsletter-email-mobile"
+                                name="email"
+                                type="email"
+                                required
+                                placeholder="{{ esc_attr__('tu@email.com', 'flux-press') }}"
+                                class="min-w-0 flex-1 rounded-xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 px-3 py-2.5 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40"
+                            />
+                            <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Suscribirme', 'flux-press') }}" />
+                        </form>
+                    </div>
+                </details>
             </div>
         </div>
 
-        {{-- Widgets de WordPress --}}
         @if ($footerWidgets)
-            <flux:separator class="mt-16 mb-10 !border-zinc-800/50" />
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                @php(dynamic_sidebar('sidebar-footer'))
-            </div>
+            <section class="mt-10 sm:mt-12 pt-8 border-t border-zinc-800/80">
+                <flux:heading size="sm" class="!text-white uppercase tracking-wider">{{ __('Mas contenido', 'flux-press') }}</flux:heading>
+                <div class="flux-footer-widgets mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
+                    @php(dynamic_sidebar('sidebar-footer'))
+                </div>
+            </section>
         @endif
     </div>
 
-    {{-- Barra de copyright --}}
-    <div class="bg-black/50 border-t border-zinc-800">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4">
+    <div class="border-t border-zinc-800/90 bg-black/35">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
             <flux:text class="text-zinc-500 text-center md:text-left">
-                &copy; {{ $currentYear }} <span class="text-zinc-300 font-medium">{!! $siteName !!}</span>. {{ __('Todos los derechos reservados.', 'flux-press') }}
+                &copy; {{ $currentYear }} <span class="text-zinc-200 font-medium">{!! $siteName !!}</span>. {{ __('Todos los derechos reservados.', 'flux-press') }}
             </flux:text>
-            <div class="flex flex-wrap justify-center items-center gap-2">
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-zinc-300">{{ __('Privacidad', 'flux-press') }}</flux:button>
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-zinc-300">{{ __('Términos', 'flux-press') }}</flux:button>
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-zinc-300">{{ __('Cookies', 'flux-press') }}</flux:button>
-            </div>
+
+            @if(! empty($legalItems))
+                <nav aria-label="{{ esc_attr__('Legal', 'flux-press') }}" class="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+                    @foreach($legalItems as $item)
+                        <a href="{{ esc_url((string) $item['url']) }}" class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors">
+                            {{ $item['label'] }}
+                        </a>
+                    @endforeach
+                </nav>
+            @endif
         </div>
     </div>
 </footer>

@@ -129,7 +129,25 @@
                                         );
                                     @endphp
 
-                                    {!! apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item) !!}
+                                    @php
+                                        $quantityMarkup = apply_filters('woocommerce_cart_item_quantity', $product_quantity, $cart_item_key, $cart_item);
+                                    @endphp
+
+                                    @if($_product->is_sold_individually())
+                                        {!! $quantityMarkup !!}
+                                    @else
+                                        {!! sprintf(
+                                            '<div class="flux-cart-qty-control" data-cart-item="%1$s">
+                                                <button type="button" class="flux-cart-qty-btn flux-cart-qty-btn--minus" data-direction="minus" aria-label="%2$s">-</button>
+                                                <div class="flux-cart-qty-field">%3$s</div>
+                                                <button type="button" class="flux-cart-qty-btn flux-cart-qty-btn--plus" data-direction="plus" aria-label="%4$s">+</button>
+                                            </div>',
+                                            esc_attr($cart_item_key),
+                                            esc_attr__('Decrease quantity', 'flux-press'),
+                                            $quantityMarkup,
+                                            esc_attr__('Increase quantity', 'flux-press')
+                                        ) !!}
+                                    @endif
                                 </td>
 
                                 <td class="product-subtotal" data-title="{{ esc_attr__('Subtotal', 'woocommerce') }}">

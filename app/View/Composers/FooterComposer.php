@@ -34,10 +34,29 @@ class FooterComposer extends Composer
      */
     protected function socialLinks(): array
     {
-        return [
-            ['url' => get_theme_mod('social_website', '#'), 'icon' => 'globe-alt', 'label' => 'Website'],
-            ['url' => get_theme_mod('social_email', '#'), 'icon' => 'envelope', 'label' => 'Email'],
-        ];
+        $websiteUrl = esc_url_raw((string) get_theme_mod('social_website', home_url('/')));
+        $rawEmail = (string) get_theme_mod('social_email', '');
+        $email = sanitize_email($rawEmail);
+
+        $links = [];
+
+        if ($websiteUrl !== '') {
+            $links[] = [
+                'url'   => $websiteUrl,
+                'icon'  => 'globe-alt',
+                'label' => __('Sitio web', 'flux-press'),
+            ];
+        }
+
+        if ($email !== '') {
+            $links[] = [
+                'url'   => 'mailto:' . $email,
+                'icon'  => 'envelope',
+                'label' => __('Correo', 'flux-press'),
+            ];
+        }
+
+        return $links;
     }
 
 	/**

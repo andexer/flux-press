@@ -9,6 +9,14 @@
     $hasEditorContent = $editorContent !== '';
     $showBuilder = in_array($contentMode, ['builder', 'hybrid'], true);
     $showEditor = in_array($contentMode, ['editor', 'hybrid'], true);
+    $visibleSections = [];
+    $brandSectionAvailable = false;
+
+    if ($showBuilder) {
+        $ecommerceService = app(\App\Services\HomeEcommerceDataService::class);
+        $visibleSections = $ecommerceService->visibleSections();
+        $brandSectionAvailable = $ecommerceService->isSectionAvailable('brands');
+    }
 @endphp
 
 <section class="overflow-hidden" wire:key="home-ecommerce-layout">
@@ -31,5 +39,9 @@
 
     @if($showBuilder)
         <livewire:ecommerce-home-builder />
+
+        @if($brandSectionAvailable && ! in_array('brands', $visibleSections, true))
+            <livewire:ecommerce-home-brands :key="'ecommerce-home-brands-fallback'" />
+        @endif
     @endif
 </section>
