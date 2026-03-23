@@ -1,0 +1,993 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Re-use same accent color tokens as app.css */
+@theme {
+	--color-accent-50: var(--color-sky-50);
+	--color-accent-100: var(--color-sky-100);
+	--color-accent-200: var(--color-sky-200);
+	--color-accent-300: var(--color-sky-300);
+	--color-accent-400: var(--color-sky-400);
+	--color-accent-500: var(--color-sky-500);
+	--color-accent-600: var(--color-sky-600);
+	--color-accent-700: var(--color-sky-700);
+	--color-accent-800: var(--color-sky-800);
+	--color-accent-900: var(--color-sky-900);
+	--color-accent-950: var(--color-sky-950);
+	--color-accent: var(--color-sky-600);
+	--color-accent-content: var(--color-sky-600);
+	--color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+	.dark {
+		--color-accent: var(--color-sky-500);
+		--color-accent-content: var(--color-sky-400);
+	}
+}
+
+/* ─────────────────────────────────────────────────────────
+   WooCommerce Theme Styles — Flux Press
+   Tailwind 4 overrides for WooCommerce elements.
+   These styles integrate WooCommerce with the Flux theme system.
+   ───────────────────────────────────────────────────────── */
+
+/* ─── Product Grid ─────────────────────────────────────── */
+.woocommerce ul.products {
+    @apply grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 !list-none !m-0 !p-0;
+}
+
+.woocommerce ul.products li.product {
+    @apply relative bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 shadow-sm overflow-hidden transition-all duration-300 hover:shadow-lg hover:-translate-y-1 !m-0 !p-0 !w-full !float-none;
+}
+
+.woocommerce ul.products li.product a {
+    @apply no-underline;
+}
+
+.woocommerce ul.products li.product a img {
+    @apply w-full h-56 object-cover rounded-t-2xl !m-0;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+    @apply text-base font-semibold text-zinc-900 dark:text-zinc-100 px-4 pt-4 pb-1 !m-0;
+}
+
+.woocommerce ul.products li.product .price {
+    @apply text-sm font-medium text-accent-600 dark:text-accent-400 px-4 pb-2;
+}
+
+.woocommerce ul.products li.product .price del {
+    @apply text-zinc-400 dark:text-zinc-500 mr-2;
+}
+
+.woocommerce ul.products li.product .price ins {
+    @apply no-underline text-accent-600 dark:text-accent-400 font-bold;
+}
+
+.woocommerce ul.products li.product .star-rating {
+    @apply mx-4 mb-2;
+}
+
+.woocommerce ul.products li.product .button,
+.woocommerce ul.products li.product .add_to_cart_button {
+    @apply block w-[calc(100%-2rem)] mx-4 mb-4 py-2.5 px-4 text-center text-sm font-medium rounded-lg bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors no-underline;
+}
+
+/* ─── Star Rating ──────────────────────────────────────── */
+.woocommerce .star-rating {
+    @apply relative text-accent-400 text-sm leading-none;
+}
+
+/* ─── Single Product ───────────────────────────────────── */
+.woocommerce div.product {
+    @apply max-w-6xl mx-auto;
+}
+
+.woocommerce div.product div.images {
+    @apply w-full lg:w-1/2 float-none lg:float-left lg:pr-8;
+}
+
+.woocommerce div.product div.images img {
+    @apply w-full rounded-2xl;
+}
+
+.woocommerce div.product div.summary {
+    @apply w-full lg:w-1/2 float-none lg:float-right;
+}
+
+.woocommerce div.product .product_title {
+    @apply text-3xl font-bold text-zinc-900 dark:text-zinc-50 mb-4;
+}
+
+.woocommerce div.product p.price {
+    @apply text-2xl font-bold text-accent-600 dark:text-accent-400 mb-6;
+}
+
+.woocommerce div.product .woocommerce-product-details__short-description {
+    @apply text-zinc-600 dark:text-zinc-400 mb-6 leading-relaxed;
+}
+
+.woocommerce div.product form.cart {
+    @apply flex items-center gap-4 mb-8;
+}
+
+.woocommerce div.product form.cart .quantity input {
+    @apply w-16 text-center rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 py-2;
+}
+
+.woocommerce div.product form.cart .single_add_to_cart_button {
+    @apply py-3 px-8 rounded-lg bg-accent-600 text-white font-medium hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors cursor-pointer;
+}
+
+/* ─── Tabs (Product page) ──────────────────────────────── */
+.woocommerce div.product .woocommerce-tabs {
+    @apply clear-both mt-12;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs {
+    @apply flex gap-1 list-none m-0 p-0 border-b border-zinc-200 dark:border-zinc-700 mb-6;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li {
+    @apply m-0 p-0;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li a {
+    @apply block px-4 py-3 text-sm font-medium text-zinc-600 dark:text-zinc-400 hover:text-accent-600 dark:hover:text-accent-400 border-b-2 border-transparent transition-colors no-underline;
+}
+
+.woocommerce div.product .woocommerce-tabs ul.tabs li.active a {
+    @apply text-accent-600 dark:text-accent-400 border-accent-600 dark:border-accent-400;
+}
+
+.woocommerce div.product .woocommerce-tabs .panel {
+    @apply text-zinc-700 dark:text-zinc-300 leading-relaxed;
+}
+
+/* ─── Cart Page ────────────────────────────────────────── */
+.woocommerce table.shop_table {
+    @apply w-full border-collapse bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800;
+}
+
+.woocommerce table.shop_table thead {
+    @apply bg-zinc-50 dark:bg-zinc-800;
+}
+
+.woocommerce table.shop_table th {
+    @apply px-6 py-4 text-left text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce table.shop_table td {
+    @apply px-6 py-4 text-sm text-zinc-700 dark:text-zinc-300 border-t border-zinc-100 dark:border-zinc-800;
+}
+
+.woocommerce table.shop_table td.product-thumbnail img {
+    @apply w-16 h-16 rounded-lg object-cover;
+}
+
+.woocommerce table.shop_table td.product-name a {
+    @apply text-zinc-900 dark:text-zinc-100 font-medium hover:text-accent-600 dark:hover:text-accent-400 no-underline transition-colors;
+}
+
+.woocommerce table.shop_table td.product-remove a {
+    @apply text-zinc-400 hover:text-red-500 dark:hover:text-red-400 transition-colors text-lg no-underline;
+}
+
+/* ─── Cart Totals ──────────────────────────────────────── */
+.woocommerce .cart_totals {
+    @apply max-w-md ml-auto;
+}
+
+.woocommerce .cart_totals h2 {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4;
+}
+
+.woocommerce .cart_totals table {
+    @apply w-full;
+}
+
+.woocommerce .cart_totals .order-total .amount {
+    @apply text-xl font-bold text-accent-600 dark:text-accent-400;
+}
+
+.woocommerce .wc-proceed-to-checkout .checkout-button {
+    @apply block w-full py-3 px-6 rounded-lg bg-accent-600 text-white text-center font-medium hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors no-underline mt-4;
+}
+
+/* ─── Checkout — 2-Column Desktop Layout ──────────────── */
+.woocommerce form.woocommerce-checkout {
+    @apply grid grid-cols-1 lg:grid-cols-[1fr_420px] gap-8 lg:gap-12 items-start;
+}
+
+/* Billing & Shipping column */
+.woocommerce form.woocommerce-checkout #customer_details {
+    @apply space-y-6;
+}
+
+/* Order Review column (sticky on desktop) */
+.woocommerce form.woocommerce-checkout #order_review {
+    @apply lg:sticky lg:top-24;
+}
+
+/* Force full-width items that WC puts outside the grid children */
+.woocommerce form.woocommerce-checkout > .woocommerce-info,
+.woocommerce form.woocommerce-checkout > .woocommerce-NoticeGroup {
+    @apply lg:col-span-2;
+}
+
+/* Checkout section headings */
+.woocommerce-checkout h3,
+.woocommerce-checkout .woocommerce-billing-fields h3,
+.woocommerce-checkout .woocommerce-shipping-fields h3,
+.woocommerce-checkout .woocommerce-additional-fields h3 {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-6 pb-3 border-b border-zinc-200 dark:border-zinc-800;
+}
+
+/* Checkout form fields */
+.woocommerce form .form-row {
+    @apply mb-5;
+}
+
+.woocommerce form .form-row label {
+    @apply block text-sm font-medium text-zinc-700 dark:text-zinc-300 mb-1.5;
+}
+
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select {
+    @apply w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-4 py-3 text-sm transition-all duration-200 focus:outline-none focus:ring-4 focus:ring-accent/15 focus:border-accent shadow-sm;
+}
+
+/* Order review table */
+.woocommerce-checkout #order_review_heading {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table {
+    @apply w-full mb-6;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table th {
+    @apply text-left text-xs font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 px-4 py-3 bg-zinc-50 dark:bg-zinc-800/50;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table td {
+    @apply px-4 py-3 text-sm text-zinc-700 dark:text-zinc-300 border-t border-zinc-100 dark:border-zinc-800;
+}
+
+.woocommerce-checkout .woocommerce-checkout-review-order-table .order-total td {
+    @apply text-lg font-bold text-accent-600 dark:text-accent-400;
+}
+
+#place_order {
+    @apply w-full py-3.5 px-6 rounded-xl bg-accent-600 text-white font-semibold hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors cursor-pointer text-base shadow-md;
+}
+
+/* ─── Messages ─────────────────────────────────────────── */
+.woocommerce .woocommerce-message {
+    @apply bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 rounded-xl p-4 mb-6 text-sm;
+}
+
+.woocommerce .woocommerce-error {
+    @apply bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-xl p-4 mb-6 text-sm list-none;
+}
+
+.woocommerce .woocommerce-info {
+    @apply bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-200 rounded-xl p-4 mb-6 text-sm;
+}
+
+.woocommerce .woocommerce-message a,
+.woocommerce .woocommerce-info a {
+    @apply font-medium underline;
+}
+
+/* ─── Buttons generic ──────────────────────────────────── */
+.woocommerce a.button,
+.woocommerce button.button,
+.woocommerce input.button {
+    @apply inline-flex items-center justify-center px-5 py-2.5 text-sm font-medium rounded-lg bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors cursor-pointer no-underline border-none;
+}
+
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt {
+    @apply bg-accent-600 hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600;
+}
+
+/* ─── Breadcrumb ───────────────────────────────────────── */
+.woocommerce .woocommerce-breadcrumb {
+    @apply text-sm text-zinc-500 dark:text-zinc-400 mb-6;
+}
+
+.woocommerce .woocommerce-breadcrumb a {
+    @apply text-zinc-600 dark:text-zinc-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors no-underline;
+}
+
+/* ─── Sale Badge ───────────────────────────────────────── */
+.woocommerce span.onsale {
+    @apply absolute top-3 left-3 z-10 bg-red-500 text-white text-xs font-bold px-2.5 py-1 rounded-full;
+}
+
+/* ─── Pagination ───────────────────────────────────────── */
+.woocommerce nav.woocommerce-pagination {
+    @apply mt-8;
+}
+
+.woocommerce nav.woocommerce-pagination ul {
+    @apply flex items-center justify-center gap-1 list-none m-0 p-0;
+}
+
+.woocommerce nav.woocommerce-pagination ul li a,
+.woocommerce nav.woocommerce-pagination ul li span {
+    @apply inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 text-sm rounded-lg transition-colors;
+}
+
+.woocommerce nav.woocommerce-pagination ul li a {
+    @apply text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800 no-underline;
+}
+
+.woocommerce nav.woocommerce-pagination ul li span.current {
+    @apply bg-accent-600 text-white font-medium;
+}
+
+/* ─── My Account ───────────────────────────────────────── */
+.woocommerce-account .woocommerce {
+    @apply space-y-8;
+}
+
+.woocommerce-account .woocommerce-MyAccount-navigation {
+    display: none !important; /* Managed by App Shell Sidebar */
+}
+
+.woocommerce-account .woocommerce-MyAccount-content {
+    @apply w-full min-w-0;
+}
+
+/* ─── WooCommerce Forms (All pages) ────────────────────── */
+.woocommerce form .form-row {
+    @apply mb-6;
+}
+
+.woocommerce form .form-row label {
+    @apply block text-sm font-semibold text-zinc-800 dark:text-zinc-200 mb-2;
+}
+
+.woocommerce form .form-row label .required {
+    @apply text-red-500 dark:text-red-400 font-bold;
+}
+
+.woocommerce form .form-row input.input-text,
+.woocommerce form .form-row textarea,
+.woocommerce form .form-row select,
+.woocommerce-Input,
+.woocommerce input.input-text,
+.woocommerce-EditAccountForm input[type="text"],
+.woocommerce-EditAccountForm input[type="email"],
+.woocommerce-EditAccountForm input[type="password"],
+.woocommerce-address-fields input[type="text"],
+.woocommerce-address-fields input[type="email"],
+.woocommerce-address-fields input[type="tel"],
+.woocommerce-address-fields select {
+    @apply w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-4 py-3 text-sm transition-all duration-200 outline-hidden ring-accent/0 focus:ring-4 focus:ring-accent/15 focus:border-accent shadow-sm;
+}
+
+/* Two-column name rows — use CSS grid for precise alignment */
+.woocommerce-billing-fields__field-wrapper,
+.woocommerce-shipping-fields__field-wrapper,
+.woocommerce-address-fields__field-wrapper {
+    display: grid !important;
+    grid-template-columns: 1fr 1fr;
+    gap: 0 1rem;
+}
+
+.woocommerce form .form-row-first,
+.woocommerce form .form-row-last {
+    @apply w-full;
+}
+
+.woocommerce form .form-row-wide {
+    grid-column: 1 / -1;
+    @apply w-full;
+}
+
+/* Description text under fields */
+.woocommerce form .form-row span em {
+    @apply block mt-2 text-xs text-zinc-500 dark:text-zinc-400 not-italic font-medium;
+}
+
+/* Fieldset (password change) */
+.woocommerce fieldset {
+    @apply mt-10 pt-8 border-t border-zinc-100 dark:border-zinc-800/50;
+}
+
+.woocommerce fieldset legend {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-50 mb-6;
+}
+
+/* Clear float helpers */
+.woocommerce .clear {
+    @apply clear-both;
+}
+
+/* Layout containers for forms */
+.woocommerce-EditAccountForm,
+.edit-account,
+.woocommerce-form-login,
+.woocommerce-form-register {
+    @apply bg-white dark:bg-zinc-900/50 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-8 lg:p-10 shadow-sm;
+}
+
+/* Dashboard content */
+.woocommerce-MyAccount-content > p {
+    @apply text-zinc-600 dark:text-zinc-400 leading-relaxed mb-6 text-lg;
+}
+
+.woocommerce-MyAccount-content > p a {
+    @apply text-accent-600 dark:text-accent-400 font-semibold hover:underline decoration-2 underline-offset-4;
+}
+
+/* Orders table */
+.woocommerce-orders-table {
+    @apply w-full border-collapse bg-white dark:bg-zinc-900 rounded-2xl overflow-hidden border border-zinc-200 dark:border-zinc-800 shadow-sm;
+}
+
+.woocommerce-orders-table thead {
+    @apply bg-zinc-50 dark:bg-zinc-800/50;
+}
+
+.woocommerce-orders-table th {
+    @apply px-5 py-4 text-left text-xs font-bold uppercase tracking-widest text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce-orders-table td {
+    @apply px-5 py-4 text-sm text-zinc-700 dark:text-zinc-300 border-t border-zinc-100 dark:border-zinc-800;
+}
+
+.woocommerce-orders-table td a {
+    @apply text-accent-600 dark:text-accent-400 font-semibold hover:underline no-underline;
+}
+
+/* Address cards */
+.woocommerce-Addresses {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+}
+
+.woocommerce-Addresses .woocommerce-Address {
+    @apply bg-white dark:bg-zinc-900/50 rounded-3xl border border-zinc-200 dark:border-zinc-800 p-8 shadow-sm;
+}
+
+.woocommerce-Addresses .woocommerce-Address header {
+    @apply flex items-center justify-between mb-6 pb-4 border-b border-zinc-100 dark:border-zinc-800;
+}
+
+.woocommerce-Addresses .woocommerce-Address header h3 {
+    @apply text-lg font-bold text-zinc-900 dark:text-zinc-50;
+}
+
+.woocommerce-Addresses .woocommerce-Address header a {
+    @apply text-sm text-accent-600 dark:text-accent-400 font-semibold hover:underline no-underline decoration-2 underline-offset-4;
+}
+
+.woocommerce-Addresses .woocommerce-Address address {
+    @apply text-base text-zinc-600 dark:text-zinc-400 not-italic leading-loose;
+}
+
+
+/* ─── Login / Register form ────────────────────────────── */
+.woocommerce form.woocommerce-form-login,
+.woocommerce form.woocommerce-form-register {
+    @apply bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 lg:p-8 shadow-sm;
+}
+
+.woocommerce .woocommerce-form-login__rememberme {
+    @apply flex items-center gap-2 text-sm text-zinc-600 dark:text-zinc-400;
+}
+
+.woocommerce .woocommerce-LostPassword {
+    @apply mt-4;
+}
+
+.woocommerce .woocommerce-LostPassword a {
+    @apply text-sm text-accent-600 dark:text-accent-400 hover:underline no-underline;
+}
+
+/* Two column login/register */
+.u-columns {
+    @apply grid grid-cols-1 md:grid-cols-2 gap-8;
+}
+
+.u-columns .u-column1,
+.u-columns .u-column2 {
+    @apply w-full;
+}
+
+.u-columns h2 {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-6;
+}
+
+/* ─── Widget: Price Filter ─────────────────────────────── */
+.widget_price_filter .price_slider_wrapper {
+    @apply py-4;
+}
+
+.widget_price_filter .price_slider {
+    @apply bg-zinc-200 dark:bg-zinc-700 rounded-full h-1 relative;
+}
+
+.widget_price_filter .ui-slider-range {
+    @apply bg-accent-500 absolute h-full rounded-full;
+}
+
+.widget_price_filter .ui-slider-handle {
+    @apply w-4 h-4 rounded-full bg-accent-600 dark:bg-accent-400 border-2 border-white dark:border-zinc-900 shadow-md absolute -top-1.5 cursor-pointer;
+}
+
+/* ─── Related Products / Upsells ───────────────────────── */
+.woocommerce section.related,
+.woocommerce section.up-sells {
+    @apply mt-16 clear-both;
+}
+
+.woocommerce section.related h2,
+.woocommerce section.up-sells h2 {
+    @apply text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8;
+}
+
+/* ─── Result Count & Ordering ──────────────────────────── */
+.woocommerce .woocommerce-result-count {
+    @apply text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce .woocommerce-ordering select {
+    @apply bg-transparent border-0 border-b border-transparent hover:border-zinc-300 dark:hover:border-zinc-700 text-zinc-900 dark:text-zinc-100 text-sm py-2 pl-4 pr-8 cursor-pointer focus:ring-0 appearance-none bg-no-repeat transition-colors shadow-none m-0;
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-size: 1.2em 1.2em;
+}
+
+/* Hide Redundant Breadcrumbs */
+.woocommerce-breadcrumb {
+    display: none !important;
+}
+
+/* ─── Variable Product Variations ──────────────────────── */
+.woocommerce div.product .variations {
+    @apply w-full border-collapse mb-6;
+}
+
+.woocommerce div.product .variations td,
+.woocommerce div.product .variations th {
+    @apply py-2 align-middle border-none bg-transparent;
+}
+
+.woocommerce div.product .variations td.label label {
+    @apply text-sm font-semibold text-zinc-700 dark:text-zinc-300;
+}
+
+.woocommerce div.product .variations td.value select {
+    @apply w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-4 py-3 text-sm shadow-sm transition-all duration-200 focus:ring-4 focus:ring-accent/15 focus:border-accent outline-hidden;
+}
+
+.woocommerce div.product .variations .reset_variations {
+    @apply inline-block mt-2 text-xs text-accent-600 dark:text-accent-400 font-medium hover:underline cursor-pointer no-underline;
+}
+
+/* Variation description */
+.woocommerce div.product .woocommerce-variation-description p {
+    @apply text-sm text-zinc-600 dark:text-zinc-400 mb-2;
+}
+
+.woocommerce div.product .woocommerce-variation-price .price {
+    @apply text-xl font-bold text-accent-600 dark:text-accent-400 mb-4;
+}
+
+.woocommerce div.product .woocommerce-variation-availability p {
+    @apply text-sm;
+}
+
+.woocommerce div.product .woocommerce-variation-availability .in-stock {
+    @apply text-emerald-600 dark:text-emerald-400 font-medium;
+}
+
+.woocommerce div.product .woocommerce-variation-availability .out-of-stock {
+    @apply text-red-500 dark:text-red-400 font-medium;
+}
+
+/* ─── Grouped Product Table ────────────────────────────── */
+.woocommerce table.group_table {
+    @apply w-full border-collapse mb-6;
+}
+
+.woocommerce table.group_table td {
+    @apply py-3 border-b border-zinc-100 dark:border-zinc-800 align-middle;
+}
+
+.woocommerce table.group_table td label a {
+    @apply text-zinc-900 dark:text-zinc-100 font-medium hover:text-accent-600 dark:hover:text-accent-400 no-underline transition-colors;
+}
+
+.woocommerce table.group_table td .quantity input {
+    @apply w-16 text-center rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 py-2;
+}
+
+/* ─── Quantity Buttons ─────────────────────────────────── */
+.woocommerce .quantity {
+    @apply inline-flex items-center bg-zinc-50 dark:bg-zinc-800 rounded-xl border border-zinc-200 dark:border-zinc-700 overflow-hidden;
+}
+
+.woocommerce .quantity .qty {
+    @apply w-14 text-center bg-transparent border-none text-zinc-900 dark:text-zinc-100 text-sm font-medium py-2.5 focus:outline-none appearance-none;
+    -moz-appearance: textfield;
+}
+
+.woocommerce .quantity .qty::-webkit-inner-spin-button,
+.woocommerce .quantity .qty::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* ─── Empty Cart State ─────────────────────────────────── */
+.woocommerce .cart-empty {
+    @apply text-center py-12 text-lg text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce .cart-empty.woocommerce-info {
+    @apply bg-transparent border-none shadow-none text-xl font-semibold text-zinc-700 dark:text-zinc-300 rounded-none p-0 mb-2;
+}
+
+.woocommerce .return-to-shop {
+    @apply text-center mt-4;
+}
+
+.woocommerce .return-to-shop a.button {
+    @apply inline-flex items-center gap-2 px-8 py-3 rounded-xl bg-accent-600 text-white font-medium hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors no-underline text-base shadow-md;
+}
+
+/* ─── Order Received / Thank You ───────────────────────── */
+.woocommerce-order-received .woocommerce {
+    @apply space-y-8;
+}
+
+.woocommerce ul.woocommerce-thankyou-order-details,
+.woocommerce ul.order_details {
+    @apply grid grid-cols-2 sm:grid-cols-4 gap-4 list-none m-0 p-0 mb-8;
+}
+
+.woocommerce ul.woocommerce-thankyou-order-details li,
+.woocommerce ul.order_details li {
+    @apply bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-4 border border-zinc-200 dark:border-zinc-800 text-center;
+}
+
+.woocommerce ul.woocommerce-thankyou-order-details li strong,
+.woocommerce ul.order_details li strong {
+    @apply block text-lg font-bold text-zinc-900 dark:text-zinc-100 mt-1;
+}
+
+.woocommerce-order-received .woocommerce-thankyou-order-received {
+    @apply text-center text-xl font-bold text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-950/30 rounded-xl p-6 mb-8 border border-emerald-200 dark:border-emerald-800;
+}
+
+.woocommerce-order-received .woocommerce-order-details,
+.woocommerce-order-received .woocommerce-customer-details {
+    @apply bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm;
+}
+
+.woocommerce-order-received h2 {
+    @apply text-xl font-bold text-zinc-900 dark:text-zinc-100 mb-4;
+}
+
+/* ─── Coupon Form ──────────────────────────────────────── */
+.woocommerce .coupon {
+    @apply flex flex-col sm:flex-row gap-3 items-start sm:items-center;
+}
+
+.woocommerce .coupon label {
+    @apply sr-only;
+}
+
+.woocommerce .coupon input.input-text {
+    @apply w-full sm:w-48 rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-accent focus:border-transparent;
+}
+
+.woocommerce .coupon button,
+.woocommerce .coupon input[type="submit"] {
+    @apply px-5 py-2.5 rounded-lg bg-zinc-200 dark:bg-zinc-700 text-zinc-800 dark:text-zinc-200 font-medium text-sm hover:bg-zinc-300 dark:hover:bg-zinc-600 transition-colors cursor-pointer border-none;
+}
+
+/* ─── Shipping Calculator ──────────────────────────────── */
+.woocommerce .shipping-calculator-form {
+    @apply bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-5 mt-4 space-y-4 border border-zinc-200 dark:border-zinc-800;
+}
+
+.woocommerce .shipping-calculator-form select,
+.woocommerce .shipping-calculator-form input.input-text {
+    @apply w-full rounded-lg border border-zinc-300 dark:border-zinc-700 bg-white dark:bg-zinc-800 text-zinc-900 dark:text-zinc-100 px-4 py-2.5 text-sm focus:ring-2 focus:ring-accent focus:border-transparent;
+}
+
+.woocommerce .shipping-calculator-form button {
+    @apply w-full py-2.5 rounded-lg bg-accent-600 text-white font-medium hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors cursor-pointer border-none text-sm;
+}
+
+.woocommerce a.shipping-calculator-button {
+    @apply text-sm text-accent-600 dark:text-accent-400 font-medium hover:underline no-underline cursor-pointer;
+}
+
+/* ─── Product Gallery Thumbnails ───────────────────────── */
+.woocommerce div.product div.images .flex-control-thumbs {
+    @apply grid grid-cols-4 gap-2 mt-3 list-none m-0 p-0;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li {
+    @apply m-0 p-0;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li img {
+    @apply w-full h-auto rounded-lg cursor-pointer opacity-60 hover:opacity-100 transition-opacity border-2 border-transparent;
+}
+
+.woocommerce div.product div.images .flex-control-thumbs li img.flex-active {
+    @apply opacity-100 border-accent-500;
+}
+
+/* ─── Product Meta (SKU, Categories, Tags) ─────────────── */
+.woocommerce div.product .product_meta {
+    @apply mt-8 pt-6 border-t border-zinc-200 dark:border-zinc-700 space-y-2;
+}
+
+.woocommerce div.product .product_meta > span {
+    @apply block text-sm text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce div.product .product_meta > span a {
+    @apply text-accent-600 dark:text-accent-400 hover:underline no-underline font-medium;
+}
+
+.woocommerce div.product .product_meta > span .sku {
+    @apply font-mono text-zinc-700 dark:text-zinc-300;
+}
+
+/* ─── Cross-Sells ──────────────────────────────────────── */
+.woocommerce .cross-sells {
+    @apply mt-12;
+}
+
+.woocommerce .cross-sells h2 {
+    @apply text-2xl font-bold text-zinc-900 dark:text-zinc-50 mb-8;
+}
+
+/* ─── Review / Comment Form ────────────────────────────── */
+.woocommerce #reviews #review_form_wrapper {
+    @apply mt-8;
+}
+
+.woocommerce #reviews .comment-form {
+    @apply space-y-4;
+}
+
+.woocommerce #reviews .comment-form label {
+    @apply block text-sm font-semibold text-zinc-700 dark:text-zinc-300 mb-1;
+}
+
+.woocommerce #reviews .comment-form input[type="text"],
+.woocommerce #reviews .comment-form input[type="email"],
+.woocommerce #reviews .comment-form textarea {
+    @apply w-full rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-4 py-3 text-sm shadow-sm focus:ring-4 focus:ring-accent/15 focus:border-accent outline-hidden;
+}
+
+.woocommerce #reviews .comment-form textarea {
+    @apply h-28 resize-y;
+}
+
+.woocommerce #reviews .comment-form .form-submit input[type="submit"] {
+    @apply px-6 py-3 rounded-lg bg-accent-600 text-white font-medium hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600 transition-colors cursor-pointer border-none;
+}
+
+.woocommerce #reviews .star-rating {
+    @apply mb-2;
+}
+
+.woocommerce #reviews .comment-reply-title {
+    @apply text-lg font-bold text-zinc-900 dark:text-zinc-100 mb-4;
+}
+
+.woocommerce #reviews ol.commentlist {
+    @apply list-none m-0 p-0 space-y-6;
+}
+
+.woocommerce #reviews ol.commentlist li .comment-text {
+    @apply bg-zinc-50 dark:bg-zinc-800/50 rounded-xl p-5 border border-zinc-200 dark:border-zinc-800;
+}
+
+.woocommerce #reviews ol.commentlist li .comment-text .meta {
+    @apply text-sm text-zinc-500 dark:text-zinc-400 mb-2;
+}
+
+.woocommerce #reviews ol.commentlist li .comment-text .meta strong {
+    @apply text-zinc-900 dark:text-zinc-100 font-semibold;
+}
+
+.woocommerce #reviews ol.commentlist li .comment-text .description p {
+    @apply text-zinc-700 dark:text-zinc-300 leading-relaxed;
+}
+
+/* ─── Stock Status ─────────────────────────────────────── */
+.woocommerce div.product .stock {
+    @apply text-sm font-medium mb-4;
+}
+
+.woocommerce div.product .stock.in-stock {
+    @apply text-emerald-600 dark:text-emerald-400;
+}
+
+.woocommerce div.product .stock.out-of-stock {
+    @apply text-red-500 dark:text-red-400;
+}
+
+/* ─── Select2 Dropdowns (WooCommerce) ──────────────────── */
+.select2-container--default .select2-selection--single {
+    @apply rounded-xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 h-auto px-4 py-3 text-sm;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__rendered {
+    @apply text-zinc-900 dark:text-zinc-100 leading-normal p-0;
+}
+
+.select2-container--default .select2-selection--single .select2-selection__arrow {
+    @apply h-full top-0 right-3;
+}
+
+.select2-dropdown {
+    @apply border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 rounded-xl shadow-lg overflow-hidden mt-1;
+}
+
+.select2-container--default .select2-results__option {
+    @apply px-4 py-2.5 text-sm text-zinc-700 dark:text-zinc-300;
+}
+
+.select2-container--default .select2-results__option--highlighted[aria-selected] {
+    @apply bg-accent-50 dark:bg-accent-950/50 text-accent-700 dark:text-accent-300;
+}
+
+.select2-container--default .select2-search--dropdown .select2-search__field {
+    @apply rounded-lg border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 text-zinc-900 dark:text-zinc-100 px-3 py-2 text-sm;
+}
+
+/* ─── Payment Methods (Checkout) ───────────────────────── */
+.woocommerce-checkout #payment {
+    @apply bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-200 dark:border-zinc-800 overflow-hidden shadow-sm;
+}
+
+.woocommerce-checkout #payment ul.payment_methods {
+    @apply list-none m-0 p-0 border-b border-zinc-200 dark:border-zinc-800;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li {
+    @apply border-b border-zinc-100 dark:border-zinc-800 last:border-b-0;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label {
+    @apply flex items-center gap-3 px-6 py-4 cursor-pointer text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800/50 transition-colors;
+}
+
+.woocommerce-checkout #payment ul.payment_methods li label img {
+    @apply h-6 w-auto;
+}
+
+.woocommerce-checkout #payment .payment_box {
+    @apply bg-zinc-50 dark:bg-zinc-800/50 px-6 py-4 text-sm text-zinc-600 dark:text-zinc-400 leading-relaxed;
+}
+
+.woocommerce-checkout #payment .place-order {
+    @apply p-6;
+}
+
+/* ─── Checkout — Order review card ─────────────────────── */
+.woocommerce-checkout #order_review {
+    @apply bg-zinc-50 dark:bg-zinc-900/50 rounded-2xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm;
+}
+
+/* Additional information / notes area */
+.woocommerce-additional-fields {
+    @apply mt-6;
+}
+
+.woocommerce-additional-fields textarea {
+    @apply h-24 resize-y;
+}
+
+/* Checkout privacy policy & terms */
+.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper {
+    @apply text-xs text-zinc-500 dark:text-zinc-400 leading-relaxed;
+}
+
+.woocommerce-checkout .woocommerce-terms-and-conditions-wrapper a {
+    @apply text-accent-600 dark:text-accent-400 hover:underline;
+}
+
+/* Coupon toggle notice at top */
+.woocommerce-form-coupon-toggle .woocommerce-info {
+    @apply lg:col-span-2;
+}
+
+/* Coupon form */
+.woocommerce form.checkout_coupon {
+    @apply lg:col-span-2 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 p-6 shadow-sm flex flex-col sm:flex-row gap-3 items-start sm:items-end;
+}
+
+/* ─── WC Notices Enhancement ───────────────────────────── */
+.woocommerce .woocommerce-message::before,
+.woocommerce .woocommerce-error::before,
+.woocommerce .woocommerce-info::before {
+    display: none;
+}
+
+.woocommerce .woocommerce-message {
+    @apply flex items-center gap-3 bg-emerald-50 dark:bg-emerald-950/30 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-200 rounded-xl px-5 py-4 mb-6 text-sm font-medium shadow-sm;
+}
+
+.woocommerce .woocommerce-error {
+    @apply flex flex-col gap-2 bg-red-50 dark:bg-red-950/30 border border-red-200 dark:border-red-800 text-red-800 dark:text-red-200 rounded-xl px-5 py-4 mb-6 text-sm font-medium list-none shadow-sm;
+}
+
+.woocommerce .woocommerce-info {
+    @apply flex items-center gap-3 bg-sky-50 dark:bg-sky-950/30 border border-sky-200 dark:border-sky-800 text-sky-800 dark:text-sky-200 rounded-xl px-5 py-4 mb-6 text-sm font-medium shadow-sm;
+}
+
+.woocommerce .woocommerce-message a.button,
+.woocommerce .woocommerce-error a.button,
+.woocommerce .woocommerce-info a.button {
+    @apply ml-auto shrink-0 text-xs px-4 py-1.5 rounded-lg bg-white/70 dark:bg-zinc-800/70 text-current border border-current/20 font-semibold hover:bg-white dark:hover:bg-zinc-800 transition-colors no-underline;
+}
+
+/* ─── Mini Cart Widget ─────────────────────────────────── */
+.widget_shopping_cart .cart_list {
+    @apply list-none m-0 p-0 space-y-3;
+}
+
+.widget_shopping_cart .cart_list li {
+    @apply flex items-start gap-3 pb-3 border-b border-zinc-100 dark:border-zinc-800 last:border-b-0;
+}
+
+.widget_shopping_cart .cart_list li a {
+    @apply text-sm font-medium text-zinc-900 dark:text-zinc-100 hover:text-accent-600 dark:hover:text-accent-400 no-underline transition-colors;
+}
+
+.widget_shopping_cart .cart_list li img {
+    @apply w-12 h-12 rounded-lg object-cover;
+}
+
+.widget_shopping_cart .cart_list li .quantity {
+    @apply text-xs text-zinc-500 dark:text-zinc-400 mt-0.5;
+}
+
+.widget_shopping_cart .total {
+    @apply flex items-center justify-between mt-4 pt-4 border-t border-zinc-200 dark:border-zinc-700 text-sm font-semibold text-zinc-900 dark:text-zinc-100;
+}
+
+.widget_shopping_cart .total .amount {
+    @apply text-accent-600 dark:text-accent-400 font-bold;
+}
+
+.widget_shopping_cart .buttons {
+    @apply grid grid-cols-2 gap-3 mt-4;
+}
+
+.widget_shopping_cart .buttons a {
+    @apply text-center py-2.5 rounded-lg text-sm font-medium transition-colors no-underline;
+}
+
+.widget_shopping_cart .buttons a:first-child {
+    @apply bg-zinc-100 dark:bg-zinc-800 text-zinc-800 dark:text-zinc-200 hover:bg-zinc-200 dark:hover:bg-zinc-700;
+}
+
+.widget_shopping_cart .buttons a:last-child {
+    @apply bg-accent-600 text-white hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600;
+}
+

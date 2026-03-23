@@ -1,0 +1,7 @@
+/node_modules
+/vendor
+/public/*
+!/public/.gitkeep
+npm-debug.log
+package-lock.json
+composer.lock

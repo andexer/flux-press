@@ -1,0 +1,1092 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Flux Press 1.0.0\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/flux-press\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: Spanish <es_ES@li.org>\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"POT-Creation-Date: 2026-03-19T19:32:10-04:00\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Language: es_ES\n"
+"X-Generator: WP-CLI 2.12.0\n"
+"X-Domain: flux-press\n"
+
+#. Theme Name of the theme
+#: style.css
+msgid "Flux Press"
+msgstr "Flux Press"
+
+#. Theme URI of the theme
+#: style.css
+msgid "https://github.com/andexer/flux-press"
+msgstr "https://github.com/andexer/flux-press"
+
+#. Description of the theme
+#: style.css
+msgid "Flux Press is a WordPress starter theme."
+msgstr "Flux Press es un tema inicial para WordPress."
+
+#. Author of the theme
+#: style.css
+msgid "Andexer"
+msgstr "Andexer"
+
+#. Author URI of the theme
+#: style.css
+msgid "https://andexer.com/"
+msgstr "https://andexer.com/"
+
+#. Template Name of the theme
+msgid "Flux Press Home Demo"
+msgstr "Inicio Demo Flux Press"
+
+#. Template Name of the theme
+msgid "Custom Template"
+msgstr "Plantilla Personalizada"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (50)"
+msgstr "Rojo (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (200)"
+msgstr "Rojo (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (300)"
+msgstr "Rojo (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (400)"
+msgstr "Rojo (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (500)"
+msgstr "Rojo (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (600)"
+msgstr "Rojo (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (700)"
+msgstr "Rojo (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (800)"
+msgstr "Rojo (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Red (900)"
+msgstr "Rojo (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (50)"
+msgstr "Naranja (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (200)"
+msgstr "Naranja (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (300)"
+msgstr "Naranja (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (400)"
+msgstr "Naranja (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (500)"
+msgstr "Naranja (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (600)"
+msgstr "Naranja (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (700)"
+msgstr "Naranja (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (800)"
+msgstr "Naranja (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Orange (950)"
+msgstr "Naranja (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (50)"
+msgstr "Ámbar (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (200)"
+msgstr "Ámbar (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (300)"
+msgstr "Ámbar (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (400)"
+msgstr "Ámbar (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (500)"
+msgstr "Ámbar (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (600)"
+msgstr "Ámbar (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (700)"
+msgstr "Ámbar (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (800)"
+msgstr "Ámbar (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Amber (950)"
+msgstr "Ámbar (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (50)"
+msgstr "Amarillo (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (200)"
+msgstr "Amarillo (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (300)"
+msgstr "Amarillo (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (400)"
+msgstr "Amarillo (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (500)"
+msgstr "Amarillo (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (600)"
+msgstr "Amarillo (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (700)"
+msgstr "Amarillo (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (800)"
+msgstr "Amarillo (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Yellow (950)"
+msgstr "Amarillo (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (50)"
+msgstr "Lima (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (200)"
+msgstr "Lima (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (300)"
+msgstr "Lima (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (400)"
+msgstr "Lima (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (500)"
+msgstr "Lima (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (600)"
+msgstr "Lima (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (700)"
+msgstr "Lima (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (800)"
+msgstr "Lima (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (900)"
+msgstr "Lima (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Lime (950)"
+msgstr "Lima (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (50)"
+msgstr "Verde (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (200)"
+msgstr "Verde (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (300)"
+msgstr "Verde (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (400)"
+msgstr "Verde (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (500)"
+msgstr "Verde (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (600)"
+msgstr "Verde (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Green (800)"
+msgstr "Verde (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (50)"
+msgstr "Esmeralda (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (200)"
+msgstr "Esmeralda (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (300)"
+msgstr "Esmeralda (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (400)"
+msgstr "Esmeralda (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (500)"
+msgstr "Esmeralda (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (600)"
+msgstr "Esmeralda (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (700)"
+msgstr "Esmeralda (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (800)"
+msgstr "Esmeralda (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Emerald (900)"
+msgstr "Esmeralda (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (50)"
+msgstr "Teal (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (200)"
+msgstr "Teal (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (300)"
+msgstr "Teal (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (400)"
+msgstr "Teal (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (500)"
+msgstr "Teal (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (600)"
+msgstr "Teal (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Teal (800)"
+msgstr "Teal (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (50)"
+msgstr "Cian (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (200)"
+msgstr "Cian (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (300)"
+msgstr "Cian (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (400)"
+msgstr "Cian (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (500)"
+msgstr "Cian (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (600)"
+msgstr "Cian (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Cyan (800)"
+msgstr "Cian (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (50)"
+msgstr "Cielo (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (100)"
+msgstr "Cielo (100)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (200)"
+msgstr "Cielo (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (300)"
+msgstr "Cielo (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (400)"
+msgstr "Cielo (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (500)"
+msgstr "Cielo (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (600)"
+msgstr "Cielo (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (700)"
+msgstr "Cielo (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (800)"
+msgstr "Cielo (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (900)"
+msgstr "Cielo (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Sky (950)"
+msgstr "Cielo (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (50)"
+msgstr "Azul (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (200)"
+msgstr "Azul (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (300)"
+msgstr "Azul (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (400)"
+msgstr "Azul (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (500)"
+msgstr "Azul (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (600)"
+msgstr "Azul (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Blue (800)"
+msgstr "Azul (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (50)"
+msgstr "Índigo (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (200)"
+msgstr "Índigo (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (300)"
+msgstr "Índigo (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (400)"
+msgstr "Índigo (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (500)"
+msgstr "Índigo (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (600)"
+msgstr "Índigo (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (700)"
+msgstr "Índigo (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Indigo (800)"
+msgstr "Índigo (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (50)"
+msgstr "Violeta (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (200)"
+msgstr "Violeta (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (300)"
+msgstr "Violeta (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (400)"
+msgstr "Violeta (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (500)"
+msgstr "Violeta (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (600)"
+msgstr "Violeta (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (700)"
+msgstr "Violeta (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Violet (800)"
+msgstr "Violeta (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (50)"
+msgstr "Púrpura (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (200)"
+msgstr "Púrpura (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (300)"
+msgstr "Púrpura (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (400)"
+msgstr "Púrpura (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (500)"
+msgstr "Púrpura (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (600)"
+msgstr "Púrpura (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (700)"
+msgstr "Púrpura (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (800)"
+msgstr "Púrpura (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Purple (900)"
+msgstr "Púrpura (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (50)"
+msgstr "Fucsia (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (200)"
+msgstr "Fucsia (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (300)"
+msgstr "Fucsia (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (400)"
+msgstr "Fucsia (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (500)"
+msgstr "Fucsia (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (600)"
+msgstr "Fucsia (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (700)"
+msgstr "Fucsia (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Fuchsia (800)"
+msgstr "Fucsia (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (50)"
+msgstr "Rosa (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (200)"
+msgstr "Rosa (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (300)"
+msgstr "Rosa (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (400)"
+msgstr "Rosa (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (500)"
+msgstr "Rosa (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (600)"
+msgstr "Rosa (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (700)"
+msgstr "Rosa (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Pink (800)"
+msgstr "Rosa (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (50)"
+msgstr "Rosa (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (200)"
+msgstr "Rosa (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (300)"
+msgstr "Rosa (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (400)"
+msgstr "Rosa (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (500)"
+msgstr "Rosa (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (600)"
+msgstr "Rosa (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (700)"
+msgstr "Rosa (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Rose (800)"
+msgstr "Rosa (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Slate (800)"
+msgstr "Pizarra (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (50)"
+msgstr "Gris (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (100)"
+msgstr "Gris (100)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (200)"
+msgstr "Gris (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (300)"
+msgstr "Gris (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (400)"
+msgstr "Gris (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (500)"
+msgstr "Gris (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (600)"
+msgstr "Gris (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (700)"
+msgstr "Gris (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (800)"
+msgstr "Gris (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (900)"
+msgstr "Gris (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Gray (950)"
+msgstr "Gris (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (50)"
+msgstr "Zinc (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (100)"
+msgstr "Zinc (100)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (200)"
+msgstr "Zinc (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (300)"
+msgstr "Zinc (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (400)"
+msgstr "Zinc (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (500)"
+msgstr "Zinc (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (600)"
+msgstr "Zinc (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (700)"
+msgstr "Zinc (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (800)"
+msgstr "Zinc (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (900)"
+msgstr "Zinc (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Zinc (950)"
+msgstr "Zinc (950)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Neutral (800)"
+msgstr "Neutral (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (200)"
+msgstr "Piedra (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (300)"
+msgstr "Piedra (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (500)"
+msgstr "Piedra (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (600)"
+msgstr "Piedra (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (800)"
+msgstr "Piedra (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Stone (900)"
+msgstr "Piedra (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Mauve (800)"
+msgstr "Malva (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Olive (800)"
+msgstr "Oliva (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Mist (800)"
+msgstr "Niebla (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Taupe (800)"
+msgstr "Topo (800)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Black"
+msgstr "Negro"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "White"
+msgstr "Blanco"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent"
+msgstr "Acento"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (Content)"
+msgstr "Acento (Contenido)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (Foreground)"
+msgstr "Acento (Frente)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (50)"
+msgstr "Acento (50)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (200)"
+msgstr "Acento (200)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (300)"
+msgstr "Acento (300)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (400)"
+msgstr "Acento (400)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (500)"
+msgstr "Acento (500)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (600)"
+msgstr "Acento (600)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (700)"
+msgstr "Acento (700)"
+
+#: public/build/assets/theme.json
+msgctxt "Color name"
+msgid "Accent (900)"
+msgstr "Acento (900)"
+
+#: public/build/assets/theme.json
+msgctxt "Font family name"
+msgid "sans"
+msgstr "sans"
+
+#: public/build/assets/theme.json
+msgctxt "Font family name"
+msgid "serif"
+msgstr "serif"
+
+#: public/build/assets/theme.json
+msgctxt "Font family name"
+msgid "mono"
+msgstr "mono"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "xs"
+msgstr "xs"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "sm"
+msgstr "sm"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "base"
+msgstr "base"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "lg"
+msgstr "lg"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "xl"
+msgstr "xl"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "2xl"
+msgstr "2xl"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "3xl"
+msgstr "3xl"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "4xl"
+msgstr "4xl"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "5xl"
+msgstr "5xl"
+
+#: public/build/assets/theme.json
+msgctxt "Font size name"
+msgid "6xl"
+msgstr "6xl"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "sm"
+msgstr "sm"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "md"
+msgstr "md"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "lg"
+msgstr "lg"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "xl"
+msgstr "xl"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "2xl"
+msgstr "2xl"
+
+#: public/build/assets/theme.json
+msgctxt "Border radius size name"
+msgid "3xl"
+msgstr "3xl"

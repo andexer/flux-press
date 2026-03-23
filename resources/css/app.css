@@ -1,0 +1,218 @@
+@import 'tailwindcss';
+@import '../../vendor/livewire/flux/dist/flux.css';
+
+@source '../views';
+@source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
+@source '../../vendor/livewire/flux-pro/stubs/**/*.blade.php';
+@source '../../vendor/livewire/flux/stubs/**/*.blade.php';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* Re-assign Flux's gray of choice... */
+@theme {
+	--color-zinc-50: var(--color-gray-50);
+	--color-zinc-100: var(--color-gray-100);
+	--color-zinc-200: var(--color-gray-200);
+	--color-zinc-300: var(--color-gray-300);
+	--color-zinc-400: var(--color-gray-400);
+	--color-zinc-500: var(--color-gray-500);
+	--color-zinc-600: var(--color-gray-600);
+	--color-zinc-700: var(--color-gray-700);
+	--color-zinc-800: var(--color-gray-800);
+	--color-zinc-900: var(--color-gray-900);
+	--color-zinc-950: var(--color-gray-950);
+}
+
+@theme {
+	--color-accent-50: var(--color-sky-50);
+	--color-accent-100: var(--color-sky-100);
+	--color-accent-200: var(--color-sky-200);
+	--color-accent-300: var(--color-sky-300);
+	--color-accent-400: var(--color-sky-400);
+	--color-accent-500: var(--color-sky-500);
+	--color-accent-600: var(--color-sky-600);
+	--color-accent-700: var(--color-sky-700);
+	--color-accent-800: var(--color-sky-800);
+	--color-accent-900: var(--color-sky-900);
+	--color-accent-950: var(--color-sky-950);
+	--color-accent: var(--color-sky-600);
+	--color-accent-content: var(--color-sky-600);
+	--color-accent-foreground: var(--color-white);
+}
+
+@layer theme {
+	.dark {
+		--color-accent: var(--color-sky-500);
+		--color-accent-content: var(--color-sky-400);
+	}
+}
+
+@layer base {
+
+	*,
+	::after,
+	::before,
+	::backdrop,
+	::file-selector-button {
+		border-color: var(--color-gray-200, currentColor);
+	}
+}
+
+#app {
+	display: flex !important;
+	flex-direction: column !important;
+	min-height: 100vh;
+}
+
+a {
+	text-decoration: none;
+}
+
+[data-flux-field]:not(ui-radio, ui-checkbox) {
+	@apply grid gap-2;
+}
+
+[data-flux-label] {
+	@apply !mb-0 !leading-tight;
+}
+
+input:focus[data-flux-control],
+textarea:focus[data-flux-control],
+select:focus[data-flux-control] {
+	@apply outline-hidden ring-2 ring-accent ring-offset-2 ring-offset-accent-foreground;
+}
+
+/* ─────────────────────────────────────────────────────────
+   WordPress Base Styles
+   Estilos globales para elementos nativos de WordPress
+   que no están cubiertos por Flux UI.
+   ───────────────────────────────────────────────────────── */
+
+/* Widgets */
+.widget {
+	@apply p-5 bg-white dark:bg-zinc-900 rounded-xl border border-zinc-200 dark:border-zinc-800 shadow-sm;
+}
+
+.widget-title,
+.widget h3 {
+	@apply text-sm font-semibold uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3 pb-2 border-b border-zinc-100 dark:border-zinc-800;
+}
+
+.widget ul {
+	@apply space-y-1.5 list-none m-0 p-0;
+}
+
+.widget ul li {
+	@apply text-sm;
+}
+
+.widget ul li a {
+	@apply text-zinc-600 dark:text-zinc-400 hover:text-accent-600 dark:hover:text-accent-400 transition-colors;
+}
+
+/* Search form uses Flux UI components via forms/search.blade.php */
+
+/* Post Navigation */
+.posts-navigation,
+.post-navigation,
+.nav-links {
+	@apply flex items-center justify-between gap-4 mt-8;
+}
+
+.posts-navigation a,
+.post-navigation a,
+.nav-links a {
+	@apply inline-flex items-center gap-1 px-4 py-2 text-sm font-medium rounded-lg border border-zinc-200 dark:border-zinc-700 text-zinc-700 dark:text-zinc-300 hover:bg-zinc-50 dark:hover:bg-zinc-800 transition-colors;
+}
+
+/* Pagination */
+.pagination,
+.page-numbers {
+	@apply flex items-center gap-1;
+}
+
+.page-numbers li {
+	@apply list-none;
+}
+
+.page-numbers a,
+.page-numbers span {
+	@apply inline-flex items-center justify-center min-w-[2.25rem] h-9 px-3 text-sm rounded-lg transition-colors;
+}
+
+.page-numbers a {
+	@apply text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800;
+}
+
+.page-numbers .current {
+	@apply bg-accent-600 text-white font-medium;
+}
+
+/* WordPress post content alignment */
+.alignleft {
+	@apply float-left mr-6 mb-4;
+}
+
+.alignright {
+	@apply float-right ml-6 mb-4;
+}
+
+.aligncenter {
+	@apply mx-auto block;
+}
+
+.alignwide {
+	@apply -mx-4 sm:-mx-8;
+}
+
+.alignfull {
+	@apply -mx-4 sm:-mx-8 lg:-mx-16 w-[calc(100%+2rem)] sm:w-[calc(100%+4rem)] lg:w-[calc(100%+8rem)];
+}
+
+/* WordPress image captions */
+.wp-caption {
+	@apply max-w-full;
+}
+
+.wp-caption-text {
+	@apply text-sm text-zinc-500 dark:text-zinc-400 mt-2 text-center italic;
+}
+
+/* Gallery */
+.gallery {
+	@apply grid grid-cols-2 md:grid-cols-3 gap-4;
+}
+
+.gallery-item {
+	@apply overflow-hidden rounded-lg;
+}
+
+.gallery-item img {
+	@apply w-full h-full object-cover;
+}
+
+/* WordPress block styles */
+.wp-block-group {
+	@apply p-6 rounded-xl;
+}
+
+/* Screen reader text */
+.screen-reader-text {
+	@apply sr-only;
+}
+
+/* Post index grid */
+.post-grid {
+	@apply grid grid-cols-1 md:grid-cols-2 gap-6;
+}
+
+/* Fallback: Tema desde DB si JS falla */
+.flux-appearance-dark { color-scheme: dark; }
+.flux-appearance-dark [data-flux-theme] { color-scheme: dark; }
+.flux-appearance-dark body { 
+    background-color: hsl(var(--color-zinc-950));
+    color: hsl(var(--color-zinc-50));
+}
+
+/* Transición suave */
+html { transition: color-scheme 0.2s ease-in-out; }
