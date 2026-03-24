@@ -7,6 +7,7 @@ use Livewire\Component;
 new class extends Component
 {
     public bool $canAccess = false;
+    public bool $autoOpen = false;
 
     /** @var array<int,string> */
     public array $sectionOrder = [];
@@ -15,13 +16,12 @@ new class extends Component
     public array $sectionVisibility = [];
 
     public string $contentMode = 'hybrid';
-    public string $previewUrl = '';
     public string $statusMessage = '';
     public int $lastSavedAt = 0;
 
     public function mount(): void
     {
-        $this->canAccess = current_user_can('edit_theme_options');
+        $this->canAccess = is_user_logged_in() && current_user_can('edit_theme_options');
 
         if (! $this->canAccess) {
             return;
@@ -38,7 +38,7 @@ new class extends Component
 
         $resolvedMode = (string) ($settings['content_mode'] ?? 'hybrid');
         $this->contentMode = in_array($resolvedMode, $this->allowedContentModes(), true) ? $resolvedMode : 'hybrid';
-        $this->previewUrl = $this->buildPreviewUrl(true);
+        $this->autoOpen = is_admin() || (isset($_GET['flux_builder']) && (string) $_GET['flux_builder'] !== '0');
     }
 
     #[Computed]
@@ -81,7 +81,11 @@ new class extends Component
 
         $this->sectionOrder = $nextOrder;
         set_theme_mod('home_ecommerce_section_order', implode(',', $this->sectionOrder));
-        $this->markSaved(__('Orden de secciones actualizado.', 'flux-press'));
+        logger()->info('flux_home_builder_reorder', [
+            'order' => $this->sectionOrder,
+            'user' => get_current_user_id(),
+        ]);
+        $this->markSaved(__('Orden de secciones actualizado.', 'flux-press'), true);
     }
 
     public function toggleSection(string $section): void
@@ -95,14 +99,24 @@ new class extends Component
             return;
         }
 
+        if (! app(HomeEcommerceDataService::class)->isSectionAvailable($section)) {
+            return;
+        }
+
         $enabled = ! (bool) ($this->sectionVisibility[$section] ?? false);
         $this->sectionVisibility[$section] = $enabled;
         set_theme_mod("home_ecommerce_show_{$section}", $enabled);
+        logger()->info('flux_home_builder_toggle', [
+            'section' => $section,
+            'enabled' => $enabled,
+            'user' => get_current_user_id(),
+        ]);
 
         $this->markSaved(
             $enabled
                 ? __('Seccion activada.', 'flux-press')
-                : __('Seccion ocultada.', 'flux-press')
+                : __('Seccion ocultada.', 'flux-press'),
+            true
         );
     }
 
@@ -123,19 +137,20 @@ new class extends Component
 
         $this->contentMode = $mode;
         set_theme_mod('home_ecommerce_content_mode', $mode);
-        $this->markSaved(__('Modo de contenido actualizado.', 'flux-press'));
+        logger()->info('flux_home_builder_mode', [
+            'mode' => $mode,
+            'user' => get_current_user_id(),
+        ]);
+        $this->markSaved(__('Modo de contenido actualizado.', 'flux-press'), true);
     }
 
-    public function refreshPreview(): void
+    public function refreshHome(): void
     {
         if (! $this->canAccess) {
             return;
         }
 
-        $this->previewUrl = $this->buildPreviewUrl(true);
-        $this->dispatchPreviewRefresh();
-        $this->statusMessage = __('Preview recargado.', 'flux-press');
-        $this->lastSavedAt = time();
+        $this->markSaved(__('Vista actualizada.', 'flux-press'));
     }
 
     /**
@@ -219,74 +234,78 @@ new class extends Component
         ];
     }
 
-    private function markSaved(string $message): void
+    private function markSaved(string $message, bool $needsReload = false): void
     {
         $this->statusMessage = $message;
         $this->lastSavedAt = time();
-        $this->previewUrl = $this->buildPreviewUrl(true);
-        $this->dispatchPreviewRefresh();
-    }
 
-    private function dispatchPreviewRefresh(): void
-    {
-        $payload = wp_json_encode(
-            ['url' => $this->previewUrl],
-            JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES
-        );
+        // Refresca componentes Livewire del home en caliente.
+        $this->dispatch('flux-home-builder-refresh');
+        $this->dispatch('flux-home-builder-refresh')->to('ecommerce-home-builder');
+        $this->dispatch('fluxHomeBuilderRefresh');
+        $this->dispatch('fluxHomeBuilderRefresh')->to('ecommerce-home-builder');
+        $this->js("window.Livewire && window.Livewire.dispatch && window.Livewire.dispatch('flux-home-builder-refresh');");
+        $this->js("window.Livewire && window.Livewire.dispatch && window.Livewire.dispatch('fluxHomeBuilderRefresh');");
+        $this->js("window.dispatchEvent(new CustomEvent('flux-home-builder:refresh'));");
 
-        if (! is_string($payload) || $payload === '') {
-            return;
+        if ($needsReload) {
+            $this->js("window.dispatchEvent(new CustomEvent('flux-home-builder:reload'));");
+            $this->js("window.setTimeout(() => window.location.reload(), 120);");
         }
-
-        $this->js("window.dispatchEvent(new CustomEvent('flux-home-builder-preview', { detail: {$payload} }));");
-    }
-
-    private function buildPreviewUrl(bool $cacheBust = false): string
-    {
-        $baseUrl = (string) home_url('/');
-        $showOnFront = (string) get_option('show_on_front', 'posts');
-        $frontPageId = (int) get_option('page_on_front', 0);
-
-        if ($showOnFront === 'page' && $frontPageId > 0) {
-            $frontPageUrl = get_permalink($frontPageId);
-            if (is_string($frontPageUrl) && $frontPageUrl !== '') {
-                $baseUrl = $frontPageUrl;
-            }
-        }
-
-        $args = ['flux_visual_builder_preview' => '1'];
-        if ($cacheBust) {
-            $args['flux_preview_tick'] = (string) microtime(true);
-        }
-
-        return esc_url_raw((string) add_query_arg($args, $baseUrl));
     }
 };
 ?>
 
-<div class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm md:p-5"
-    x-data="fluxVisualBuilderPanel(@js($previewUrl))"
-    x-on:flux-home-builder-preview.window="onPreviewRefresh($event)"
-    wire:key="home-visual-builder-admin">
-    @if (! $canAccess)
-        <flux:callout color="amber" icon="shield-exclamation">
-            <flux:callout.heading>{{ __('No tienes permisos para editar el builder visual.', 'flux-press') }}</flux:callout.heading>
-            <flux:callout.text>{{ __('Se requiere el permiso edit_theme_options.', 'flux-press') }}</flux:callout.text>
-        </flux:callout>
-    @else
-        <div class="grid gap-4 xl:grid-cols-[430px_minmax(0,1fr)]">
-            <aside class="space-y-4">
-                <flux:card class="rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 shadow-sm">
-                    <flux:heading size="lg" class="!font-black tracking-tight">
-                        {{ __('Panel Visual del Home', 'flux-press') }}
-                    </flux:heading>
-                    <flux:subheading class="mt-1">
-                        {{ __('Configura, reordena y aplica cambios en vivo desde la barra de administracion.', 'flux-press') }}
-                    </flux:subheading>
-                </flux:card>
+@if($canAccess)
+    <div
+        data-flux-home-builder-drawer
+        x-data="fluxVisualBuilderPanel({ initialOpen: @js($autoOpen) })"
+        x-on:flux-home-builder:open.window="openPanel()"
+        x-on:flux-home-builder:close.window="closePanel()"
+        x-on:flux-home-builder:toggle.window="togglePanel()"
+        x-on:keydown.escape.window="closePanel()"
+        x-cloak
+        wire:key="home-visual-builder-drawer"
+    >
+        <div
+            x-show="open"
+            x-transition.opacity.duration.200ms
+            class="fixed inset-0 z-[9998] bg-zinc-950/40 backdrop-blur-[2px]"
+            x-on:click="closePanel()"
+        ></div>
 
+        <aside
+            x-show="open"
+            x-transition:enter="transition ease-out duration-220"
+            x-transition:enter-start="translate-x-full opacity-0"
+            x-transition:enter-end="translate-x-0 opacity-100"
+            x-transition:leave="transition ease-in duration-180"
+            x-transition:leave-start="translate-x-0 opacity-100"
+            x-transition:leave-end="translate-x-full opacity-0"
+            class="fixed right-0 top-0 z-[9999] flex h-[100dvh] w-full max-w-[430px] flex-col border-l border-zinc-200 bg-white shadow-2xl dark:border-zinc-800 dark:bg-zinc-950"
+            role="dialog"
+            aria-label="{{ esc_attr__('Flux Visual Builder', 'flux-press') }}"
+        >
+            <header class="border-b border-zinc-200 px-4 py-3 dark:border-zinc-800">
+                <div class="flex items-center justify-between gap-3">
+                    <div class="min-w-0">
+                        <flux:heading size="sm" class="!font-black uppercase tracking-widest text-zinc-500 dark:text-zinc-400">
+                            {{ __('Flux Builder', 'flux-press') }}
+                        </flux:heading>
+                        <flux:subheading class="mt-1 text-xs">
+                            {{ __('Editor visual del home en vivo', 'flux-press') }}
+                        </flux:subheading>
+                    </div>
+
+                    <flux:button type="button" variant="ghost" size="sm" icon="x-mark" x-on:click="closePanel()">
+                        {{ __('Cerrar', 'flux-press') }}
+                    </flux:button>
+                </div>
+            </header>
+
+            <div class="flex-1 overflow-y-auto p-4">
                 @if ($statusMessage !== '')
-                    <flux:callout color="zinc" icon="check-circle">
+                    <flux:callout color="zinc" icon="check-circle" class="mb-4">
                         <flux:callout.heading>{{ $statusMessage }}</flux:callout.heading>
                         @if ($lastSavedAt > 0)
                             <flux:callout.text>
@@ -296,8 +315,8 @@ new class extends Component
                     </flux:callout>
                 @endif
 
-                <flux:card class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
-                    <flux:heading size="sm" class="!font-black uppercase tracking-wider text-zinc-600">
+                <flux:card class="mb-4 rounded-2xl border border-zinc-200 bg-zinc-50/70 p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/50">
+                    <flux:heading size="sm" class="!font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
                         {{ __('Modo de contenido', 'flux-press') }}
                     </flux:heading>
 
@@ -316,40 +335,37 @@ new class extends Component
                     </div>
                 </flux:card>
 
-                <flux:card class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm">
+                <flux:card class="rounded-2xl border border-zinc-200 bg-white p-4 shadow-sm dark:border-zinc-800 dark:bg-zinc-900/70">
                     <div class="mb-3 flex items-center justify-between gap-3">
-                        <flux:heading size="sm" class="!font-black uppercase tracking-wider text-zinc-600">
+                        <flux:heading size="sm" class="!font-black uppercase tracking-wider text-zinc-600 dark:text-zinc-300">
                             {{ __('Secciones del Home', 'flux-press') }}
                         </flux:heading>
-                        <span class="text-xs font-semibold text-zinc-500">
-                            {{ __('Arrastra y suelta', 'flux-press') }}
-                        </span>
+                        <span class="text-xs font-semibold text-zinc-500">{{ __('Arrastra y suelta', 'flux-press') }}</span>
                     </div>
 
-                    <div class="space-y-2"
-                        x-data="fluxSectionSorter($wire)"
-                        x-ref="sectionList">
+                    <div class="space-y-2" x-data="fluxSectionSorter($wire)" x-ref="sectionList">
                         @foreach ($this->sectionCards as $card)
-                            <div class="rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2.5 transition"
+                            <div
+                                class="rounded-xl border border-zinc-200 bg-zinc-50/60 px-3 py-2.5 transition dark:border-zinc-700 dark:bg-zinc-800/40"
                                 data-section="{{ $card['key'] }}"
                                 draggable="true"
                                 x-on:dragstart="start($event)"
                                 x-on:dragover.prevent
                                 x-on:drop.prevent="drop($event)"
                                 x-on:dragend="end()"
-                                :class="draggingKey === '{{ $card['key'] }}' ? 'opacity-70 ring-2 ring-accent-500/60' : ''">
+                                :class="draggingKey === '{{ $card['key'] }}' ? 'opacity-70 ring-2 ring-accent-500/60' : ''"
+                            >
                                 <div class="flex items-start justify-between gap-3">
                                     <div class="min-w-0">
                                         <div class="flex flex-wrap items-center gap-2">
-                                            <p class="text-sm font-bold text-zinc-900">{{ $card['label'] }}</p>
-
+                                            <p class="text-sm font-bold text-zinc-900 dark:text-zinc-100">{{ $card['label'] }}</p>
                                             @if (! $card['available'])
                                                 <span class="rounded-full border border-amber-300 bg-amber-50 px-2 py-0.5 text-[11px] font-semibold text-amber-700">
                                                     {{ __('Requiere WooCommerce', 'flux-press') }}
                                                 </span>
                                             @endif
                                         </div>
-                                        <p class="mt-1 text-xs text-zinc-500">{{ $card['description'] }}</p>
+                                        <p class="mt-1 text-xs text-zinc-500 dark:text-zinc-400">{{ $card['description'] }}</p>
                                     </div>
 
                                     <div class="flex shrink-0 items-center gap-2">
@@ -358,10 +374,15 @@ new class extends Component
                                             size="sm"
                                             wire:click="toggleSection('{{ $card['key'] }}')"
                                             variant="{{ $card['enabled'] ? 'primary' : 'ghost' }}"
+                                            :disabled="! $card['available']"
                                         >
                                             {{ $card['enabled'] ? __('Activo', 'flux-press') : __('Oculto', 'flux-press') }}
                                         </flux:button>
-                                        <button type="button" class="rounded-md p-1.5 text-zinc-500 hover:bg-zinc-200/70 hover:text-zinc-700" title="{{ esc_attr__('Arrastrar para reordenar', 'flux-press') }}">
+                                        <button
+                                            type="button"
+                                            class="rounded-md p-1.5 text-zinc-500 hover:bg-zinc-200/70 hover:text-zinc-700 dark:hover:bg-zinc-700/60 dark:hover:text-zinc-200"
+                                            title="{{ esc_attr__('Arrastrar para reordenar', 'flux-press') }}"
+                                        >
                                             <flux:icon.bars-3 class="size-4" />
                                         </button>
                                     </div>
@@ -370,85 +391,18 @@ new class extends Component
                         @endforeach
                     </div>
                 </flux:card>
-            </aside>
+            </div>
 
-            <section class="space-y-3">
-                <div class="flex items-center justify-between gap-2 rounded-2xl border border-zinc-200 bg-white px-3 py-2 shadow-sm">
-                    <div>
-                        <p class="text-sm font-black text-zinc-900">{{ __('Preview en vivo', 'flux-press') }}</p>
-                        <p class="text-xs text-zinc-500">{{ __('Los cambios se guardan y se aplican automaticamente.', 'flux-press') }}</p>
-                    </div>
-                    <flux:button type="button" size="sm" variant="outline" icon="arrow-path" wire:click="refreshPreview">
+            <footer class="border-t border-zinc-200 p-4 dark:border-zinc-800">
+                <div class="grid grid-cols-2 gap-2">
+                    <flux:button type="button" variant="outline" icon="arrow-path" wire:click="refreshHome" class="justify-center">
                         {{ __('Refrescar', 'flux-press') }}
                     </flux:button>
+                    <flux:button type="button" variant="primary" icon="check" x-on:click="closePanel()" class="justify-center">
+                        {{ __('Listo', 'flux-press') }}
+                    </flux:button>
                 </div>
-
-                <div class="overflow-hidden rounded-2xl border border-zinc-200 bg-zinc-100 shadow-sm">
-                    <iframe
-                        title="{{ esc_attr__('Preview Home Ecommerce', 'flux-press') }}"
-                        x-bind:src="previewUrl"
-                        class="block h-[72vh] min-h-[560px] w-full bg-white"
-                        loading="lazy"
-                    ></iframe>
-                </div>
-            </section>
-        </div>
-    @endif
-</div>
-
-<script>
-    if (!window.fluxVisualBuilderPanel) {
-        window.fluxVisualBuilderPanel = function(initialPreviewUrl) {
-            return {
-                previewUrl: initialPreviewUrl,
-                onPreviewRefresh(event) {
-                    const nextUrl = event?.detail?.url;
-                    if (typeof nextUrl === 'string' && nextUrl.length > 0) {
-                        this.previewUrl = nextUrl;
-                    }
-                },
-            };
-        };
-    }
-
-    if (!window.fluxSectionSorter) {
-        window.fluxSectionSorter = function(wire) {
-            return {
-                draggingKey: null,
-                start(event) {
-                    this.draggingKey = event.currentTarget?.dataset?.section ?? null;
-                    if (event.dataTransfer) {
-                        event.dataTransfer.effectAllowed = 'move';
-                    }
-                },
-                drop(event) {
-                    const targetKey = event.currentTarget?.dataset?.section ?? null;
-                    if (!this.draggingKey || !targetKey || this.draggingKey === targetKey) {
-                        return;
-                    }
-
-                    const currentOrder = Array.from(this.$refs.sectionList.querySelectorAll('[data-section]'))
-                        .map((element) => element.dataset.section)
-                        .filter((key) => typeof key === 'string' && key.length > 0);
-
-                    const fromIndex = currentOrder.indexOf(this.draggingKey);
-                    const toIndex = currentOrder.indexOf(targetKey);
-
-                    if (fromIndex < 0 || toIndex < 0) {
-                        this.draggingKey = null;
-                        return;
-                    }
-
-                    const nextOrder = [...currentOrder];
-                    const [moved] = nextOrder.splice(fromIndex, 1);
-                    nextOrder.splice(toIndex, 0, moved);
-                    wire.reorderSections(nextOrder);
-                    this.draggingKey = null;
-                },
-                end() {
-                    this.draggingKey = null;
-                },
-            };
-        };
-    }
-</script>
+            </footer>
+        </aside>
+    </div>
+@endif

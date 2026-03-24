@@ -219,6 +219,19 @@ const createPromoCardEdit = ({ attributes, setAttributes }) => {
   );
 };
 
+const createSectionBlockEdit = ({ title, description }) => () => {
+  const blockProps = useBlockProps({
+    className: 'flux-ecommerce-parent-block rounded-xl border border-zinc-300 p-4',
+  });
+
+  return el(
+    'div',
+    blockProps,
+    el('p', { className: 'm-0 text-sm font-semibold text-zinc-900' }, title),
+    el('p', { className: 'mt-1 mb-0 text-xs text-zinc-500' }, description),
+  );
+};
+
 domReady(() => {
   registerBlockType('flux-press/featured-categories', {
     apiVersion: 3,
@@ -365,6 +378,71 @@ domReady(() => {
         ),
       );
     },
+    save: () => null,
+  });
+
+  registerBlockType('flux-press/home-hero', {
+    apiVersion: 3,
+    title: __('Home: Hero', 'flux-press'),
+    description: __('Seccion hero ecommerce del tema.', 'flux-press'),
+    category: 'widgets',
+    icon: 'slides',
+    edit: createSectionBlockEdit({
+      title: __('Hero principal', 'flux-press'),
+      description: __('Mueve este bloque para cambiar el orden del hero en el Home.', 'flux-press'),
+    }),
+    save: () => null,
+  });
+
+  registerBlockType('flux-press/home-best-sellers', {
+    apiVersion: 3,
+    title: __('Home: Mas Vendidos', 'flux-press'),
+    description: __('Seccion de productos mas vendidos.', 'flux-press'),
+    category: 'widgets',
+    icon: 'cart',
+    edit: createSectionBlockEdit({
+      title: __('Productos mas vendidos', 'flux-press'),
+      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'flux-press'),
+    }),
+    save: () => null,
+  });
+
+  registerBlockType('flux-press/home-top-rated', {
+    apiVersion: 3,
+    title: __('Home: Mejor Valorados', 'flux-press'),
+    description: __('Seccion de productos top rated.', 'flux-press'),
+    category: 'widgets',
+    icon: 'star-filled',
+    edit: createSectionBlockEdit({
+      title: __('Productos mejor valorados', 'flux-press'),
+      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'flux-press'),
+    }),
+    save: () => null,
+  });
+
+  registerBlockType('flux-press/home-newsletter', {
+    apiVersion: 3,
+    title: __('Home: Newsletter', 'flux-press'),
+    description: __('Seccion de newsletter del home.', 'flux-press'),
+    category: 'widgets',
+    icon: 'email',
+    edit: createSectionBlockEdit({
+      title: __('Newsletter', 'flux-press'),
+      description: __('Mueve este bloque para reordenar la newsletter en el Home.', 'flux-press'),
+    }),
+    save: () => null,
+  });
+
+  registerBlockType('flux-press/home-blog', {
+    apiVersion: 3,
+    title: __('Home: Blog', 'flux-press'),
+    description: __('Seccion de entradas recientes del blog.', 'flux-press'),
+    category: 'widgets',
+    icon: 'admin-post',
+    edit: createSectionBlockEdit({
+      title: __('Contenido reciente', 'flux-press'),
+      description: __('Mueve este bloque para reordenar la seccion de blog en el Home.', 'flux-press'),
+    }),
     save: () => null,
   });
 

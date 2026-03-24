@@ -56,7 +56,7 @@ class HomeComposer extends Composer
      */
     protected function homeEcommerceEditorSections(): array
     {
-        $postId = (int) get_queried_object_id();
+        $postId = $this->resolveHomePageId();
         if ($postId <= 0) {
             return [];
         }
@@ -75,6 +75,11 @@ class HomeComposer extends Composer
             'flux-press/featured-categories' => 'categories',
             'flux-press/featured-brands'     => 'brands',
             'flux-press/featured-promos'     => 'promos',
+            'flux-press/home-hero'           => 'hero',
+            'flux-press/home-best-sellers'   => 'best_sellers',
+            'flux-press/home-top-rated'      => 'top_rated',
+            'flux-press/home-newsletter'     => 'newsletter',
+            'flux-press/home-blog'           => 'blog',
         ];
 
         $found = [];
@@ -120,6 +125,21 @@ class HomeComposer extends Composer
             $found['brands'] = true;
             $found['promos'] = true;
         }
+        if (stripos($content, '[flux_home_hero') !== false) {
+            $found['hero'] = true;
+        }
+        if (stripos($content, '[flux_home_best_sellers') !== false) {
+            $found['best_sellers'] = true;
+        }
+        if (stripos($content, '[flux_home_top_rated') !== false) {
+            $found['top_rated'] = true;
+        }
+        if (stripos($content, '[flux_home_newsletter') !== false) {
+            $found['newsletter'] = true;
+        }
+        if (stripos($content, '[flux_home_blog') !== false) {
+            $found['blog'] = true;
+        }
 
         return array_values(array_keys($found));
     }
@@ -154,9 +174,9 @@ class HomeComposer extends Composer
 		return in_array($default, $allowed, true) ? $default : 'hybrid';
 	}
 
-	protected function homeEditorContent(): string
-	{
-		$postId = (int) get_queried_object_id();
+    protected function homeEditorContent(): string
+    {
+		$postId = $this->resolveHomePageId();
 		if ($postId <= 0) {
 			return '';
 		}
@@ -189,6 +209,21 @@ class HomeComposer extends Composer
 
 		return is_string($rendered) ? $rendered : '';
 	}
+
+    protected function resolveHomePageId(): int
+    {
+        $postId = (int) get_queried_object_id();
+        if ($postId > 0) {
+            return $postId;
+        }
+
+        $frontPageId = (int) get_option('page_on_front');
+        if ($frontPageId > 0) {
+            return $frontPageId;
+        }
+
+        return 0;
+    }
 
 	/**
 	 * Resolve active home layout.

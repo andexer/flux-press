@@ -276,13 +276,14 @@ Incluye:
 
 ## 14. Flux Visual Builder desde la barra superior de admin (nuevo)
 
-Ahora puedes abrir el editor visual directamente desde la barra de administracion de WordPress (frontend o backend).
+Ahora puedes abrir el editor visual directamente sobre el Home frontend (sin entrar al panel admin).
 
 Ruta rapida:
 
 1. Inicia sesion como administrador.
-2. En la barra superior, haz clic en `Flux Builder`.
-3. Se abre `Flux Visual Builder` con panel lateral + preview en vivo.
+2. Ve al Home.
+3. En la barra superior, haz clic en `Flux Builder`.
+4. Se abre un drawer lateral para editar en vivo sobre la pagina.
 
 Funciones incluidas:
 
@@ -290,7 +291,8 @@ Funciones incluidas:
 - Activar/ocultar secciones del Home.
 - Reordenar secciones con arrastrar y soltar.
 - Guardado automatico en `theme_mod` (sin JSON manual).
-- Preview en vivo con auto-refresco tras cada cambio.
+- Aplicacion en vivo sobre el Home sin recarga para orden/visibilidad.
+- Cambio de modo (`builder/hybrid/editor`) con recarga controlada.
 
 Theme mods que actualiza este panel:
 

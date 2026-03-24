@@ -136,7 +136,13 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			return;
 		}
 
-		$targetUrl = esc_url_raw(admin_url('admin.php?page=flux-visual-builder'));
+		$gutenbergUrl = $this->resolveHomeGutenbergEditorUrl();
+		$frontendBuilderUrl = esc_url_raw(add_query_arg('flux_builder', '1', (string) home_url('/')));
+		$fallbackUrl = esc_url_raw(admin_url('admin.php?page=flux-visual-builder'));
+		$targetUrl = $gutenbergUrl ?: $frontendBuilderUrl;
+		if ($targetUrl === '') {
+			$targetUrl = $fallbackUrl;
+		}
 
 		$adminBar->add_node([
 			'id'    => 'flux-visual-builder',
@@ -149,11 +155,38 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		]);
 
 		$adminBar->add_node([
-			'id'     => 'flux-visual-builder-open',
+			'id'     => 'flux-visual-builder-gutenberg',
 			'parent' => 'flux-visual-builder',
-			'title'  => __('Abrir editor visual', 'flux-press'),
-			'href'   => $targetUrl,
-			'meta'   => ['title' => __('Gestionar secciones del home con drag and drop y preview en vivo', 'flux-press')],
+			'title'  => __('Editar Home (Gutenberg)', 'flux-press'),
+			'href'   => $gutenbergUrl ?: $fallbackUrl,
+			'meta'   => ['title' => __('Abrir el editor de bloques nativo de WordPress para la pagina de inicio', 'flux-press')],
+		]);
+
+		$elementorUrl = $this->resolveHomeElementorEditorUrl();
+		if ($elementorUrl !== '') {
+			$adminBar->add_node([
+				'id'     => 'flux-visual-builder-elementor',
+				'parent' => 'flux-visual-builder',
+				'title'  => __('Editar Home (Elementor)', 'flux-press'),
+				'href'   => $elementorUrl,
+				'meta'   => ['title' => __('Abrir la pagina de inicio en Elementor', 'flux-press')],
+			]);
+		}
+
+		$adminBar->add_node([
+			'id'     => 'flux-visual-builder-live',
+			'parent' => 'flux-visual-builder',
+			'title'  => __('Editor visual frontend (Beta)', 'flux-press'),
+			'href'   => $frontendBuilderUrl,
+			'meta'   => ['title' => __('Abrir panel lateral en vivo sobre el Home', 'flux-press')],
+		]);
+
+		$adminBar->add_node([
+			'id'     => 'flux-visual-builder-admin',
+			'parent' => 'flux-visual-builder',
+			'title'  => __('Panel tecnico (Admin)', 'flux-press'),
+			'href'   => $fallbackUrl,
+			'meta'   => ['title' => __('Abrir pantalla tecnica del builder en wp-admin', 'flux-press')],
 		]);
 	}
 
@@ -211,6 +244,90 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		}
 
 		return (string) $screen->id === 'toplevel_page_flux-visual-builder';
+	}
+
+	protected function resolveHomeGutenbergEditorUrl(): string
+	{
+		$pageOnFront = (int) get_option('page_on_front');
+		if ($pageOnFront <= 0) {
+			return '';
+		}
+
+		$post = get_post($pageOnFront);
+		if (! $post instanceof \WP_Post) {
+			return '';
+		}
+
+		if (! current_user_can('edit_post', $pageOnFront)) {
+			return '';
+		}
+
+		$this->seedFrontPageWithEcommerceBlocksIfEmpty($pageOnFront);
+
+		return esc_url_raw(get_edit_post_link($pageOnFront, ''));
+	}
+
+	protected function resolveHomeElementorEditorUrl(): string
+	{
+		if (! class_exists('\\Elementor\\Plugin')) {
+			return '';
+		}
+
+		$pageOnFront = (int) get_option('page_on_front');
+		if ($pageOnFront <= 0) {
+			return '';
+		}
+
+		if (! current_user_can('edit_post', $pageOnFront)) {
+			return '';
+		}
+
+		return esc_url_raw(add_query_arg([
+			'post'   => $pageOnFront,
+			'action' => 'elementor',
+		], admin_url('post.php')));
+	}
+
+	protected function seedFrontPageWithEcommerceBlocksIfEmpty(int $pageId): void
+	{
+		if ($pageId <= 0) {
+			return;
+		}
+
+		if ((string) get_theme_mod('home_layout', 'corporate') !== 'ecommerce') {
+			return;
+		}
+
+		$post = get_post($pageId);
+		if (! $post instanceof \WP_Post) {
+			return;
+		}
+
+		$content = trim((string) $post->post_content);
+		if ($content !== '') {
+			return;
+		}
+
+		$starterBlocks = [
+			'<!-- wp:flux-press/home-hero /-->',
+			'<!-- wp:flux-press/featured-categories /-->',
+			'<!-- wp:flux-press/home-best-sellers /-->',
+			'<!-- wp:flux-press/home-top-rated /-->',
+			'<!-- wp:flux-press/featured-brands /-->',
+			'<!-- wp:flux-press/featured-promos /-->',
+			'<!-- wp:flux-press/home-newsletter /-->',
+			'<!-- wp:flux-press/home-blog /-->',
+		];
+
+		wp_update_post([
+			'ID'           => $pageId,
+			'post_content' => implode("\n\n", $starterBlocks),
+		]);
+
+		$currentMode = (string) get_theme_mod('home_ecommerce_content_mode', 'hybrid');
+		if (! in_array($currentMode, ['hybrid', 'editor'], true)) {
+			set_theme_mod('home_ecommerce_content_mode', 'hybrid');
+		}
 	}
 
 	/**
@@ -1051,6 +1168,26 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			],
 		]);
 
+		register_block_type('flux-press/home-hero', [
+			'render_callback' => [$this, 'renderHomeHeroBlock'],
+		]);
+
+		register_block_type('flux-press/home-best-sellers', [
+			'render_callback' => [$this, 'renderHomeBestSellersBlock'],
+		]);
+
+		register_block_type('flux-press/home-top-rated', [
+			'render_callback' => [$this, 'renderHomeTopRatedBlock'],
+		]);
+
+		register_block_type('flux-press/home-newsletter', [
+			'render_callback' => [$this, 'renderHomeNewsletterBlock'],
+		]);
+
+		register_block_type('flux-press/home-blog', [
+			'render_callback' => [$this, 'renderHomeBlogBlock'],
+		]);
+
 		register_block_type('flux-press/category-card', [
 			'render_callback' => static fn (): string => '',
 			'attributes' => [
@@ -1155,6 +1292,26 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 				'showControls' => $this->toShortcodeBool($atts['show_controls'], true),
 			], 'shortcode-home-sections-carousel');
 		});
+
+		add_shortcode('flux_home_hero', function (): string {
+			return $this->renderLivewireSection('ecommerce-home-hero', [], 'shortcode-home-hero');
+		});
+
+		add_shortcode('flux_home_best_sellers', function (): string {
+			return $this->renderLivewireSection('ecommerce-home-best-sellers', [], 'shortcode-home-best-sellers');
+		});
+
+		add_shortcode('flux_home_top_rated', function (): string {
+			return $this->renderLivewireSection('ecommerce-home-top-rated', [], 'shortcode-home-top-rated');
+		});
+
+		add_shortcode('flux_home_newsletter', function (): string {
+			return $this->renderLivewireSection('ecommerce-home-newsletter', [], 'shortcode-home-newsletter');
+		});
+
+		add_shortcode('flux_home_blog', function (): string {
+			return $this->renderLivewireSection('ecommerce-home-blog', [], 'shortcode-home-blog');
+		});
 	}
 
 	/**
@@ -1234,6 +1391,31 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			'interval' => $interval,
 			'showControls' => $showControls,
 		], 'block-home-sections-carousel');
+	}
+
+	public function renderHomeHeroBlock(): string
+	{
+		return $this->renderLivewireSection('ecommerce-home-hero', [], 'block-home-hero');
+	}
+
+	public function renderHomeBestSellersBlock(): string
+	{
+		return $this->renderLivewireSection('ecommerce-home-best-sellers', [], 'block-home-best-sellers');
+	}
+
+	public function renderHomeTopRatedBlock(): string
+	{
+		return $this->renderLivewireSection('ecommerce-home-top-rated', [], 'block-home-top-rated');
+	}
+
+	public function renderHomeNewsletterBlock(): string
+	{
+		return $this->renderLivewireSection('ecommerce-home-newsletter', [], 'block-home-newsletter');
+	}
+
+	public function renderHomeBlogBlock(): string
+	{
+		return $this->renderLivewireSection('ecommerce-home-blog', [], 'block-home-blog');
 	}
 
 	/**
@@ -1344,8 +1526,24 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			$key = $keyPrefix . '-' . wp_generate_uuid4();
 			$instance = Livewire::mount($componentName, $params, $key);
 
-			return method_exists($instance, 'html') ? (string) $instance->html() : '';
+			if (is_string($instance)) {
+				return $instance;
+			}
+
+			if (is_object($instance) && method_exists($instance, 'html')) {
+				return (string) $instance->html();
+			}
+
+			if (is_object($instance) && method_exists($instance, 'toHtml')) {
+				return (string) $instance->toHtml();
+			}
+
+			return is_scalar($instance) ? (string) $instance : '';
 		} catch (\Throwable $exception) {
+			logger()->error('flux_livewire_section_render_failed', [
+				'component' => $componentName,
+				'message' => $exception->getMessage(),
+			]);
 			return '';
 		}
 	}

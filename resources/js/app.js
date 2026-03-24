@@ -3,6 +3,160 @@ import.meta.glob([
   '../fonts/**',
 ]);
 
+if (!window.fluxVisualBuilderPanel) {
+  window.fluxVisualBuilderPanel = ({ initialOpen = false } = {}) => ({
+    open: !!initialOpen,
+
+    init() {
+      this.syncPageState();
+    },
+
+    openPanel() {
+      this.open = true;
+      this.syncPageState();
+    },
+
+    closePanel() {
+      this.open = false;
+      this.syncPageState();
+    },
+
+    togglePanel() {
+      this.open = !this.open;
+      this.syncPageState();
+    },
+
+    syncPageState() {
+      const html = document.documentElement;
+      const body = document.body;
+
+      if (!html || !body) {
+        return;
+      }
+
+      html.classList.toggle('flux-home-builder-open', this.open);
+      body.classList.toggle('overflow-hidden', this.open);
+    },
+
+  });
+}
+
+if (!window.fluxSectionSorter) {
+  window.fluxSectionSorter = (wire) => ({
+    draggingKey: null,
+
+    start(event) {
+      this.draggingKey = event.currentTarget?.dataset?.section ?? null;
+      if (event.dataTransfer) {
+        event.dataTransfer.effectAllowed = 'move';
+        if (this.draggingKey) {
+          event.dataTransfer.setData('text/plain', this.draggingKey);
+        }
+      }
+    },
+
+    drop(event) {
+      const targetKey = event.currentTarget?.dataset?.section ?? null;
+      if (!this.draggingKey || !targetKey || this.draggingKey === targetKey) {
+        return;
+      }
+
+      const currentOrder = Array.from(this.$refs.sectionList.querySelectorAll('[data-section]'))
+        .map((element) => element.dataset.section)
+        .filter((key) => typeof key === 'string' && key.length > 0);
+
+      const fromIndex = currentOrder.indexOf(this.draggingKey);
+      const toIndex = currentOrder.indexOf(targetKey);
+
+      if (fromIndex < 0 || toIndex < 0) {
+        this.draggingKey = null;
+        return;
+      }
+
+      const nextOrder = [...currentOrder];
+      const [moved] = nextOrder.splice(fromIndex, 1);
+      nextOrder.splice(toIndex, 0, moved);
+      wire.reorderSections(nextOrder);
+      this.draggingKey = null;
+    },
+
+    end() {
+      this.draggingKey = null;
+    },
+  });
+}
+
+const hasFluxHomeBuilderDrawer = () => document.querySelector('[data-flux-home-builder-drawer]') !== null;
+
+const refreshHomeBuilderLivewireComponents = () => {
+  if (!window.Livewire || typeof window.Livewire.find !== 'function') {
+    return;
+  }
+
+  document
+    .querySelectorAll('[wire\\:name=\"ecommerce-home-builder\"][wire\\:id]')
+    .forEach((element) => {
+      const id = element.getAttribute('wire:id');
+      if (!id) {
+        return;
+      }
+
+      const component = window.Livewire.find(id);
+      if (!component || typeof component.call !== 'function') {
+        return;
+      }
+
+      component.call('refreshBuilder');
+    });
+};
+
+const initializeFluxBuilderBridge = () => {
+  const drawerExists = hasFluxHomeBuilderDrawer();
+
+  if (drawerExists) {
+    try {
+      const url = new URL(window.location.href);
+      if (url.searchParams.get('flux_builder') === '1') {
+        window.dispatchEvent(new CustomEvent('flux-home-builder:open'));
+      }
+    } catch (error) {
+      // noop
+    }
+  }
+
+  const builderLinks = document.querySelectorAll(
+    '#wp-admin-bar-flux-visual-builder-live > a.ab-item',
+  );
+
+  builderLinks.forEach((link) => {
+    if (link.dataset.fluxBuilderBound === '1') {
+      return;
+    }
+
+    link.dataset.fluxBuilderBound = '1';
+    link.addEventListener('click', (event) => {
+      if (!hasFluxHomeBuilderDrawer()) {
+        return;
+      }
+
+      try {
+        const url = new URL(window.location.href);
+        if (url.searchParams.get('flux_builder') !== '1') {
+          event.preventDefault();
+          url.searchParams.set('flux_builder', '1');
+          window.location.assign(url.toString());
+          return;
+        }
+      } catch (error) {
+        // noop
+      }
+
+      event.preventDefault();
+      window.dispatchEvent(new CustomEvent('flux-home-builder:toggle'));
+    });
+  });
+};
+
 const parseNumber = (value, fallback) => {
   const parsed = Number.parseFloat(value);
   return Number.isFinite(parsed) ? parsed : fallback;
@@ -144,6 +298,7 @@ document.addEventListener('input', (event) => {
 });
 
 const initializeFrontInteractions = () => {
+  initializeFluxBuilderBridge();
   initializeCartQtyControls();
   initializeWooSingleProduct();
 };
@@ -160,4 +315,17 @@ document.addEventListener('livewire:init', () => {
 
     initializeCartQtyControls();
   });
+});
+
+window.addEventListener('flux-home-builder:reload', () => {
+  window.location.reload();
+});
+
+window.addEventListener('flux-home-builder:refresh', () => {
+  refreshHomeBuilderLivewireComponents();
+
+  if (window.Livewire && typeof window.Livewire.dispatch === 'function') {
+    window.Livewire.dispatch('flux-home-builder-refresh');
+    window.Livewire.dispatch('fluxHomeBuilderRefresh');
+  }
 });

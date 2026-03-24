@@ -5,10 +5,15 @@
         $contentMode = 'hybrid';
     }
 
+    $isVisualBuilderSession = is_user_logged_in()
+        && current_user_can('edit_theme_options')
+        && isset($_GET['flux_builder'])
+        && (string) $_GET['flux_builder'] !== '0';
+
     $editorContent = trim((string) ($homeEditorContent ?? ''));
     $hasEditorContent = $editorContent !== '';
-    $showBuilder = in_array($contentMode, ['builder', 'hybrid'], true);
-    $showEditor = in_array($contentMode, ['editor', 'hybrid'], true);
+    $showBuilder = in_array($contentMode, ['builder', 'hybrid'], true) || $isVisualBuilderSession;
+    $showEditor = in_array($contentMode, ['editor', 'hybrid'], true) && ! $isVisualBuilderSession;
     $visibleSections = [];
     $brandSectionAvailable = false;
     $editorSections = is_array($homeEcommerceEditorSections ?? null) ? $homeEcommerceEditorSections : [];
@@ -17,6 +22,15 @@
         $ecommerceService = app(\App\Services\HomeEcommerceDataService::class);
         $visibleSections = $ecommerceService->visibleSections();
         $brandSectionAvailable = $ecommerceService->isSectionAvailable('brands');
+    }
+
+    $builderHiddenSections = ($showEditor && $hasEditorContent && ! $isVisualBuilderSession)
+        ? $editorSections
+        : [];
+    $renderBuilder = $showBuilder;
+    if ($renderBuilder && ! empty($builderHiddenSections) && ! empty($visibleSections)) {
+        $remainingBuilderSections = array_values(array_diff($visibleSections, $builderHiddenSections));
+        $renderBuilder = ! empty($remainingBuilderSections);
     }
 @endphp
 
@@ -38,8 +52,8 @@
         </section>
     @endif
 
-    @if($showBuilder)
-        <livewire:ecommerce-home-builder :hidden-sections="$showEditor && $hasEditorContent ? $editorSections : []" />
+    @if($renderBuilder)
+        <livewire:ecommerce-home-builder :hidden-sections="$builderHiddenSections" />
 
         @if(
             $brandSectionAvailable
@@ -48,5 +62,13 @@
         )
             <livewire:ecommerce-home-brands :key="'ecommerce-home-brands-fallback'" />
         @endif
+    @endif
+
+    @if(
+        is_user_logged_in()
+        && current_user_can('edit_theme_options')
+        && $isVisualBuilderSession
+    )
+        <livewire:home-visual-builder :key="'home-visual-builder-frontend-drawer'" />
     @endif
 </section>

@@ -2,12 +2,15 @@
 
 use App\Services\HomeEcommerceDataService;
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 new class extends Component
 {
     /** @var string[] */
     public array $hiddenSections = [];
+
+    public int $refreshTick = 0;
 
     /**
      * @param array<int,string> $hiddenSections
@@ -34,9 +37,19 @@ new class extends Component
             fn (string $section): bool => ! in_array($section, $this->hiddenSections, true)
         ));
     }
+
+    #[On('flux-home-builder-refresh')]
+    #[On('fluxHomeBuilderRefresh')]
+    public function refreshBuilder(): void
+    {
+        $this->refreshTick++;
+    }
 }; ?>
 
-<div class="space-y-0" wire:key="ecommerce-home-builder">
+<div
+    class="space-y-0"
+    wire:key="ecommerce-home-builder-{{ $refreshTick }}"
+>
     @forelse($this->sections as $section)
         @switch($section)
             @case('hero')
