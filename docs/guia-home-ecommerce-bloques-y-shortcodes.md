@@ -43,6 +43,7 @@ Si en el contenido del Home existe alguno de estos bloques/shortcodes:
 - `flux-press/featured-categories` o `[flux_featured_categories]`
 - `flux-press/featured-brands` o `[flux_featured_brands]`
 - `flux-press/featured-promos` o `[flux_featured_promos]`
+- `flux-press/home-sections-carousel` o `[flux_home_sections_carousel]`
 
 el builder ocultara automaticamente esa seccion para no duplicarla.
 
@@ -53,12 +54,20 @@ el builder ocultara automaticamente esa seccion para no duplicarla.
 - `flux-press/featured-categories`
 - `flux-press/featured-brands`
 - `flux-press/featured-promos`
+- `flux-press/home-sections-carousel`
 
 Cada bloque padre permite:
 
 - `title` (titulo)
 - `subtitle` (subtitulo)
 - `limit` (cantidad maxima de tarjetas)
+
+El bloque `flux-press/home-sections-carousel` permite:
+
+- `sections` (`categories,brands,promos` en el orden que quieras)
+- `autoplay` (`true/false`)
+- `interval` (2500 a 20000 ms)
+- `show_controls` (`true/false`)
 
 ### Bloques hijo (tarjetas)
 
@@ -139,6 +148,24 @@ Con tarjetas manuales por JSON:
 
 ```txt
 [flux_featured_promos title="Promos" subtitle="Semana activa" limit="2" cards_json='[{"eyebrow":"Live now","title":"Novedades y lanzamientos","description":"Descubre productos nuevos.","cta_label":"Explorar todo","cta_url":"/tienda/","image_url":"promo-launches.jpg","theme":"light"},{"eyebrow":"Oferta flash","title":"Ofertas relampago","description":"Descuentos por tiempo limitado.","cta_label":"Ver ofertas","cta_url":"/tienda/","image_url":"promo-flash.jpg","theme":"dark"}]']
+```
+
+## 6.4 Carrusel de secciones completas (nuevo)
+
+Este shortcode crea un carrusel de secciones completas (no solo tarjetas sueltas), ideal para Elementor o bloque Shortcode en Gutenberg.
+
+```txt
+[flux_home_sections_carousel title="Descubre" subtitle="Secciones ecommerce en carrusel" sections="categories,brands,promos" autoplay="1" interval="6500" show_controls="1"]
+```
+
+Ejemplos:
+
+```txt
+[flux_home_sections_carousel sections="brands,promos" autoplay="0" show_controls="1"]
+```
+
+```txt
+[flux_home_sections_carousel sections="categories" autoplay="0" show_controls="0"]
 ```
 
 ## 7. Configuracion por Customizer (fallback global)
@@ -224,6 +251,7 @@ Incluye:
   - `flux-press/featured-categories`
   - `flux-press/featured-brands`
   - `flux-press/featured-promos`
+  - `flux-press/home-sections-carousel`
   - `flux-press/category-card`
   - `flux-press/brand-card`
   - `flux-press/promo-card`
@@ -231,9 +259,17 @@ Incluye:
   - `[flux_featured_categories]`
   - `[flux_featured_brands]`
   - `[flux_featured_promos]`
+  - `[flux_home_sections_carousel]`
 - Theme mods:
   - `home_ecommerce_featured_categories_json`
   - `home_ecommerce_featured_brands_json`
   - `home_ecommerce_featured_promos_json`
   - `home_ecommerce_content_mode`
 
+## 13. Modo claro/oscuro global del tema
+
+- El tema ahora inicia por defecto en `modo claro`.
+- El modo oscuro se activa manualmente desde:
+  - `Header > boton Configurar Tema > Tema de Interfaz`
+  - Opciones disponibles: `Claro` y `Oscuro`.
+- La apariencia es global (definida por administracion del tema), no por modo sistema del navegador.

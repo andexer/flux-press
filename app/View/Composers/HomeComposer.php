@@ -86,7 +86,11 @@ class HomeComposer extends Composer
                 }
 
                 $name = (string) ($block['blockName'] ?? '');
-                if ($name !== '' && isset($blockToSection[$name])) {
+                if ($name === 'flux-press/home-sections-carousel') {
+                    foreach ($this->parseSectionsList((string) ($block['attrs']['sections'] ?? 'categories,brands,promos')) as $section) {
+                        $found[$section] = true;
+                    }
+                } elseif ($name !== '' && isset($blockToSection[$name])) {
                     $found[$blockToSection[$name]] = true;
                 }
 
@@ -111,8 +115,30 @@ class HomeComposer extends Composer
         if (stripos($content, '[flux_featured_promos') !== false) {
             $found['promos'] = true;
         }
+        if (stripos($content, '[flux_home_sections_carousel') !== false) {
+            $found['categories'] = true;
+            $found['brands'] = true;
+            $found['promos'] = true;
+        }
 
         return array_values(array_keys($found));
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function parseSectionsList(string $value): array
+    {
+        $allowed = ['categories', 'brands', 'promos'];
+        $sections = array_map(
+            static fn ($item) => sanitize_key((string) $item),
+            explode(',', $value)
+        );
+
+        $sections = array_values(array_filter($sections, static fn ($item) => in_array($item, $allowed, true)));
+        $sections = array_values(array_unique($sections));
+
+        return ! empty($sections) ? $sections : $allowed;
     }
 
 	protected function homeEcommerceContentMode(): string

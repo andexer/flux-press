@@ -26,7 +26,8 @@ class FluxCustomizerServiceProvider extends ServiceProvider
 
 	public function injectAppearanceClass(string $attrs): string
 	{
-		$appearance = get_option('flux_theme_appearance', 'system');
+		$appearance = (string) get_option('flux_theme_appearance', 'light');
+		$appearance = in_array($appearance, ['light', 'dark'], true) ? $appearance : 'light';
 
 		if (str_contains($attrs, 'class=')) {
 			return preg_replace(

@@ -3,7 +3,7 @@ import { registerBlockType } from '@wordpress/blocks';
 import { __ } from '@wordpress/i18n';
 import { createElement, Fragment } from '@wordpress/element';
 import { useBlockProps, InspectorControls, InnerBlocks } from '@wordpress/block-editor';
-import { PanelBody, RangeControl, SelectControl, TextControl, TextareaControl } from '@wordpress/components';
+import { PanelBody, RangeControl, SelectControl, TextControl, TextareaControl, ToggleControl } from '@wordpress/components';
 
 const el = createElement;
 
@@ -290,6 +290,82 @@ domReady(() => {
       limitMax: 6,
     }),
     save: () => el(InnerBlocks.Content),
+  });
+
+  registerBlockType('flux-press/home-sections-carousel', {
+    apiVersion: 3,
+    title: __('Carrusel de secciones', 'flux-press'),
+    description: __('Carrusel completo para reordenar categorias, marcas y promos en un solo bloque.', 'flux-press'),
+    category: 'widgets',
+    icon: 'images-alt2',
+    attributes: {
+      title: { type: 'string', default: __('Carrusel de secciones', 'flux-press') },
+      subtitle: { type: 'string', default: __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press') },
+      sections: { type: 'string', default: 'categories,brands,promos' },
+      autoplay: { type: 'boolean', default: true },
+      interval: { type: 'number', default: 6500 },
+      show_controls: { type: 'boolean', default: true },
+    },
+    edit: ({ attributes, setAttributes }) => {
+      const blockProps = useBlockProps({
+        className: 'flux-ecommerce-parent-block rounded-xl border border-zinc-300 p-4',
+      });
+
+      return el(
+        Fragment,
+        null,
+        el(
+          InspectorControls,
+          null,
+          el(
+            PanelBody,
+            { title: __('Carrusel', 'flux-press'), initialOpen: true },
+            el(TextControl, {
+              label: __('Titulo', 'flux-press'),
+              value: attributes.title || '',
+              onChange: (value) => setAttributes({ title: value }),
+            }),
+            el(TextControl, {
+              label: __('Subtitulo', 'flux-press'),
+              value: attributes.subtitle || '',
+              onChange: (value) => setAttributes({ subtitle: value }),
+            }),
+            el(TextControl, {
+              label: __('Secciones (coma separadas)', 'flux-press'),
+              help: __('Usa: categories,brands,promos', 'flux-press'),
+              value: attributes.sections || 'categories,brands,promos',
+              onChange: (value) => setAttributes({ sections: value }),
+            }),
+            el(ToggleControl, {
+              label: __('Autoplay', 'flux-press'),
+              checked: !!attributes.autoplay,
+              onChange: (value) => setAttributes({ autoplay: !!value }),
+            }),
+            el(RangeControl, {
+              label: __('Intervalo (ms)', 'flux-press'),
+              min: 2500,
+              max: 20000,
+              step: 100,
+              value: Number(attributes.interval || 6500),
+              onChange: (value) => setAttributes({ interval: Number(value || 6500) }),
+            }),
+            el(ToggleControl, {
+              label: __('Mostrar controles', 'flux-press'),
+              checked: !!attributes.show_controls,
+              onChange: (value) => setAttributes({ show_controls: !!value }),
+            }),
+          ),
+        ),
+        el(
+          'div',
+          blockProps,
+          el('p', { className: 'm-0 text-xs font-semibold uppercase tracking-wide text-zinc-500' }, __('Carrusel de secciones ecommerce', 'flux-press')),
+          el('strong', { className: 'block mt-2 text-sm' }, attributes.title || __('Carrusel de secciones', 'flux-press')),
+          el('span', { className: 'block mt-1 text-xs text-zinc-500' }, attributes.sections || 'categories,brands,promos'),
+        ),
+      );
+    },
+    save: () => null,
   });
 
   registerBlockType('flux-press/category-card', {

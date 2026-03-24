@@ -6,7 +6,7 @@ new class extends Component
 {
 	public string $selectedAccent = 'sky';
 	public string $customColor = '#3b82f6';
-	public string $selectedAppearance = 'system';
+	public string $selectedAppearance = 'light';
 	public bool $asNavLink = false;
 	public bool $canAccess = false;
 
@@ -41,7 +41,8 @@ new class extends Component
 
 		$accent = get_option('flux_theme_accent', 'sky');
 		$this->selectedAccent = $accent;
-		$this->selectedAppearance = get_option('flux_theme_appearance', 'system');
+		$appearance = (string) get_option('flux_theme_appearance', 'light');
+		$this->selectedAppearance = in_array($appearance, ['light', 'dark'], true) ? $appearance : 'light';
 		$this->customColor = $this->isHex($accent) ? $accent : '#3b82f6';
 	}
 
@@ -86,7 +87,7 @@ new class extends Component
 	{
 		if (!$this->canAccess) return;
 		$value = trim($value);
-		$allowed = ['light', 'dark', 'system'];
+		$allowed = ['light', 'dark'];
 
 		if (!in_array($value, $allowed, true)) {
 			return;
@@ -131,25 +132,15 @@ new class extends Component
 
 	private function injectAppearanceCss(string $mode): void
 	{
-		// GUARDAR LOCALSTORAGE + DISPATCH GLOBAL
 		update_option('flux_theme_appearance', $mode);
 
 		$this->js("
-            // Guardar persistente
-            localStorage.setItem('flux-appearance', '{$mode}');
-            
             // Aplicar inmediatamente
             const html = document.documentElement;
             html.classList.remove('dark', 'light');
             
             if ('{$mode}' === 'dark') {
                 html.classList.add('dark');
-            } else if ('{$mode}' === 'system') {
-                const mql = window.matchMedia('(prefers-color-scheme: dark)');
-                html.classList.toggle('dark', mql.matches);
-                mql.addEventListener('change', e => {
-                    html.classList.toggle('dark', e.matches);
-                });
             }
             
             // Notificar a otros componentes
@@ -213,7 +204,6 @@ new class extends Component
 				<flux:radio.group variant="segmented" wire:model.live="selectedAppearance">
 					<flux:radio value="light" label="Claro" icon="sun" />
 					<flux:radio value="dark" label="Oscuro" icon="moon" />
-					<flux:radio value="system" label="Sistema" icon="computer-desktop" />
 				</flux:radio.group>
 			</section>
 

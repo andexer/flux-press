@@ -11,16 +11,18 @@ new class extends Component
     public string $sectionTitle = '';
     public string $sectionSubtitle = '';
     public int $limitOverride = 0;
+    public bool $embedded = false;
 
     /**
      * @param array<int,array<string,mixed>> $manualCards
      */
-    public function mount(array $manualCards = [], ?string $sectionTitle = null, ?string $sectionSubtitle = null, int $limitOverride = 0): void
+    public function mount(array $manualCards = [], ?string $sectionTitle = null, ?string $sectionSubtitle = null, int $limitOverride = 0, bool $embedded = false): void
     {
         $this->manualCards = array_values(array_filter($manualCards, fn ($item) => is_array($item)));
         $this->sectionTitle = is_string($sectionTitle) ? trim($sectionTitle) : '';
         $this->sectionSubtitle = is_string($sectionSubtitle) ? trim($sectionSubtitle) : '';
         $this->limitOverride = max(0, (int) $limitOverride);
+        $this->embedded = (bool) $embedded;
     }
 
     #[Computed]
@@ -49,10 +51,16 @@ new class extends Component
     $resolvedSubtitle = $sectionSubtitle !== ''
         ? $sectionSubtitle
         : __('Inicia sesion para obtener beneficios exclusivos', 'flux-press');
+    $sectionClasses = $embedded
+        ? 'py-4 sm:py-5 bg-transparent border-0'
+        : 'py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800';
+    $containerClasses = $embedded
+        ? 'px-4 sm:px-5 lg:px-6'
+        : 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8';
 @endphp
 
-<section class="py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+<section class="{{ $sectionClasses }}">
+    <div class="{{ $containerClasses }}">
         <div class="mb-5 sm:mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div class="min-w-0">
                 <flux:heading size="2xl" class="!font-black tracking-tight text-zinc-900 dark:text-white uppercase">
@@ -116,7 +124,7 @@ new class extends Component
                             href="{{ $brand['url'] }}"
                             wire:navigate
                             data-brand-item
-                            class="group relative block shrink-0 min-w-[180px] sm:min-w-[205px] lg:min-w-[225px] aspect-[1.45/1] overflow-hidden rounded-3xl border border-zinc-200/70 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 snap-start shadow-sm hover:shadow-lg transition-shadow"
+                            class="group relative block shrink-0 min-w-[150px] sm:min-w-[185px] lg:min-w-[205px] aspect-[1.45/1] overflow-hidden rounded-3xl border border-zinc-200/70 dark:border-zinc-700 bg-zinc-100 dark:bg-zinc-900 snap-start shadow-sm hover:shadow-lg transition-shadow"
                         >
                             @if($brandImage !== '')
                                 <img src="{{ $brandImage }}" alt="{{ $brandName }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />

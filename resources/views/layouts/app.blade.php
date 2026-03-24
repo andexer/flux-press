@@ -1,21 +1,28 @@
+@php
+    $fluxAppearanceOption = (string) get_option('flux_theme_appearance', 'light');
+    $fluxAppearanceOption = in_array($fluxAppearanceOption, ['light', 'dark'], true) ? $fluxAppearanceOption : 'light';
+@endphp
+
 <!doctype html>
 <html @php echo language_attributes(); @endphp x-data="{ 
+        mode: @js($fluxAppearanceOption),
         init() {
             this.applySavedTheme();
             document.addEventListener('livewire:navigated', () => this.applySavedTheme());
+            window.addEventListener('flux:theme-changed', (event) => {
+                const mode = event?.detail?.mode ?? this.mode;
+                this.mode = mode;
+                this.applyTheme(this.mode);
+            });
         },
         applySavedTheme() {
-            const saved = localStorage.getItem('flux-appearance') || 'system';
-            this.applyTheme(saved);
+            this.applyTheme(this.mode);
         },
         applyTheme(mode) {
             const html = document.documentElement;
             html.classList.remove('dark', 'light');
             if (mode === 'dark') {
                 html.classList.add('dark');
-            } else if (mode === 'system') {
-                const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-                html.classList.toggle('dark', isDark);
             }
         }
       }">

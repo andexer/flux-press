@@ -935,6 +935,18 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			],
 		]);
 
+		register_block_type('flux-press/home-sections-carousel', [
+			'render_callback' => [$this, 'renderHomeSectionsCarouselBlock'],
+			'attributes' => [
+				'title' => ['type' => 'string', 'default' => __('Carrusel de secciones', 'flux-press')],
+				'subtitle' => ['type' => 'string', 'default' => __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press')],
+				'sections' => ['type' => 'string', 'default' => 'categories,brands,promos'],
+				'autoplay' => ['type' => 'boolean', 'default' => true],
+				'interval' => ['type' => 'number', 'default' => 6500],
+				'show_controls' => ['type' => 'boolean', 'default' => true],
+			],
+		]);
+
 		register_block_type('flux-press/category-card', [
 			'render_callback' => static fn (): string => '',
 			'attributes' => [
@@ -1019,6 +1031,26 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 				'limitOverride' => max(1, min(6, (int) $atts['limit'])),
 			], 'shortcode-featured-promos');
 		});
+
+		add_shortcode('flux_home_sections_carousel', function ($atts): string {
+			$atts = shortcode_atts([
+				'title' => __('Carrusel de secciones', 'flux-press'),
+				'subtitle' => __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press'),
+				'sections' => 'categories,brands,promos',
+				'autoplay' => '1',
+				'interval' => 6500,
+				'show_controls' => '1',
+			], (array) $atts, 'flux_home_sections_carousel');
+
+			return $this->renderLivewireSection('ecommerce-home-sections-carousel', [
+				'title' => sanitize_text_field((string) $atts['title']),
+				'subtitle' => sanitize_text_field((string) $atts['subtitle']),
+				'sections' => $this->sanitizeEcommerceSectionList((string) $atts['sections']),
+				'autoplay' => $this->toShortcodeBool($atts['autoplay'], true),
+				'interval' => max(2500, min(20000, (int) $atts['interval'])),
+				'showControls' => $this->toShortcodeBool($atts['show_controls'], true),
+			], 'shortcode-home-sections-carousel');
+		});
 	}
 
 	/**
@@ -1079,6 +1111,28 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 	}
 
 	/**
+	 * @param array<string,mixed> $attributes
+	 */
+	public function renderHomeSectionsCarouselBlock(array $attributes = []): string
+	{
+		$title = sanitize_text_field((string) ($attributes['title'] ?? __('Carrusel de secciones', 'flux-press')));
+		$subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press')));
+		$sections = $this->sanitizeEcommerceSectionList((string) ($attributes['sections'] ?? 'categories,brands,promos'));
+		$autoplay = (bool) ($attributes['autoplay'] ?? true);
+		$interval = max(2500, min(20000, (int) ($attributes['interval'] ?? 6500)));
+		$showControls = (bool) ($attributes['show_controls'] ?? true);
+
+		return $this->renderLivewireSection('ecommerce-home-sections-carousel', [
+			'title' => $title,
+			'subtitle' => $subtitle,
+			'sections' => $sections,
+			'autoplay' => $autoplay,
+			'interval' => $interval,
+			'showControls' => $showControls,
+		], 'block-home-sections-carousel');
+	}
+
+	/**
 	 * @param mixed $block
 	 * @return array<int,array<string,mixed>>
 	 */
@@ -1133,6 +1187,48 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		}
 
 		return array_values(array_filter($decoded, fn ($item) => is_array($item)));
+	}
+
+	/**
+	 * @return array<int,string>
+	 */
+	protected function sanitizeEcommerceSectionList(string $value): array
+	{
+		$allowed = ['categories', 'brands', 'promos'];
+		$sections = array_map(
+			static fn ($item) => sanitize_key((string) $item),
+			explode(',', $value)
+		);
+
+		$sections = array_values(array_filter($sections, static fn ($item) => in_array($item, $allowed, true)));
+		$sections = array_values(array_unique($sections));
+
+		return ! empty($sections) ? $sections : $allowed;
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	protected function toShortcodeBool($value, bool $default = false): bool
+	{
+		if (is_bool($value)) {
+			return $value;
+		}
+
+		$normalized = strtolower(trim((string) $value));
+		if ($normalized === '') {
+			return $default;
+		}
+
+		if (in_array($normalized, ['1', 'true', 'yes', 'on'], true)) {
+			return true;
+		}
+
+		if (in_array($normalized, ['0', 'false', 'no', 'off'], true)) {
+			return false;
+		}
+
+		return $default;
 	}
 
 	/**
