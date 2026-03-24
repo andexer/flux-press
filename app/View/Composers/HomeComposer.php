@@ -30,24 +30,90 @@ class HomeComposer extends Composer
 	{
 		$layout = $this->homeLayout();
 		$postsLimit = $this->homePostsLimit();
-		$showPosts = $this->homeSectionFlag('show_posts', true);
-		$editorContent = $this->homeEditorContent();
-		$contentMode = $this->homeEcommerceContentMode();
+        $showPosts = $this->homeSectionFlag('show_posts', true);
+        $editorContent = $this->homeEditorContent();
+        $contentMode = $this->homeEcommerceContentMode();
+        $editorEcommerceSections = $this->homeEcommerceEditorSections();
 
-		return [
-			'homeLayout'               => $layout,
-			'homeShowFeatures'         => $this->homeSectionFlag('show_features', true),
+        return [
+            'homeLayout'               => $layout,
+            'homeShowFeatures'         => $this->homeSectionFlag('show_features', true),
 			'homeShowStats'            => $this->homeSectionFlag('show_stats', true),
 			'homeShowCta'              => $this->homeSectionFlag('show_cta', true),
 			'homeShowPosts'            => $showPosts,
 			'homeShowWidgets'          => $this->homeSectionFlag('show_widgets', true),
 			'homePostsLimit'           => $postsLimit,
-			'homePosts'                => $showPosts ? $this->homeEcommerceDataService->latestPostsData($postsLimit) : [],
-			'homeEcommerceContentMode' => $contentMode,
-			'homeEditorContent'        => $editorContent,
-			'homeHasEditorContent'     => $editorContent !== '',
-		];
-	}
+            'homePosts'                => $showPosts ? $this->homeEcommerceDataService->latestPostsData($postsLimit) : [],
+            'homeEcommerceContentMode' => $contentMode,
+            'homeEditorContent'        => $editorContent,
+            'homeHasEditorContent'     => $editorContent !== '',
+            'homeEcommerceEditorSections' => $editorEcommerceSections,
+        ];
+    }
+
+    /**
+     * @return string[]
+     */
+    protected function homeEcommerceEditorSections(): array
+    {
+        $postId = (int) get_queried_object_id();
+        if ($postId <= 0) {
+            return [];
+        }
+
+        $post = get_post($postId);
+        if (! $post instanceof \WP_Post) {
+            return [];
+        }
+
+        $content = (string) $post->post_content;
+        if (trim($content) === '') {
+            return [];
+        }
+
+        $blockToSection = [
+            'flux-press/featured-categories' => 'categories',
+            'flux-press/featured-brands'     => 'brands',
+            'flux-press/featured-promos'     => 'promos',
+        ];
+
+        $found = [];
+
+        $walkBlocks = function (array $blocks) use (&$walkBlocks, &$found, $blockToSection): void {
+            foreach ($blocks as $block) {
+                if (! is_array($block)) {
+                    continue;
+                }
+
+                $name = (string) ($block['blockName'] ?? '');
+                if ($name !== '' && isset($blockToSection[$name])) {
+                    $found[$blockToSection[$name]] = true;
+                }
+
+                $innerBlocks = $block['innerBlocks'] ?? [];
+                if (is_array($innerBlocks) && ! empty($innerBlocks)) {
+                    $walkBlocks($innerBlocks);
+                }
+            }
+        };
+
+        $parsed = parse_blocks($content);
+        if (is_array($parsed) && ! empty($parsed)) {
+            $walkBlocks($parsed);
+        }
+
+        if (stripos($content, '[flux_featured_categories') !== false) {
+            $found['categories'] = true;
+        }
+        if (stripos($content, '[flux_featured_brands') !== false) {
+            $found['brands'] = true;
+        }
+        if (stripos($content, '[flux_featured_promos') !== false) {
+            $found['promos'] = true;
+        }
+
+        return array_values(array_keys($found));
+    }
 
 	protected function homeEcommerceContentMode(): string
 	{

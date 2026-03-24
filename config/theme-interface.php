@@ -93,6 +93,9 @@ return [
 				'button_label' => 'Suscribirme',
 				'button_url'   => '#',
 			],
+			'featured_categories_json' => '[]',
+			'featured_brands_json'     => '[]',
+			'featured_promos_json'     => '[]',
 		],
 	],
 

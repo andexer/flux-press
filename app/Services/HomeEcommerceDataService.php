@@ -2,6 +2,8 @@
 
 namespace App\Services;
 
+use Illuminate\Support\Facades\Vite;
+
 class HomeEcommerceDataService
 {
     private const CACHE_GROUP = 'flux_home_ecommerce';
@@ -154,10 +156,6 @@ class HomeEcommerceDataService
             return false;
         }
 
-        if ($section === 'brands' && $this->resolveBrandTaxonomy() === null) {
-            return false;
-        }
-
         return in_array($section, self::SECTION_KEYS, true);
     }
 
@@ -229,6 +227,182 @@ class HomeEcommerceDataService
         });
 
         return is_array($data) ? $data : [];
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    public function featuredCategories(int $limit, array $manualCards = []): array
+    {
+        $limit = max(1, min(24, $limit));
+        $result = [];
+        $seen = [];
+
+        $this->pushUniqueCards(
+            $result,
+            $seen,
+            $this->normalizeCategoryCards($manualCards),
+            $limit,
+            static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+        );
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->featuredCategoriesFromThemeMod(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->productCategories($limit),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->defaultFeaturedCategories(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        return array_slice($result, 0, $limit);
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    public function featuredBrands(int $limit, array $manualCards = []): array
+    {
+        $limit = max(1, min(24, $limit));
+        $result = [];
+        $seen = [];
+
+        $this->pushUniqueCards(
+            $result,
+            $seen,
+            $this->normalizeBrandCards($manualCards),
+            $limit,
+            static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+        );
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->featuredBrandsFromThemeMod(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->productBrands($limit),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->defaultFeaturedBrands(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['url'] ?? '')) . '|' . strtolower((string) ($item['name'] ?? ''))
+            );
+        }
+
+        return array_slice($result, 0, $limit);
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    public function featuredPromos(int $limit = 2, array $manualCards = []): array
+    {
+        $limit = max(1, min(6, $limit));
+        $result = [];
+        $seen = [];
+
+        $this->pushUniqueCards(
+            $result,
+            $seen,
+            $this->normalizePromoCards($manualCards),
+            $limit,
+            static fn (array $item): string => strtolower((string) ($item['cta_url'] ?? '')) . '|' . strtolower((string) ($item['title'] ?? ''))
+        );
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->featuredPromosFromThemeMod(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['cta_url'] ?? '')) . '|' . strtolower((string) ($item['title'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $fallbackIndex = 0;
+            $saleProducts = $this->promoData($limit, 6)['products'] ?? [];
+            $fallbackCards = [];
+
+            foreach ($saleProducts as $product) {
+                if (! is_array($product)) {
+                    continue;
+                }
+
+                $fallbackCards[] = [
+                    'id'          => 'sale-' . (string) ($product['id'] ?? $fallbackIndex),
+                    'eyebrow'     => __('Oferta activa', 'flux-press'),
+                    'title'       => (string) ($product['name'] ?? ''),
+                    'description' => (string) ($product['description'] ?? ''),
+                    'cta_label'   => __('Ver producto', 'flux-press'),
+                    'cta_url'     => esc_url_raw((string) ($product['url'] ?? '')),
+                    'image_url'   => esc_url_raw((string) ($product['image'] ?? '')),
+                    'theme'       => $fallbackIndex % 2 === 0 ? 'light' : 'dark',
+                    'source'      => 'woocommerce',
+                ];
+                $fallbackIndex++;
+            }
+
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->normalizePromoCards($fallbackCards),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['cta_url'] ?? '')) . '|' . strtolower((string) ($item['title'] ?? ''))
+            );
+        }
+
+        if (count($result) < $limit) {
+            $this->pushUniqueCards(
+                $result,
+                $seen,
+                $this->defaultFeaturedPromos(),
+                $limit,
+                static fn (array $item): string => strtolower((string) ($item['cta_url'] ?? '')) . '|' . strtolower((string) ($item['title'] ?? ''))
+            );
+        }
+
+        return array_slice($result, 0, $limit);
     }
 
     /**
@@ -524,6 +698,8 @@ class HomeEcommerceDataService
                     'url'   => (string) $url,
                     'count' => (int) $term->count,
                     'image' => $this->resolveBrandTermImage($term),
+                    'logo'  => $this->resolveBrandTermLogo($term),
+                    'badge' => __('Marca afiliada', 'flux-press'),
                 ];
             }
 
@@ -578,11 +754,30 @@ class HomeEcommerceDataService
             'image_id',
             'pwb_brand_image',
             'pwb_brand_image_id',
-            'brand_logo',
-            'brand_logo_id',
             'image',
             'thumbnail',
             'icon',
+        ];
+
+        foreach ($metaKeys as $metaKey) {
+            $imageUrl = $this->termImageFromMeta(get_term_meta($term->term_id, $metaKey, true));
+            if ($imageUrl !== '') {
+                return $imageUrl;
+            }
+        }
+
+        return '';
+    }
+
+    private function resolveBrandTermLogo(\WP_Term $term): string
+    {
+        $metaKeys = [
+            'brand_logo',
+            'brand_logo_id',
+            'logo',
+            'logo_id',
+            'icon',
+            'image',
         ];
 
         foreach ($metaKeys as $metaKey) {
@@ -756,6 +951,354 @@ class HomeEcommerceDataService
             'products'   => is_array($data['products'] ?? null) ? $data['products'] : [],
             'categories' => is_array($data['categories'] ?? null) ? $data['categories'] : [],
         ];
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    private function normalizeCategoryCards(array $manualCards): array
+    {
+        $result = [];
+
+        foreach ($manualCards as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            $name = sanitize_text_field((string) ($row['name'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+
+            $url = esc_url_raw((string) ($row['url'] ?? ''));
+            if ($url === '') {
+                $url = function_exists('wc_get_page_permalink')
+                    ? (string) wc_get_page_permalink('shop')
+                    : (string) home_url('/');
+            }
+
+            $image = $this->resolveReferenceImage((string) ($row['image_url'] ?? ($row['image'] ?? '')));
+            $badge = sanitize_text_field((string) ($row['badge'] ?? ''));
+
+            $result[] = [
+                'id'               => (string) ($row['id'] ?? md5($name . $url)),
+                'slug'             => sanitize_title($name),
+                'name'             => $name,
+                'description'      => '',
+                'count'            => 0,
+                'url'              => $url,
+                'image'            => $image,
+                'badge'            => $badge,
+                'has_image'        => $image !== '',
+                'edit_url'         => '',
+                'children'         => [],
+                'featured_product' => [
+                    'id'    => 0,
+                    'name'  => '',
+                    'url'   => '',
+                    'image' => '',
+                ],
+                'source'           => (string) ($row['source'] ?? 'manual'),
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    private function normalizeBrandCards(array $manualCards): array
+    {
+        $result = [];
+
+        foreach ($manualCards as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            $name = sanitize_text_field((string) ($row['name'] ?? ''));
+            if ($name === '') {
+                continue;
+            }
+
+            $url = esc_url_raw((string) ($row['url'] ?? ''));
+            if ($url === '') {
+                $url = function_exists('wc_get_page_permalink')
+                    ? (string) wc_get_page_permalink('shop')
+                    : (string) home_url('/');
+            }
+
+            $image = $this->resolveReferenceImage((string) ($row['image_url'] ?? ($row['image'] ?? '')));
+            $logo = $this->resolveReferenceImage((string) ($row['logo_url'] ?? ($row['logo'] ?? '')));
+            $badge = sanitize_text_field((string) ($row['badge'] ?? __('Marca afiliada', 'flux-press')));
+
+            $result[] = [
+                'id'     => (string) ($row['id'] ?? md5($name . $url)),
+                'name'   => $name,
+                'url'    => $url,
+                'count'  => max(0, (int) ($row['count'] ?? 0)),
+                'image'  => $image,
+                'logo'   => $logo,
+                'badge'  => $badge,
+                'source' => (string) ($row['source'] ?? 'manual'),
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     * @return array<int,array<string,mixed>>
+     */
+    private function normalizePromoCards(array $manualCards): array
+    {
+        $result = [];
+
+        foreach ($manualCards as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            $title = sanitize_text_field((string) ($row['title'] ?? ''));
+            if ($title === '') {
+                continue;
+            }
+
+            $theme = sanitize_key((string) ($row['theme'] ?? 'dark'));
+            $theme = in_array($theme, ['dark', 'light', 'accent'], true) ? $theme : 'dark';
+
+            $result[] = [
+                'id'          => (string) ($row['id'] ?? md5($title . (string) ($row['cta_url'] ?? ''))),
+                'eyebrow'     => sanitize_text_field((string) ($row['eyebrow'] ?? '')),
+                'title'       => $title,
+                'description' => sanitize_textarea_field((string) ($row['description'] ?? '')),
+                'cta_label'   => sanitize_text_field((string) ($row['cta_label'] ?? __('Ver mas', 'flux-press'))),
+                'cta_url'     => esc_url_raw((string) ($row['cta_url'] ?? '')),
+                'image_url'   => $this->resolveReferenceImage((string) ($row['image_url'] ?? '')),
+                'theme'       => $theme,
+                'source'      => (string) ($row['source'] ?? 'manual'),
+            ];
+        }
+
+        return $result;
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function featuredCategoriesFromThemeMod(): array
+    {
+        $defaults = config('theme-interface.home.ecommerce.featured_categories_json', wp_json_encode($this->defaultFeaturedCategoriesJson()));
+        $json = (string) get_theme_mod('home_ecommerce_featured_categories_json', (string) $defaults);
+
+        return $this->normalizeCategoryCards($this->decodeJsonRows($json));
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function featuredBrandsFromThemeMod(): array
+    {
+        $defaults = config('theme-interface.home.ecommerce.featured_brands_json', wp_json_encode($this->defaultFeaturedBrandsJson()));
+        $json = (string) get_theme_mod('home_ecommerce_featured_brands_json', (string) $defaults);
+
+        return $this->normalizeBrandCards($this->decodeJsonRows($json));
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function featuredPromosFromThemeMod(): array
+    {
+        $defaults = config('theme-interface.home.ecommerce.featured_promos_json', wp_json_encode($this->defaultFeaturedPromosJson()));
+        $json = (string) get_theme_mod('home_ecommerce_featured_promos_json', (string) $defaults);
+
+        return $this->normalizePromoCards($this->decodeJsonRows($json));
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedCategories(): array
+    {
+        return $this->normalizeCategoryCards($this->defaultFeaturedCategoriesJson());
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedBrands(): array
+    {
+        return $this->normalizeBrandCards($this->defaultFeaturedBrandsJson());
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedPromos(): array
+    {
+        return $this->normalizePromoCards($this->defaultFeaturedPromosJson());
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedCategoriesJson(): array
+    {
+        $shopUrl = function_exists('wc_get_page_permalink')
+            ? (string) wc_get_page_permalink('shop')
+            : (string) home_url('/');
+
+        return [
+            ['name' => __('Tecnologia', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-tecnologia.jpg', 'badge' => __('Tendencia', 'flux-press')],
+            ['name' => __('Hogar', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-hogar.jpg', 'badge' => __('Popular', 'flux-press')],
+            ['name' => __('Moda', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-moda.jpg', 'badge' => __('Nuevo', 'flux-press')],
+            ['name' => __('Deportes', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-deportes.jpg', 'badge' => __('Top', 'flux-press')],
+            ['name' => __('Belleza', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-belleza.jpg', 'badge' => __('Destacado', 'flux-press')],
+            ['name' => __('Accesorios', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-accesorios.jpg', 'badge' => __('Seleccion', 'flux-press')],
+            ['name' => __('Calzado', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-calzado.jpg', 'badge' => __('Essentials', 'flux-press')],
+            ['name' => __('Outlet', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-outlet.jpg', 'badge' => __('Oferta', 'flux-press')],
+        ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedBrandsJson(): array
+    {
+        $shopUrl = function_exists('wc_get_page_permalink')
+            ? (string) wc_get_page_permalink('shop')
+            : (string) home_url('/');
+
+        return [
+            ['name' => 'Adidas', 'url' => $shopUrl, 'image_url' => 'brand-adidas.jpg', 'logo_url' => 'brand-adidas-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Michael Kors', 'url' => $shopUrl, 'image_url' => 'brand-michael-kors.jpg', 'logo_url' => 'brand-michael-kors-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Coach Outlet', 'url' => $shopUrl, 'image_url' => 'brand-coach.jpg', 'logo_url' => 'brand-coach-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Clarks', 'url' => $shopUrl, 'image_url' => 'brand-clarks.jpg', 'logo_url' => 'brand-clarks-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Hugo Boss', 'url' => $shopUrl, 'image_url' => 'brand-hugo-boss.jpg', 'logo_url' => 'brand-hugo-boss-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Nike', 'url' => $shopUrl, 'image_url' => 'brand-nike.jpg', 'logo_url' => 'brand-nike-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Tommy Hilfiger', 'url' => $shopUrl, 'image_url' => 'brand-tommy.jpg', 'logo_url' => 'brand-tommy-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'MCM', 'url' => $shopUrl, 'image_url' => 'brand-mcm.jpg', 'logo_url' => 'brand-mcm-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+        ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function defaultFeaturedPromosJson(): array
+    {
+        $shopUrl = function_exists('wc_get_page_permalink')
+            ? (string) wc_get_page_permalink('shop')
+            : (string) home_url('/');
+
+        return [
+            [
+                'eyebrow' => __('Live now', 'flux-press'),
+                'title' => __('Novedades y lanzamientos', 'flux-press'),
+                'description' => __('Descubre productos nuevos para elevar tu estilo diario.', 'flux-press'),
+                'cta_label' => __('Explorar todo', 'flux-press'),
+                'cta_url' => $shopUrl,
+                'image_url' => 'promo-launches.jpg',
+                'theme' => 'light',
+            ],
+            [
+                'eyebrow' => __('Oferta flash', 'flux-press'),
+                'title' => __('Ofertas relampago', 'flux-press'),
+                'description' => __('Descuentos por tiempo limitado en productos seleccionados.', 'flux-press'),
+                'cta_label' => __('Ver ofertas', 'flux-press'),
+                'cta_url' => $shopUrl,
+                'image_url' => 'promo-flash.jpg',
+                'theme' => 'dark',
+            ],
+        ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function decodeJsonRows(string $json): array
+    {
+        $decoded = json_decode($json, true);
+
+        return is_array($decoded) ? array_values(array_filter($decoded, fn ($row) => is_array($row))) : [];
+    }
+
+    private function resolveReferenceImage(string $value): string
+    {
+        $value = trim($value);
+        if ($value === '') {
+            return '';
+        }
+
+        if (filter_var($value, FILTER_VALIDATE_URL)) {
+            return esc_url_raw($value);
+        }
+
+        $normalized = ltrim($value, '/');
+
+        if (str_starts_with($normalized, 'resources/images/')) {
+            try {
+                return (string) Vite::asset($normalized);
+            } catch (\Throwable $exception) {
+                return esc_url_raw(get_theme_file_uri($normalized));
+            }
+        }
+
+        if (str_starts_with($normalized, 'ecommerce/reference/')) {
+            $normalized = substr($normalized, strlen('ecommerce/reference/'));
+        }
+
+        if (str_starts_with($normalized, 'images/ecommerce/reference/')) {
+            $normalized = substr($normalized, strlen('images/ecommerce/reference/'));
+        }
+
+        return $this->themeReferenceAsset($normalized);
+    }
+
+    private function themeReferenceAsset(string $fileName): string
+    {
+        $relative = 'resources/images/ecommerce/reference/' . ltrim($fileName, '/');
+
+        try {
+            return (string) Vite::asset($relative);
+        } catch (\Throwable $exception) {
+            return esc_url_raw(get_theme_file_uri($relative));
+        }
+    }
+
+    /**
+     * @param array<int,array<string,mixed>> $bucket
+     * @param array<string,bool> $seen
+     * @param array<int,array<string,mixed>> $items
+     * @param callable(array<string,mixed>):string $resolver
+     */
+    private function pushUniqueCards(array &$bucket, array &$seen, array $items, int $limit, callable $resolver): void
+    {
+        foreach ($items as $item) {
+            if (! is_array($item)) {
+                continue;
+            }
+
+            $identity = trim((string) $resolver($item));
+            if ($identity === '') {
+                $identity = md5((string) wp_json_encode($item));
+            }
+
+            if (isset($seen[$identity])) {
+                continue;
+            }
+
+            $seen[$identity] = true;
+            $bucket[] = $item;
+
+            if (count($bucket) >= $limit) {
+                break;
+            }
+        }
     }
 
     /**

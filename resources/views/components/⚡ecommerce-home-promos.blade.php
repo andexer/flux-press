@@ -6,55 +6,106 @@ use Livewire\Component;
 
 new class extends Component
 {
+    /** @var array<int,array<string,mixed>> */
+    public array $manualCards = [];
+    public string $sectionTitle = '';
+    public string $sectionSubtitle = '';
+    public int $limitOverride = 0;
+
+    /**
+     * @param array<int,array<string,mixed>> $manualCards
+     */
+    public function mount(array $manualCards = [], ?string $sectionTitle = null, ?string $sectionSubtitle = null, int $limitOverride = 0): void
+    {
+        $this->manualCards = array_values(array_filter($manualCards, fn ($item) => is_array($item)));
+        $this->sectionTitle = is_string($sectionTitle) ? trim($sectionTitle) : '';
+        $this->sectionSubtitle = is_string($sectionSubtitle) ? trim($sectionSubtitle) : '';
+        $this->limitOverride = max(0, (int) $limitOverride);
+    }
+
     #[Computed]
-    public function promoData(): array
+    public function promos(): array
     {
         $service = app(HomeEcommerceDataService::class);
-        $settings = $service->settings();
-        $limits = is_array($settings['limits'] ?? null) ? $settings['limits'] : [];
+        $limit = $this->limitOverride > 0 ? min(6, $this->limitOverride) : 2;
 
-        return $service->promoData(
-            max(1, (int) ($limits['products'] ?? 6)),
-            max(1, (int) ($limits['categories'] ?? 8))
-        );
+        return $service->featuredPromos($limit, $this->manualCards);
     }
 }; ?>
 
-<section class="py-12 sm:py-14 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
+@php
+    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Promociones destacadas', 'flux-press');
+    $resolvedSubtitle = $sectionSubtitle !== ''
+        ? $sectionSubtitle
+        : __('Ofertas y lanzamientos en una vista mas visual', 'flux-press');
+@endphp
+
+<section class="py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div class="mb-6 sm:mb-8">
-            <flux:badge color="rose" class="mb-2 uppercase tracking-widest">{{ __('Promociones', 'flux-press') }}</flux:badge>
-            <flux:heading size="3xl" class="!font-black tracking-tight">{{ __('Ofertas activas', 'flux-press') }}</flux:heading>
+        <div class="mb-5 sm:mb-6">
+            <flux:heading size="2xl" class="!font-black tracking-tight text-zinc-900 dark:text-white uppercase">
+                {{ $resolvedTitle }}
+            </flux:heading>
+            <flux:text class="mt-1 text-sm font-semibold tracking-wide text-zinc-500 dark:text-zinc-400 uppercase">
+                {{ $resolvedSubtitle }}
+            </flux:text>
         </div>
 
-        @if(empty($this->promoData['products']) && empty($this->promoData['categories']))
+        @if(empty($this->promos))
             <flux:callout color="zinc" icon="tag">
-                <flux:callout.heading>{{ __('No hay ofertas activas en este momento.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Cuando existan productos en oferta, esta seccion se actualizara automaticamente.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay promociones activas en este momento.', 'flux-press') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Agrega tarjetas manuales desde Gutenberg o configura ofertas en WooCommerce.', 'flux-press') }}</flux:callout.text>
             </flux:callout>
         @else
-            <div class="grid lg:grid-cols-12 gap-6">
-                <div class="lg:col-span-8 grid grid-cols-2 sm:grid-cols-3 gap-3 sm:gap-4">
-                    @foreach($this->promoData['products'] as $product)
-                        <livewire:product-card :product-id="$product['id']" variant="compact" :key="'promo-'.$product['id'].'-'.$loop->index" />
-                    @endforeach
-                </div>
+            <div class="grid gap-4 lg:gap-6 md:grid-cols-2">
+                @foreach($this->promos as $promo)
+                    @php
+                        $theme = (string) ($promo['theme'] ?? 'dark');
+                        $isLight = $theme === 'light';
+                        $ctaLabel = (string) ($promo['cta_label'] ?? __('Ver mas', 'flux-press'));
+                        $ctaUrl = (string) ($promo['cta_url'] ?? '#');
+                    @endphp
+                    <article class="group relative overflow-hidden rounded-[2rem] border border-zinc-200/70 dark:border-zinc-700 min-h-[320px] sm:min-h-[360px]">
+                        @if(($promo['image_url'] ?? '') !== '')
+                            <img src="{{ $promo['image_url'] }}" alt="{{ $promo['title'] ?? '' }}" class="absolute inset-0 h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" loading="lazy" />
+                        @else
+                            <div class="absolute inset-0 bg-linear-to-br from-zinc-700 to-zinc-900"></div>
+                        @endif
 
-                <aside class="lg:col-span-4 rounded-2xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-900/60 p-4 sm:p-5">
-                    <h3 class="text-sm font-black uppercase tracking-widest text-zinc-600 dark:text-zinc-300 mb-3">{{ __('Categorias en oferta', 'flux-press') }}</h3>
-                    @if(empty($this->promoData['categories']))
-                        <p class="text-sm text-zinc-500 dark:text-zinc-400">{{ __('Sin categorias promocionadas por ahora.', 'flux-press') }}</p>
-                    @else
-                        <div class="space-y-2">
-                            @foreach($this->promoData['categories'] as $category)
-                                <a href="{{ $category['url'] }}" wire:navigate class="flex items-center justify-between rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 hover:border-accent-400 dark:hover:border-accent-500 transition-colors">
-                                    <span class="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{{ $category['name'] }}</span>
-                                    <span class="text-xs text-zinc-500 dark:text-zinc-400">{{ $category['count'] }}</span>
-                                </a>
-                            @endforeach
+                        <div class="absolute inset-0 {{ $isLight ? 'bg-linear-to-br from-zinc-100/45 via-zinc-300/35 to-zinc-900/60' : 'bg-linear-to-br from-zinc-950/70 via-zinc-900/50 to-zinc-950/80' }}"></div>
+
+                        <div class="relative h-full p-5 sm:p-7 lg:p-8 flex items-end">
+                            <div class="w-full max-w-xl rounded-[1.6rem] border border-white/30 bg-white/12 px-5 py-5 sm:px-7 sm:py-6 backdrop-blur-md shadow-xl">
+                                @if(($promo['eyebrow'] ?? '') !== '')
+                                    <span class="inline-flex rounded-full border border-white/30 bg-black/20 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-white mb-3">
+                                        {{ $promo['eyebrow'] }}
+                                    </span>
+                                @endif
+
+                                <h3 class="text-white text-3xl sm:text-4xl font-black uppercase tracking-tight leading-[0.95]">
+                                    {{ $promo['title'] ?? '' }}
+                                </h3>
+
+                                @if(($promo['description'] ?? '') !== '')
+                                    <p class="mt-3 text-sm sm:text-base text-white/85 max-w-md">
+                                        {{ $promo['description'] }}
+                                    </p>
+                                @endif
+
+                                <div class="mt-5">
+                                    <a
+                                        href="{{ $ctaUrl }}"
+                                        wire:navigate
+                                        class="inline-flex items-center gap-2 rounded-full px-5 py-2.5 text-sm font-black uppercase tracking-[0.12em] transition-colors {{ $isLight ? 'bg-accent-600 hover:bg-accent-700 text-white' : 'bg-zinc-900/70 hover:bg-zinc-900 text-white border border-white/30' }}"
+                                    >
+                                        {{ $ctaLabel }}
+                                        <flux:icon.arrow-right class="size-4" />
+                                    </a>
+                                </div>
+                            </div>
                         </div>
-                    @endif
-                </aside>
+                    </article>
+                @endforeach
             </div>
         @endif
     </div>

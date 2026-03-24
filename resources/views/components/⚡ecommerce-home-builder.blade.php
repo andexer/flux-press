@@ -6,10 +6,33 @@ use Livewire\Component;
 
 new class extends Component
 {
+    /** @var string[] */
+    public array $hiddenSections = [];
+
+    /**
+     * @param array<int,string> $hiddenSections
+     */
+    public function mount(array $hiddenSections = []): void
+    {
+        $this->hiddenSections = array_values(array_filter(
+            array_map(static fn ($section): string => sanitize_key((string) $section), $hiddenSections),
+            static fn (string $section): bool => in_array($section, HomeEcommerceDataService::SECTION_KEYS, true)
+        ));
+    }
+
     #[Computed]
     public function sections(): array
     {
-        return app(HomeEcommerceDataService::class)->visibleSections();
+        $sections = app(HomeEcommerceDataService::class)->visibleSections();
+
+        if (empty($this->hiddenSections)) {
+            return $sections;
+        }
+
+        return array_values(array_filter(
+            $sections,
+            fn (string $section): bool => ! in_array($section, $this->hiddenSections, true)
+        ));
     }
 }; ?>
 

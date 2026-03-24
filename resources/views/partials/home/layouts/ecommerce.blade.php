@@ -11,6 +11,7 @@
     $showEditor = in_array($contentMode, ['editor', 'hybrid'], true);
     $visibleSections = [];
     $brandSectionAvailable = false;
+    $editorSections = is_array($homeEcommerceEditorSections ?? null) ? $homeEcommerceEditorSections : [];
 
     if ($showBuilder) {
         $ecommerceService = app(\App\Services\HomeEcommerceDataService::class);
@@ -38,9 +39,13 @@
     @endif
 
     @if($showBuilder)
-        <livewire:ecommerce-home-builder />
+        <livewire:ecommerce-home-builder :hidden-sections="$showEditor && $hasEditorContent ? $editorSections : []" />
 
-        @if($brandSectionAvailable && ! in_array('brands', $visibleSections, true))
+        @if(
+            $brandSectionAvailable
+            && ! in_array('brands', $visibleSections, true)
+            && ! in_array('brands', $editorSections, true)
+        )
             <livewire:ecommerce-home-brands :key="'ecommerce-home-brands-fallback'" />
         @endif
     @endif

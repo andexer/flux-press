@@ -6,6 +6,7 @@ use App\Services\HomeEcommerceDataService;
 use App\Traits\SanitizesCustomizerValues;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Livewire\Livewire;
 
 class ThemeInterfaceServiceProvider extends ServiceProvider
 {
@@ -43,6 +44,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
 		// Registrar secciones del WordPress Customizer.
 		add_action('customize_register', [$this, 'registerCustomizerSettings']);
+
+		// Registrar bloques/shortcodes del Home ecommerce.
+		add_action('init', [$this, 'registerHomeEcommerceBlocksAndShortcodes']);
 	}
 
 	/**
@@ -629,6 +633,42 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 			'section' => 'flux_home_ecommerce_section',
 			'type'    => 'url',
 		]);
+
+		$wp_customize->add_setting('home_ecommerce_featured_categories_json', [
+			'default'           => config('theme-interface.home.ecommerce.featured_categories_json', '[]'),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceFeaturedCategoriesJson'],
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_featured_categories_json', [
+			'label'       => __('Categorias destacadas (JSON)', 'flux-press'),
+			'description' => __('Campos por card: name, url, image_url, badge', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'textarea',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_featured_brands_json', [
+			'default'           => config('theme-interface.home.ecommerce.featured_brands_json', '[]'),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceFeaturedBrandsJson'],
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_featured_brands_json', [
+			'label'       => __('Marcas destacadas (JSON)', 'flux-press'),
+			'description' => __('Campos por card: name, url, image_url, logo_url, badge', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'textarea',
+		]);
+
+		$wp_customize->add_setting('home_ecommerce_featured_promos_json', [
+			'default'           => config('theme-interface.home.ecommerce.featured_promos_json', '[]'),
+			'sanitize_callback' => [$this, 'sanitizeHomeEcommerceFeaturedPromosJson'],
+			'transport'         => 'refresh',
+		]);
+		$wp_customize->add_control('home_ecommerce_featured_promos_json', [
+			'label'       => __('Promociones destacadas (JSON)', 'flux-press'),
+			'description' => __('Campos por card: eyebrow, title, description, cta_label, cta_url, image_url, theme', 'flux-press'),
+			'section'     => 'flux_home_ecommerce_section',
+			'type'        => 'textarea',
+		]);
 	}
 
 	/**
@@ -748,6 +788,366 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		$encoded = wp_json_encode($sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
 		return is_string($encoded) ? $encoded : '[]';
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public function sanitizeHomeEcommerceFeaturedCategoriesJson($value): string
+	{
+		return $this->sanitizeHomeEcommerceCardsJson((string) $value, [
+			'name' => 'text',
+			'url' => 'url',
+			'image_url' => 'url_or_path',
+			'badge' => 'text',
+		], ['name']);
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public function sanitizeHomeEcommerceFeaturedBrandsJson($value): string
+	{
+		return $this->sanitizeHomeEcommerceCardsJson((string) $value, [
+			'name' => 'text',
+			'url' => 'url',
+			'image_url' => 'url_or_path',
+			'logo_url' => 'url_or_path',
+			'badge' => 'text',
+		], ['name']);
+	}
+
+	/**
+	 * @param mixed $value
+	 */
+	public function sanitizeHomeEcommerceFeaturedPromosJson($value): string
+	{
+		return $this->sanitizeHomeEcommerceCardsJson((string) $value, [
+			'eyebrow' => 'text',
+			'title' => 'text',
+			'description' => 'textarea',
+			'cta_label' => 'text',
+			'cta_url' => 'url',
+			'image_url' => 'url_or_path',
+			'theme' => 'theme',
+		], ['title']);
+	}
+
+	/**
+	 * @param array<string,string> $schema
+	 * @param string[] $required
+	 */
+	protected function sanitizeHomeEcommerceCardsJson(string $value, array $schema, array $required): string
+	{
+		$decoded = json_decode($value, true);
+		if (! is_array($decoded)) {
+			return '[]';
+		}
+
+		$sanitized = [];
+		foreach ($decoded as $item) {
+			if (! is_array($item)) {
+				continue;
+			}
+
+			$row = [];
+			foreach ($schema as $field => $type) {
+				$raw = (string) ($item[$field] ?? '');
+				switch ($type) {
+					case 'url':
+						$row[$field] = esc_url_raw($raw);
+						break;
+					case 'textarea':
+						$row[$field] = sanitize_textarea_field($raw);
+						break;
+					case 'theme':
+						$theme = sanitize_key($raw);
+						$row[$field] = in_array($theme, ['dark', 'light', 'accent'], true) ? $theme : 'dark';
+						break;
+					case 'url_or_path':
+						if (filter_var($raw, FILTER_VALIDATE_URL)) {
+							$row[$field] = esc_url_raw($raw);
+						} else {
+							$row[$field] = ltrim(sanitize_text_field($raw), '/');
+						}
+						break;
+					default:
+						$row[$field] = sanitize_text_field($raw);
+						break;
+				}
+			}
+
+			$skip = false;
+			foreach ($required as $requiredField) {
+				if (trim((string) ($row[$requiredField] ?? '')) === '') {
+					$skip = true;
+					break;
+				}
+			}
+			if ($skip) {
+				continue;
+			}
+
+			$sanitized[] = $row;
+		}
+
+		$encoded = wp_json_encode($sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+
+		return is_string($encoded) ? $encoded : '[]';
+	}
+
+	public function registerHomeEcommerceBlocksAndShortcodes(): void
+	{
+		$this->registerHomeEcommerceBlocks();
+		$this->registerHomeEcommerceShortcodes();
+	}
+
+	protected function registerHomeEcommerceBlocks(): void
+	{
+		if (! function_exists('register_block_type')) {
+			return;
+		}
+
+		register_block_type('flux-press/featured-categories', [
+			'render_callback' => [$this, 'renderFeaturedCategoriesBlock'],
+			'attributes' => [
+				'title' => ['type' => 'string', 'default' => __('Categorias destacadas', 'flux-press')],
+				'subtitle' => ['type' => 'string', 'default' => __('Explora las mejores tendencias del momento', 'flux-press')],
+				'limit' => ['type' => 'number', 'default' => 8],
+			],
+		]);
+
+		register_block_type('flux-press/featured-brands', [
+			'render_callback' => [$this, 'renderFeaturedBrandsBlock'],
+			'attributes' => [
+				'title' => ['type' => 'string', 'default' => __('Tus marcas favoritas', 'flux-press')],
+				'subtitle' => ['type' => 'string', 'default' => __('Inicia sesion para obtener beneficios exclusivos', 'flux-press')],
+				'limit' => ['type' => 'number', 'default' => 8],
+			],
+		]);
+
+		register_block_type('flux-press/featured-promos', [
+			'render_callback' => [$this, 'renderFeaturedPromosBlock'],
+			'attributes' => [
+				'title' => ['type' => 'string', 'default' => __('Promociones destacadas', 'flux-press')],
+				'subtitle' => ['type' => 'string', 'default' => __('Ofertas y lanzamientos en una vista mas visual', 'flux-press')],
+				'limit' => ['type' => 'number', 'default' => 2],
+			],
+		]);
+
+		register_block_type('flux-press/category-card', [
+			'render_callback' => static fn (): string => '',
+			'attributes' => [
+				'name' => ['type' => 'string', 'default' => ''],
+				'url' => ['type' => 'string', 'default' => ''],
+				'image_url' => ['type' => 'string', 'default' => ''],
+				'badge' => ['type' => 'string', 'default' => ''],
+			],
+		]);
+
+		register_block_type('flux-press/brand-card', [
+			'render_callback' => static fn (): string => '',
+			'attributes' => [
+				'name' => ['type' => 'string', 'default' => ''],
+				'url' => ['type' => 'string', 'default' => ''],
+				'image_url' => ['type' => 'string', 'default' => ''],
+				'logo_url' => ['type' => 'string', 'default' => ''],
+				'badge' => ['type' => 'string', 'default' => ''],
+			],
+		]);
+
+		register_block_type('flux-press/promo-card', [
+			'render_callback' => static fn (): string => '',
+			'attributes' => [
+				'eyebrow' => ['type' => 'string', 'default' => ''],
+				'title' => ['type' => 'string', 'default' => ''],
+				'description' => ['type' => 'string', 'default' => ''],
+				'cta_label' => ['type' => 'string', 'default' => ''],
+				'cta_url' => ['type' => 'string', 'default' => ''],
+				'image_url' => ['type' => 'string', 'default' => ''],
+				'theme' => ['type' => 'string', 'default' => 'dark'],
+			],
+		]);
+	}
+
+	protected function registerHomeEcommerceShortcodes(): void
+	{
+		add_shortcode('flux_featured_categories', function ($atts): string {
+			$atts = shortcode_atts([
+				'title' => __('Categorias destacadas', 'flux-press'),
+				'subtitle' => __('Explora las mejores tendencias del momento', 'flux-press'),
+				'limit' => 8,
+				'cards_json' => '',
+			], (array) $atts, 'flux_featured_categories');
+
+			return $this->renderLivewireSection('ecommerce-home-categories', [
+				'manualCards' => $this->extractManualCardsFromJson((string) $atts['cards_json']),
+				'sectionTitle' => sanitize_text_field((string) $atts['title']),
+				'sectionSubtitle' => sanitize_text_field((string) $atts['subtitle']),
+				'limitOverride' => max(1, min(24, (int) $atts['limit'])),
+			], 'shortcode-featured-categories');
+		});
+
+		add_shortcode('flux_featured_brands', function ($atts): string {
+			$atts = shortcode_atts([
+				'title' => __('Tus marcas favoritas', 'flux-press'),
+				'subtitle' => __('Inicia sesion para obtener beneficios exclusivos', 'flux-press'),
+				'limit' => 8,
+				'cards_json' => '',
+			], (array) $atts, 'flux_featured_brands');
+
+			return $this->renderLivewireSection('ecommerce-home-brands', [
+				'manualCards' => $this->extractManualCardsFromJson((string) $atts['cards_json']),
+				'sectionTitle' => sanitize_text_field((string) $atts['title']),
+				'sectionSubtitle' => sanitize_text_field((string) $atts['subtitle']),
+				'limitOverride' => max(1, min(24, (int) $atts['limit'])),
+			], 'shortcode-featured-brands');
+		});
+
+		add_shortcode('flux_featured_promos', function ($atts): string {
+			$atts = shortcode_atts([
+				'title' => __('Promociones destacadas', 'flux-press'),
+				'subtitle' => __('Ofertas y lanzamientos en una vista mas visual', 'flux-press'),
+				'limit' => 2,
+				'cards_json' => '',
+			], (array) $atts, 'flux_featured_promos');
+
+			return $this->renderLivewireSection('ecommerce-home-promos', [
+				'manualCards' => $this->extractManualCardsFromJson((string) $atts['cards_json']),
+				'sectionTitle' => sanitize_text_field((string) $atts['title']),
+				'sectionSubtitle' => sanitize_text_field((string) $atts['subtitle']),
+				'limitOverride' => max(1, min(6, (int) $atts['limit'])),
+			], 'shortcode-featured-promos');
+		});
+	}
+
+	/**
+	 * @param array<string,mixed> $attributes
+	 * @param mixed $block
+	 */
+	public function renderFeaturedCategoriesBlock(array $attributes = [], string $content = '', $block = null): string
+	{
+		$manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/category-card');
+		$title = sanitize_text_field((string) ($attributes['title'] ?? __('Categorias destacadas', 'flux-press')));
+		$subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Explora las mejores tendencias del momento', 'flux-press')));
+		$limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
+
+		return $this->renderLivewireSection('ecommerce-home-categories', [
+			'manualCards' => $manualCards,
+			'sectionTitle' => $title,
+			'sectionSubtitle' => $subtitle,
+			'limitOverride' => $limit,
+		], 'block-featured-categories');
+	}
+
+	/**
+	 * @param array<string,mixed> $attributes
+	 * @param mixed $block
+	 */
+	public function renderFeaturedBrandsBlock(array $attributes = [], string $content = '', $block = null): string
+	{
+		$manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/brand-card');
+		$title = sanitize_text_field((string) ($attributes['title'] ?? __('Tus marcas favoritas', 'flux-press')));
+		$subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Inicia sesion para obtener beneficios exclusivos', 'flux-press')));
+		$limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
+
+		return $this->renderLivewireSection('ecommerce-home-brands', [
+			'manualCards' => $manualCards,
+			'sectionTitle' => $title,
+			'sectionSubtitle' => $subtitle,
+			'limitOverride' => $limit,
+		], 'block-featured-brands');
+	}
+
+	/**
+	 * @param array<string,mixed> $attributes
+	 * @param mixed $block
+	 */
+	public function renderFeaturedPromosBlock(array $attributes = [], string $content = '', $block = null): string
+	{
+		$manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/promo-card');
+		$title = sanitize_text_field((string) ($attributes['title'] ?? __('Promociones destacadas', 'flux-press')));
+		$subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Ofertas y lanzamientos en una vista mas visual', 'flux-press')));
+		$limit = max(1, min(6, (int) ($attributes['limit'] ?? 2)));
+
+		return $this->renderLivewireSection('ecommerce-home-promos', [
+			'manualCards' => $manualCards,
+			'sectionTitle' => $title,
+			'sectionSubtitle' => $subtitle,
+			'limitOverride' => $limit,
+		], 'block-featured-promos');
+	}
+
+	/**
+	 * @param mixed $block
+	 * @return array<int,array<string,mixed>>
+	 */
+	protected function extractManualCardsFromBlock($block, string $cardBlockName): array
+	{
+		if (! ($block instanceof \WP_Block)) {
+			return [];
+		}
+
+		$parsed = $block->parsed_block ?? null;
+		if (! is_array($parsed)) {
+			return [];
+		}
+
+		$rows = [];
+		$walk = function (array $innerBlocks) use (&$walk, &$rows, $cardBlockName): void {
+			foreach ($innerBlocks as $innerBlock) {
+				if (! is_array($innerBlock)) {
+					continue;
+				}
+
+				if ((string) ($innerBlock['blockName'] ?? '') === $cardBlockName) {
+					$attrs = $innerBlock['attrs'] ?? [];
+					if (is_array($attrs)) {
+						$rows[] = $attrs;
+					}
+				}
+
+				$children = $innerBlock['innerBlocks'] ?? [];
+				if (is_array($children) && ! empty($children)) {
+					$walk($children);
+				}
+			}
+		};
+
+		$inner = $parsed['innerBlocks'] ?? [];
+		if (is_array($inner) && ! empty($inner)) {
+			$walk($inner);
+		}
+
+		return $rows;
+	}
+
+	/**
+	 * @return array<int,array<string,mixed>>
+	 */
+	protected function extractManualCardsFromJson(string $json): array
+	{
+		$decoded = json_decode($json, true);
+		if (! is_array($decoded)) {
+			return [];
+		}
+
+		return array_values(array_filter($decoded, fn ($item) => is_array($item)));
+	}
+
+	/**
+	 * @param array<string,mixed> $params
+	 */
+	protected function renderLivewireSection(string $componentName, array $params, string $keyPrefix): string
+	{
+		try {
+			$key = $keyPrefix . '-' . wp_generate_uuid4();
+			$instance = Livewire::mount($componentName, $params, $key);
+
+			return method_exists($instance, 'html') ? (string) $instance->html() : '';
+		} catch (\Throwable $exception) {
+			return '';
+		}
 	}
 
 	/**
