@@ -95,6 +95,35 @@ const initializeCartQtyControls = () => {
   });
 };
 
+const initializeWooSingleProduct = () => {
+  if (!window.jQuery) {
+    return;
+  }
+
+  const $ = window.jQuery;
+
+  $('.variations_form').each(function initializeVariationForm() {
+    const $form = $(this);
+
+    if (typeof $form.wc_variation_form !== 'function') {
+      return;
+    }
+
+    $form.off('.wc-variation-form');
+    $form.wc_variation_form();
+    $form.trigger('check_variations');
+  });
+
+  $('#rating').each(function initializeRatingSelect() {
+    const $rating = $(this);
+    if ($rating.prev('.stars').length > 0) {
+      return;
+    }
+
+    $rating.trigger('init');
+  });
+};
+
 document.addEventListener('click', (event) => {
   const button = event.target.closest('.flux-cart-qty-btn');
   if (!button) {
@@ -114,8 +143,13 @@ document.addEventListener('input', (event) => {
   updateQtyButtonsState(input.closest('.flux-cart-qty-control'));
 });
 
-document.addEventListener('livewire:navigated', initializeCartQtyControls);
-document.addEventListener('DOMContentLoaded', initializeCartQtyControls);
+const initializeFrontInteractions = () => {
+  initializeCartQtyControls();
+  initializeWooSingleProduct();
+};
+
+document.addEventListener('livewire:navigated', initializeFrontInteractions);
+document.addEventListener('DOMContentLoaded', initializeFrontInteractions);
 
 document.addEventListener('livewire:init', () => {
   Livewire.on('wc-cart-fragments-refresh', () => {

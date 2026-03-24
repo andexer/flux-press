@@ -1371,3 +1371,390 @@
 .flux-wc-thankyou-page .woocommerce-order {
     @apply space-y-4;
 }
+
+/* ─── Single Product Marketplace Layout ───────────────── */
+.woocommerce .flux-single-product-shell {
+    @apply space-y-8;
+}
+
+.woocommerce .flux-single-product-grid {
+    @apply items-start;
+}
+
+.woocommerce .flux-single-product-main {
+    @apply min-w-0;
+}
+
+.woocommerce .flux-single-product-top {
+    @apply items-start;
+}
+
+.woocommerce .flux-single-product-card {
+    @apply shadow-[0_16px_38px_-30px_rgba(15,23,42,0.45)];
+}
+
+.woocommerce .flux-single-product-summary .product_title {
+    @apply m-0 text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-4xl;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-product-rating {
+    @apply flex flex-wrap items-center gap-3 text-sm;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-product-rating::after {
+    display: none;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-product-rating .star-rating {
+    @apply m-0;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-review-link {
+    @apply text-sm font-medium text-zinc-500 no-underline transition-colors hover:text-accent-600 dark:text-zinc-400 dark:hover:text-accent-400;
+}
+
+.woocommerce .flux-single-product-summary p.price,
+.woocommerce .flux-single-product-summary span.price {
+    @apply m-0 flex flex-wrap items-baseline gap-2 text-3xl font-black text-accent-600 dark:text-accent-400;
+}
+
+.woocommerce .flux-single-product-summary p.price del,
+.woocommerce .flux-single-product-summary span.price del,
+.woocommerce .flux-single-purchase-price del {
+    @apply text-base font-medium text-zinc-400 dark:text-zinc-500;
+}
+
+.woocommerce .flux-single-product-summary p.price ins,
+.woocommerce .flux-single-product-summary span.price ins,
+.woocommerce .flux-single-purchase-price ins {
+    @apply no-underline;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-product-details__short-description {
+    @apply text-base leading-relaxed text-zinc-600 dark:text-zinc-300;
+}
+
+.woocommerce .flux-single-product-summary .woocommerce-product-details__short-description p:last-child {
+    @apply mb-0;
+}
+
+.woocommerce .flux-single-summary-stats {
+    @apply min-w-0;
+}
+
+.woocommerce .flux-single-summary-stat {
+    @apply ring-1 ring-zinc-200/75 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-product-gallery__stage {
+    @apply relative isolate flex min-h-[23rem] items-center justify-center overflow-hidden rounded-[1.6rem] bg-zinc-100/75 p-4 ring-1 ring-zinc-200/80 sm:min-h-[38rem] sm:p-6 dark:bg-zinc-950/45 dark:ring-zinc-800/80;
+}
+
+.woocommerce .flux-product-gallery__thumb {
+    @apply h-20 w-20 overflow-hidden rounded-2xl bg-white p-1 ring-1 ring-zinc-200/80 transition-all duration-200 hover:-translate-y-0.5 hover:ring-accent-300 dark:bg-zinc-900 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-product-gallery__thumb.is-active {
+    @apply ring-2 ring-accent-400 dark:ring-accent-500;
+}
+
+.woocommerce .flux-product-gallery__focus-thumb {
+    @apply h-16 w-16 overflow-hidden rounded-xl bg-white/95 p-0.5 ring-1 ring-white/15 transition-colors hover:ring-accent-300 dark:bg-zinc-900/85;
+}
+
+.woocommerce .flux-product-gallery__focus-thumb.is-active {
+    @apply ring-2 ring-accent-400;
+}
+
+.woocommerce .flux-product-gallery__stage img {
+    will-change: transform;
+}
+
+.woocommerce .flux-single-purchase-card form.cart {
+    @apply mb-0 flex flex-col items-stretch gap-4;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .quantity {
+    @apply m-0;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .quantity input.qty {
+    @apply w-20 rounded-xl border border-zinc-200 bg-white px-3 py-3 text-center text-sm font-semibold text-zinc-900 shadow-none outline-hidden ring-accent/0 focus:border-accent focus:ring-4 focus:ring-accent/15 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .single_add_to_cart_button {
+    @apply inline-flex w-full items-center justify-center rounded-xl px-5 py-3.5 text-sm font-semibold shadow-none;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .stock {
+    @apply mb-0 rounded-xl bg-zinc-100/80 px-4 py-3 text-sm font-medium text-zinc-700 ring-1 ring-zinc-200/80 dark:bg-zinc-800/65 dark:text-zinc-300 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations {
+    @apply m-0 w-full border-collapse;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations tr {
+    @apply block;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations td,
+.woocommerce .flux-single-purchase-card form.cart table.variations th {
+    @apply block w-full p-0 text-left;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations td.label {
+    @apply mb-1.5;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations td.label label {
+    @apply text-sm font-semibold text-zinc-700 dark:text-zinc-300;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations td.value {
+    @apply flex flex-col gap-2;
+}
+
+.woocommerce .flux-single-purchase-card form.cart table.variations td.value select {
+    @apply w-full rounded-xl border border-zinc-200 bg-white px-4 py-3 text-sm text-zinc-900 shadow-none outline-hidden ring-accent/0 focus:border-accent focus:ring-4 focus:ring-accent/15 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .reset_variations {
+    @apply inline-flex w-max text-sm font-medium text-zinc-500 no-underline transition-colors hover:text-accent-600 dark:text-zinc-400 dark:hover:text-accent-400;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .woocommerce-variation {
+    @apply rounded-2xl bg-zinc-100/80 p-4 text-sm ring-1 ring-zinc-200/80 dark:bg-zinc-800/55 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .single_variation_wrap {
+    @apply flex flex-col gap-4;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .variations_button {
+    @apply flex flex-col gap-4 sm:flex-row sm:items-center;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .group_table {
+    @apply w-full border-collapse rounded-2xl bg-zinc-100/70 ring-1 ring-zinc-200/80 dark:bg-zinc-800/50 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-single-purchase-card form.cart .group_table td {
+    @apply border-b border-zinc-200/80 px-3 py-3 align-middle last:border-b-0 dark:border-zinc-700/80;
+}
+
+.woocommerce .flux-single-purchase-card .product_meta {
+    @apply mt-0 space-y-2 border-t-0 pt-0;
+}
+
+.woocommerce .flux-single-purchase-card .product_meta > span {
+    @apply text-sm text-zinc-600 dark:text-zinc-400;
+}
+
+.woocommerce .flux-single-purchase-card .product_meta > span a {
+    @apply font-medium text-accent-600 no-underline hover:underline dark:text-accent-400;
+}
+
+.woocommerce .flux-single-purchase-sharing .woocommerce-product-details__share {
+    @apply flex flex-wrap items-center gap-3 text-sm font-medium text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce .flux-single-purchase-sharing .woocommerce-product-details__share a {
+    @apply text-accent-600 no-underline hover:underline dark:text-accent-400;
+}
+
+.woocommerce .flux-single-purchase-form form.cart:not(.variations_form):not(.grouped_form):has(.quantity) {
+    display: grid;
+    grid-template-columns: 5.5rem minmax(0, 1fr);
+    gap: 0.75rem;
+    align-items: stretch;
+}
+
+.woocommerce .flux-single-purchase-form form.cart:not(.variations_form):not(.grouped_form):has(.quantity) .quantity {
+    width: 100%;
+}
+
+.woocommerce .flux-single-purchase-form form.cart:not(.variations_form):not(.grouped_form):has(.quantity) .quantity .qty {
+    width: 100% !important;
+    min-width: 0 !important;
+}
+
+.woocommerce .flux-single-purchase-form form.cart:not(.variations_form):not(.grouped_form):has(.quantity) .single_add_to_cart_button {
+    margin: 0 !important;
+    width: 100% !important;
+    min-height: 3rem;
+}
+
+.woocommerce .flux-single-product-hook > :is(.woocommerce-info, .woocommerce-message, .woocommerce-error) {
+    @apply mb-0;
+}
+
+.woocommerce .flux-single-product-tabs-shell {
+    @apply rounded-[1.8rem] bg-white/70 p-5 ring-1 ring-zinc-200/80 dark:bg-zinc-900/45 dark:ring-zinc-800/70 sm:p-6;
+}
+
+.woocommerce .flux-single-tabs__link {
+    @apply rounded-full border px-4 py-2 text-sm font-semibold transition-all duration-200;
+}
+
+.woocommerce .flux-single-tabs__link.is-active {
+    @apply border-accent-300 bg-accent-50 text-accent-700 dark:border-accent-800 dark:bg-accent-950/35 dark:text-accent-300;
+}
+
+.woocommerce .flux-single-tabs__link.is-inactive {
+    @apply border-zinc-200 bg-white/90 text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100;
+}
+
+.woocommerce .flux-single-tabs__panel {
+    @apply block border-t border-zinc-200/85 pt-5 text-zinc-700 dark:border-zinc-800/85 dark:text-zinc-300;
+}
+
+.woocommerce .flux-single-tabs__panel > :first-child {
+    @apply mt-0;
+}
+
+.woocommerce .flux-single-tabs__panel > :last-child {
+    @apply mb-0;
+}
+
+.woocommerce .flux-single-tabs__panel h2 {
+    @apply mb-4 text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-tabs__panel table.shop_attributes {
+    @apply w-full border-collapse rounded-2xl bg-white ring-1 ring-zinc-200/80 dark:bg-zinc-900 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-single-tabs__panel table.shop_attributes th,
+.woocommerce .flux-single-tabs__panel table.shop_attributes td {
+    @apply border-b border-zinc-200/85 px-4 py-3 text-left text-sm dark:border-zinc-700/85;
+}
+
+.woocommerce .flux-single-tabs__panel table.shop_attributes tr:last-child th,
+.woocommerce .flux-single-tabs__panel table.shop_attributes tr:last-child td {
+    @apply border-b-0;
+}
+
+.woocommerce .flux-single-tabs__panel #reviews #comments h2 {
+    @apply mb-5 text-3xl font-black tracking-tight text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-tabs__panel #reviews ol.commentlist {
+    @apply m-0 space-y-3 p-0;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell {
+    @apply m-0 list-none;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item {
+    @apply grid grid-cols-[3.5rem_minmax(0,1fr)] gap-4 rounded-2xl bg-white/80 p-4 ring-1 ring-zinc-200/85 dark:bg-zinc-900/70 dark:ring-zinc-700/80 sm:p-5;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__avatar img {
+    @apply size-14 rounded-2xl object-cover ring-1 ring-zinc-200/90 dark:ring-zinc-700/80;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__body {
+    @apply min-w-0 space-y-2;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__header {
+    @apply flex flex-wrap items-center justify-between gap-2;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__author-wrap {
+    @apply flex flex-wrap items-center gap-2;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__author {
+    @apply m-0 text-sm font-semibold uppercase tracking-[0.12em] text-zinc-800 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__badge {
+    @apply inline-flex items-center rounded-full bg-emerald-50 px-2 py-0.5 text-[10px] font-semibold uppercase tracking-[0.12em] text-emerald-700 ring-1 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-800;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__date {
+    @apply text-xs uppercase tracking-[0.14em] text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__rating .star-rating {
+    @apply m-0 text-accent-400;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__content p {
+    @apply m-0 text-base leading-relaxed text-zinc-700 dark:text-zinc-300;
+}
+
+.woocommerce .flux-single-tabs__panel #review_form_wrapper {
+    @apply mt-8 rounded-2xl bg-zinc-50/75 p-5 ring-1 ring-zinc-200/80 dark:bg-zinc-900/55 dark:ring-zinc-700/75 sm:p-6;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-reply-title {
+    @apply mb-4 text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating {
+    @apply space-y-2;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating label {
+    @apply text-sm font-semibold text-zinc-700 dark:text-zinc-300;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating #rating {
+    @apply w-full rounded-xl border border-zinc-200 bg-white px-4 py-2 text-sm text-zinc-700 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-200;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars {
+    @apply flex flex-wrap items-center gap-2;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars a {
+    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg text-zinc-500 no-underline ring-1 ring-zinc-200 transition-colors hover:text-accent-600 hover:ring-accent-300 dark:bg-zinc-900 dark:text-zinc-400 dark:ring-zinc-700 dark:hover:text-accent-400 dark:hover:ring-accent-700;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form textarea {
+    @apply min-h-36 rounded-2xl;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .form-submit {
+    @apply mt-5;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .form-submit input[type="submit"] {
+    @apply inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-semibold;
+}
+
+.woocommerce .flux-single-product-upsells-shell,
+.woocommerce .flux-single-product-related-shell {
+    @apply rounded-[1.75rem] bg-white/70 p-5 ring-1 ring-zinc-200/80 dark:bg-zinc-900/45 dark:ring-zinc-800/70 sm:p-6;
+}
+
+.woocommerce .flux-single-product-upsells-shell .upsells,
+.woocommerce .flux-single-product-related-shell .related {
+    @apply space-y-6;
+}
+
+.woocommerce .flux-single-product-upsells-shell h2,
+.woocommerce .flux-single-product-related-shell h2 {
+    @apply m-0 text-2xl font-black tracking-tight text-zinc-900 dark:text-zinc-100;
+}
+
+.woocommerce .flux-single-product-upsells-shell .products,
+.woocommerce .flux-single-product-related-shell .products {
+    @apply mt-0;
+}
+
+.woocommerce .flux-single-product-lower {
+    @apply mt-8;
+}
+
+@media (max-width: 1023px) {
+    .woocommerce .flux-single-product-media,
+    .woocommerce .flux-single-product-summary,
+    .woocommerce .flux-single-product-purchase {
+        min-width: 0;
+    }
+}
