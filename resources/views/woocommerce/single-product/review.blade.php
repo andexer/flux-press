@@ -30,9 +30,10 @@
     $isVerifiedOwner = function_exists('wc_review_is_from_verified_owner')
         ? wc_review_is_from_verified_owner($comment->comment_ID)
         : false;
+    $rating = (int) get_comment_meta($comment->comment_ID, 'rating', true);
 @endphp
 
-<li @php comment_class('flux-review-item-shell'); @endphp id="li-comment-{{ (int) $comment->comment_ID }}">
+<li @php comment_class('flux-review-item-shell', $comment); @endphp id="li-comment-{{ (int) $comment->comment_ID }}">
     <article id="comment-{{ (int) $comment->comment_ID }}" class="flux-review-item">
         <div class="flux-review-item__avatar" aria-hidden="true">
             {!! $avatarHtml !!}
@@ -58,12 +59,20 @@
             </header>
 
             <div class="flux-review-item__rating">
-                @php woocommerce_review_display_rating($comment); @endphp
+                @if($rating > 0)
+                    {!! wc_get_rating_html($rating) !!}
+                    <span class="flux-review-item__rating-label">{{ sprintf(__('%s de 5', 'flux-press'), $rating) }}</span>
+                @else
+                    <div class="star-rating" aria-hidden="true">
+                        <span style="width:0%"></span>
+                    </div>
+                    <span class="flux-review-item__rating-label">{{ __('Sin puntuacion', 'flux-press') }}</span>
+                @endif
             </div>
 
             <div class="flux-review-item__content">
                 @php do_action('woocommerce_review_before_comment_text', $comment); @endphp
-                @php comment_text(); @endphp
+                @php comment_text($comment); @endphp
                 @php do_action('woocommerce_review_after_comment_text', $comment); @endphp
             </div>
         </div>

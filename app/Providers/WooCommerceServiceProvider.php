@@ -159,7 +159,45 @@ class WooCommerceServiceProvider extends ServiceProvider
             return $fragments;
         });
 
+        $this->registerProductReviewCommentFallback();
         $this->registerShopCatalogFiltering();
+    }
+
+    /**
+     * Ensure legacy product comments (type comment/'') are included in review queries.
+     */
+    protected function registerProductReviewCommentFallback(): void
+    {
+        add_filter('comments_template_query_args', function ($args) {
+            if (! $this->isProductCommentsContext() || ! is_array($args)) {
+                return $args;
+            }
+
+            $args['type__in'] = ['review', 'comment', ''];
+
+            return $args;
+        });
+
+        add_filter('comments_template_top_level_query_args', function ($args) {
+            if (! $this->isProductCommentsContext() || ! is_array($args)) {
+                return $args;
+            }
+
+            $args['type__in'] = ['review', 'comment', ''];
+
+            return $args;
+        });
+    }
+
+    protected function isProductCommentsContext(): bool
+    {
+        if (function_exists('is_singular') && is_singular('product')) {
+            return true;
+        }
+
+        global $post;
+
+        return $post instanceof \WP_Post && $post->post_type === 'product';
     }
 
     /**

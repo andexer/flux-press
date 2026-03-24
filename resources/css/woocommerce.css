@@ -82,7 +82,39 @@
 
 /* ─── Star Rating ──────────────────────────────────────── */
 .woocommerce .star-rating {
-    @apply relative text-accent-400 text-sm leading-none;
+    position: relative;
+    display: inline-block;
+    overflow: hidden;
+    width: 6.2rem;
+    height: 1.1rem;
+    font-size: 0.95rem;
+    line-height: 1;
+    letter-spacing: 0.12em;
+}
+
+.woocommerce .star-rating::before {
+    content: '★★★★★';
+    position: absolute;
+    left: 0;
+    top: 0;
+    color: rgb(161 161 170);
+}
+
+.woocommerce .star-rating span {
+    position: absolute;
+    left: 0;
+    top: 0;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.woocommerce .star-rating span::before {
+    content: '★★★★★';
+    color: rgb(245 158 11);
+}
+
+.woocommerce .star-rating span strong {
+    display: none;
 }
 
 /* ─── Single Product ───────────────────────────────────── */
@@ -1451,11 +1483,12 @@
 }
 
 .woocommerce .flux-product-gallery__thumb {
-    @apply h-20 w-20 overflow-hidden rounded-2xl bg-white p-1 ring-1 ring-zinc-200/80 transition-all duration-200 hover:-translate-y-0.5 hover:ring-accent-300 dark:bg-zinc-900 dark:ring-zinc-700/80;
+    @apply relative h-20 w-20 overflow-hidden rounded-2xl bg-white p-1 ring-1 ring-zinc-200/80 outline-hidden transition-all duration-200 hover:-translate-y-0.5 hover:ring-zinc-300 focus-visible:ring-2 focus-visible:ring-accent-400 dark:bg-zinc-900 dark:ring-zinc-700/80 dark:hover:ring-zinc-600;
 }
 
 .woocommerce .flux-product-gallery__thumb.is-active {
-    @apply ring-2 ring-accent-400 dark:ring-accent-500;
+    @apply ring-2 ring-accent-500 dark:ring-accent-400;
+    box-shadow: 0 0 0 2px rgb(255 255 255 / 0.75);
 }
 
 .woocommerce .flux-product-gallery__focus-thumb {
@@ -1648,27 +1681,70 @@
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item {
-    @apply grid grid-cols-[3.5rem_minmax(0,1fr)] gap-4 rounded-2xl bg-white/80 p-4 ring-1 ring-zinc-200/85 dark:bg-zinc-900/70 dark:ring-zinc-700/80 sm:p-5;
+    @apply grid grid-cols-[2.6rem_minmax(0,1fr)] items-start gap-2.5 bg-transparent p-0 ring-0;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__avatar img {
-    @apply size-14 rounded-2xl object-cover ring-1 ring-zinc-200/90 dark:ring-zinc-700/80;
+    @apply size-10 rounded-full object-cover ring-1 ring-zinc-200/85 dark:ring-zinc-700/80;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__body {
-    @apply min-w-0 space-y-2;
+    @apply relative min-w-0 space-y-1.5 rounded-2xl bg-zinc-100 px-3.5 py-2.5 ring-1 ring-zinc-200/70 dark:bg-zinc-800/70 dark:ring-zinc-700/70;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__body::before {
+    content: '';
+    position: absolute;
+    left: -0.32rem;
+    top: 0.9rem;
+    width: 0.72rem;
+    height: 0.72rem;
+    background: inherit;
+    transform: rotate(45deg);
+    border-radius: 0.15rem;
+    box-shadow: -1px 1px 0 rgb(228 228 231 / 0.85);
+}
+
+.dark .woocommerce .flux-single-tabs__panel .flux-review-item__body::before {
+    box-shadow: -1px 1px 0 rgb(63 63 70 / 0.8);
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item__body {
+    @apply bg-sky-50 dark:bg-sky-950/25;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item {
+    @apply grid-cols-[minmax(0,1fr)_2.6rem];
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item__avatar {
+    @apply order-2 justify-self-end;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item__body {
+    @apply order-1;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item__body::before {
+    left: auto;
+    right: -0.32rem;
+    box-shadow: 1px -1px 0 rgb(228 228 231 / 0.85);
+}
+
+.dark .woocommerce .flux-single-tabs__panel .flux-review-item-shell:nth-child(even) .flux-review-item__body::before {
+    box-shadow: 1px -1px 0 rgb(63 63 70 / 0.8);
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__header {
-    @apply flex flex-wrap items-center justify-between gap-2;
+    @apply flex flex-wrap items-center justify-between gap-1.5;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__author-wrap {
-    @apply flex flex-wrap items-center gap-2;
+    @apply flex flex-wrap items-center gap-1.5;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__author {
-    @apply m-0 text-sm font-semibold uppercase tracking-[0.12em] text-zinc-800 dark:text-zinc-100;
+    @apply m-0 text-[13px] font-semibold text-zinc-800 dark:text-zinc-100;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__badge {
@@ -1676,15 +1752,23 @@
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__date {
-    @apply text-xs uppercase tracking-[0.14em] text-zinc-500 dark:text-zinc-400;
+    @apply text-[11px] text-zinc-500 dark:text-zinc-400;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__rating {
+    @apply flex items-center gap-1.5;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__rating .star-rating {
-    @apply m-0 text-accent-400;
+    @apply m-0;
+}
+
+.woocommerce .flux-single-tabs__panel .flux-review-item__rating-label {
+    @apply text-[11px] font-medium text-zinc-500 dark:text-zinc-400;
 }
 
 .woocommerce .flux-single-tabs__panel .flux-review-item__content p {
-    @apply m-0 text-base leading-relaxed text-zinc-700 dark:text-zinc-300;
+    @apply m-0 text-[15px] leading-relaxed text-zinc-700 dark:text-zinc-300;
 }
 
 .woocommerce .flux-single-tabs__panel #review_form_wrapper {
@@ -1708,11 +1792,27 @@
 }
 
 .woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars {
-    @apply flex flex-wrap items-center gap-2;
+    @apply flex flex-row-reverse justify-end gap-2;
 }
 
 .woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars a {
-    @apply inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-lg text-zinc-500 no-underline ring-1 ring-zinc-200 transition-colors hover:text-accent-600 hover:ring-accent-300 dark:bg-zinc-900 dark:text-zinc-400 dark:ring-zinc-700 dark:hover:text-accent-400 dark:hover:ring-accent-700;
+    @apply relative inline-flex h-9 w-9 items-center justify-center rounded-full bg-white text-zinc-400 no-underline ring-1 ring-zinc-200 outline-hidden transition-colors hover:text-amber-500 hover:ring-amber-300 dark:bg-zinc-900 dark:text-zinc-500 dark:ring-zinc-700 dark:hover:text-amber-400 dark:hover:ring-amber-700;
+    font-size: 0;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars a::before {
+    content: '★';
+    font-size: 1.05rem;
+    line-height: 1;
+}
+
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars a.active,
+.woocommerce .flux-single-tabs__panel #respond .comment-form-rating .stars a.active ~ a {
+    @apply text-amber-500 dark:text-amber-400;
+}
+
+.woocommerce .flux-single-tabs__panel .woocommerce-noreviews {
+    @apply rounded-2xl bg-zinc-100/85 px-4 py-3 text-sm text-zinc-600 ring-1 ring-zinc-200/80 dark:bg-zinc-800/65 dark:text-zinc-300 dark:ring-zinc-700/80;
 }
 
 .woocommerce .flux-single-tabs__panel #respond .comment-form textarea {

@@ -27,4 +27,11 @@ if (! view()->exists($viewName)) {
     return;
 }
 
-echo view($viewName, isset($args) && is_array($args) ? $args : [])->render();
+$viewData = [];
+if (isset($action_args['args']) && is_array($action_args['args'])) {
+    $viewData = $action_args['args'];
+} elseif (isset($args) && is_array($args)) {
+    $viewData = $args;
+}
+
+echo view($viewName, $viewData)->render();
