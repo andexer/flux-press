@@ -273,3 +273,34 @@ Incluye:
   - `Header > boton Configurar Tema > Tema de Interfaz`
   - Opciones disponibles: `Claro` y `Oscuro`.
 - La apariencia es global (definida por administracion del tema), no por modo sistema del navegador.
+
+## 14. Flux Visual Builder desde la barra superior de admin (nuevo)
+
+Ahora puedes abrir el editor visual directamente desde la barra de administracion de WordPress (frontend o backend).
+
+Ruta rapida:
+
+1. Inicia sesion como administrador.
+2. En la barra superior, haz clic en `Flux Builder`.
+3. Se abre `Flux Visual Builder` con panel lateral + preview en vivo.
+
+Funciones incluidas:
+
+- Cambiar `modo de contenido`: `Builder`, `Hybrid`, `Editor`.
+- Activar/ocultar secciones del Home.
+- Reordenar secciones con arrastrar y soltar.
+- Guardado automatico en `theme_mod` (sin JSON manual).
+- Preview en vivo con auto-refresco tras cada cambio.
+
+Theme mods que actualiza este panel:
+
+- `home_ecommerce_content_mode`
+- `home_ecommerce_section_order`
+- `home_ecommerce_show_hero`
+- `home_ecommerce_show_categories`
+- `home_ecommerce_show_best_sellers`
+- `home_ecommerce_show_top_rated`
+- `home_ecommerce_show_brands`
+- `home_ecommerce_show_promos`
+- `home_ecommerce_show_newsletter`
+- `home_ecommerce_show_blog`

@@ -6,6 +6,7 @@ use App\Services\HomeEcommerceDataService;
 use App\Traits\SanitizesCustomizerValues;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Livewire\Livewire;
 
 class ThemeInterfaceServiceProvider extends ServiceProvider
@@ -47,6 +48,13 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
 		// Registrar bloques/shortcodes del Home ecommerce.
 		add_action('init', [$this, 'registerHomeEcommerceBlocksAndShortcodes']);
+
+		// Visual Builder del Home ecommerce en barra/admin.
+		add_action('admin_menu', [$this, 'registerFluxVisualBuilderAdminMenu']);
+		add_action('admin_bar_menu', [$this, 'registerFluxVisualBuilderAdminBarMenu'], 90);
+		add_action('admin_head', [$this, 'renderFluxVisualBuilderAdminHead']);
+		add_action('admin_footer', [$this, 'renderFluxVisualBuilderAdminFooter']);
+		add_filter('show_admin_bar', [$this, 'hideAdminBarInFluxPreview'], 20);
 	}
 
 	/**
@@ -107,6 +115,102 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 		echo "  gtag('js', new Date());\n";
 		echo "  gtag('config', '" . esc_js($analyticsId) . "');\n";
 		echo "</script>\n";
+	}
+
+	public function registerFluxVisualBuilderAdminMenu(): void
+	{
+		add_menu_page(
+			__('Flux Visual Builder', 'flux-press'),
+			__('Flux Builder', 'flux-press'),
+			'edit_theme_options',
+			'flux-visual-builder',
+			[$this, 'renderFluxVisualBuilderAdminPage'],
+			'dashicons-layout',
+			58
+		);
+	}
+
+	public function registerFluxVisualBuilderAdminBarMenu(\WP_Admin_Bar $adminBar): void
+	{
+		if (! current_user_can('edit_theme_options')) {
+			return;
+		}
+
+		$targetUrl = esc_url_raw(admin_url('admin.php?page=flux-visual-builder'));
+
+		$adminBar->add_node([
+			'id'    => 'flux-visual-builder',
+			'title' => __('Flux Builder', 'flux-press'),
+			'href'  => $targetUrl,
+			'meta'  => [
+				'class' => 'flux-adminbar-visual-builder',
+				'title' => __('Abrir editor visual reactivo del home ecommerce', 'flux-press'),
+			],
+		]);
+
+		$adminBar->add_node([
+			'id'     => 'flux-visual-builder-open',
+			'parent' => 'flux-visual-builder',
+			'title'  => __('Abrir editor visual', 'flux-press'),
+			'href'   => $targetUrl,
+			'meta'   => ['title' => __('Gestionar secciones del home con drag and drop y preview en vivo', 'flux-press')],
+		]);
+	}
+
+	public function renderFluxVisualBuilderAdminPage(): void
+	{
+		if (! current_user_can('edit_theme_options')) {
+			wp_die(esc_html__('No tienes permisos para acceder a esta pantalla.', 'flux-press'));
+		}
+
+		echo View::make('admin.flux-visual-builder')->render();
+	}
+
+	public function renderFluxVisualBuilderAdminHead(): void
+	{
+		if (! $this->isFluxVisualBuilderAdminScreen()) {
+			return;
+		}
+
+		echo Vite::withEntryPoints([
+			'resources/css/app.css',
+			'resources/css/woocommerce.css',
+			'resources/js/app.js',
+		])->toHtml();
+
+		echo View::make('admin.partials.flux-visual-builder-head')->render();
+	}
+
+	public function renderFluxVisualBuilderAdminFooter(): void
+	{
+		if (! $this->isFluxVisualBuilderAdminScreen()) {
+			return;
+		}
+
+		echo View::make('admin.partials.flux-visual-builder-footer')->render();
+	}
+
+	public function hideAdminBarInFluxPreview(bool $show): bool
+	{
+		if (is_admin()) {
+			return $show;
+		}
+
+		return isset($_GET['flux_visual_builder_preview']) ? false : $show;
+	}
+
+	protected function isFluxVisualBuilderAdminScreen(): bool
+	{
+		if (! function_exists('get_current_screen')) {
+			return false;
+		}
+
+		$screen = get_current_screen();
+		if (! $screen instanceof \WP_Screen) {
+			return false;
+		}
+
+		return (string) $screen->id === 'toplevel_page_flux-visual-builder';
 	}
 
 	/**
