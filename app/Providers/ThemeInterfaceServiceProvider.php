@@ -965,7 +965,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerHomeEcommerceHeroVisualSlidesCustomizerSettings(\WP_Customize_Manager $wp_customize): void
     {
         $section = 'flux_home_ecommerce_section';
-        $slides = 4;
+        $slides = 6;
 
         for ($index = 1; $index <= $slides; $index++) {
             $prefix = "home_ecommerce_hero_slide_{$index}";

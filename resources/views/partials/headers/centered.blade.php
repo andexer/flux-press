@@ -24,6 +24,7 @@
     $wishlistUrl = home_url('/wishlist/');
 
     $primaryNavItems = array_slice($topMenuItems, 0, 4);
+    $highlightLimit = $megaMenuEnabled ? 4 : 7;
 
     $highlightMenuItemsResolved = [];
     if (isset($highlightMenuItems) && is_array($highlightMenuItems)) {
@@ -87,35 +88,36 @@
 
 <flux:header
     @class([
-        'z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90',
+        'flux-header-shell flux-header-mobile-compact',
         'sticky top-0' => $sticky ?? false,
         'relative' => ! ($sticky ?? false),
     ])
 >
-    @if(! $isAccountSidebarContext)
-        <div class="hidden lg:block border-b border-zinc-200/70 bg-zinc-50/85 dark:border-zinc-800/70 dark:bg-zinc-900/80">
-            <div class="mx-auto flex max-w-[95rem] items-center justify-between gap-4 px-4 py-2 text-xs">
-                <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
-                    @foreach($utilityLeftLinks as $utilityLink)
-                        <a href="{{ $utilityLink['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
-                            {{ $utilityLink['title'] }}
-                        </a>
-                    @endforeach
-                </div>
+    <div class="w-full">
+        @if(! $isAccountSidebarContext)
+            <div class="flux-header-topbar hidden lg:block">
+                <div class="flux-header-centered-topbar flex items-center justify-between gap-4 py-2 text-xs">
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
+                        @foreach($utilityLeftLinks as $utilityLink)
+                            <a href="{{ $utilityLink['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
+                                {{ $utilityLink['title'] }}
+                            </a>
+                        @endforeach
+                    </div>
 
-                <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
-                    @foreach(array_slice($utilityRightLinks, 0, 3) as $utilityLink)
-                        <a href="{{ $utilityLink['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
-                            {{ $utilityLink['title'] }}
-                        </a>
-                    @endforeach
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
+                        @foreach(array_slice($utilityRightLinks, 0, 3) as $utilityLink)
+                            <a href="{{ $utilityLink['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
+                                {{ $utilityLink['title'] }}
+                            </a>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-        </div>
-    @endif
+        @endif
 
-    <div class="mx-auto w-full max-w-[95rem] px-4 py-3">
-        <div class="grid items-center gap-3 lg:grid-cols-[auto_minmax(0,1fr)_auto]">
+        <div class="flux-header-centered-main">
+            <div class="grid grid-cols-[minmax(0,1fr)_auto] items-center gap-2 lg:grid-cols-[auto_minmax(0,1fr)_auto] lg:gap-3">
             <div class="flex min-w-0 items-center gap-2 lg:gap-4">
                 @if($isAccountSidebarContext)
                     <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
@@ -133,7 +135,7 @@
                     @else
                         <span class="size-2 rounded-full bg-accent-500"></span>
                     @endif
-                    <span class="truncate">{{ $siteName ?? get_bloginfo('name') }}</span>
+                    <span class="truncate max-[430px]:hidden">{{ $siteName ?? get_bloginfo('name') }}</span>
                 </a>
 
                 @if(! $isAccountSidebarContext)
@@ -147,11 +149,11 @@
                 @endif
             </div>
 
-            <div class="min-w-0 w-full">
+            <div class="order-3 col-span-2 min-w-0 w-full lg:order-none lg:col-span-1">
                 <livewire:global-search variant="market" :show-scope="true" />
             </div>
 
-            <div class="flex items-center justify-end gap-1 sm:gap-2">
+            <div class="order-2 flex items-center justify-end gap-1 sm:gap-2 lg:order-none">
                 @if($isWooCommerce)
                     <flux:button variant="ghost" size="sm" href="{{ $compareUrl }}" wire:navigate icon="arrows-right-left" class="hidden xl:inline-flex">
                         {{ __('Compare', 'flux-press') }}
@@ -195,36 +197,39 @@
                     </flux:button>
                 @endif
             </div>
-        </div>
-
-        @if(! $isAccountSidebarContext)
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200/70 pt-3 dark:border-zinc-800/80">
-                <div class="flex flex-wrap items-center gap-2">
-                    @foreach(array_slice($highlightMenuItemsResolved, 0, 7) as $item)
-                        <a
-                            href="{{ $item->url }}"
-                            wire:navigate
-                            class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/80 px-3 py-1.5 text-xs font-bold tracking-wide text-zinc-700 transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700 dark:border-zinc-700 dark:bg-zinc-800/80 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:bg-accent-900/20 dark:hover:text-accent-300"
-                        >
-                            <span class="size-1.5 rounded-full bg-accent-500"></span>
-                            <span>{{ $item->title }}</span>
-                        </a>
-                    @endforeach
-                </div>
-
-                <div class="hidden xl:flex items-center gap-4 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                    @foreach(array_slice($utilityRightLinks, 0, 4) as $link)
-                        <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-accent-600 dark:hover:text-accent-300">{{ $link['title'] }}</a>
-                    @endforeach
-                </div>
             </div>
 
-            @if($megaMenuEnabled)
-                <div class="hidden lg:flex border-t border-zinc-200/70 pt-3 mt-3 dark:border-zinc-800/80">
-                    <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
+            @if(! $isAccountSidebarContext)
+                <div class="flux-header-divider flux-header-centered-bottom mt-3 hidden lg:block border-t pt-3">
+                    <div class="flux-header-centered-bottom-grid">
+                        <div class="flex min-w-0 flex-wrap items-center gap-2">
+                            @foreach(array_slice($highlightMenuItemsResolved, 0, $highlightLimit) as $item)
+                                <a
+                                    href="{{ $item->url }}"
+                                    wire:navigate
+                                    class="flux-header-chip"
+                                >
+                                    <span class="size-1.5 rounded-full bg-accent-500"></span>
+                                    <span>{{ $item->title }}</span>
+                                </a>
+                            @endforeach
+                        </div>
+
+                        <div class="hidden lg:flex min-w-[14rem] items-center justify-center">
+                            @if($megaMenuEnabled)
+                                <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" layout="centered" />
+                            @endif
+                        </div>
+
+                        <div class="hidden xl:flex items-center gap-4 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                            @foreach(array_slice($utilityRightLinks, 0, 4) as $link)
+                                <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-accent-600 dark:hover:text-accent-300">{{ $link['title'] }}</a>
+                            @endforeach
+                        </div>
+                    </div>
                 </div>
             @endif
-        @endif
+        </div>
     </div>
 </flux:header>
 

@@ -131,22 +131,27 @@ new class extends Component
         wire:submit="submitSearch"
         role="search"
         method="get"
-        class="search-form flex w-full items-center {{ $isMarket ? 'rounded-2xl border border-zinc-200/90 bg-white px-2 py-1.5 shadow-[0_8px_24px_-18px_rgba(15,23,42,.55)] dark:border-zinc-700 dark:bg-zinc-900' : 'gap-2' }}"
+        class="search-form flex w-full items-center {{ $isMarket ? 'flux-market-search gap-2' : 'gap-2' }}"
         action="{{ home_url('/') }}"
     >
         @if($showScope)
             <label class="sr-only" for="{{ $scopeFieldId }}">{{ __('Alcance', 'flux-press') }}</label>
-            <select
-                id="{{ $scopeFieldId }}"
-                wire:model.live="scope"
-                class="h-11 min-w-[6.6rem] rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-semibold text-zinc-600 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200"
-                name="post_type"
-            >
-                <option value="all">{{ __('All', 'flux-press') }}</option>
-                <option value="product">{{ __('Products', 'flux-press') }}</option>
-                <option value="post">{{ __('Posts', 'flux-press') }}</option>
-                <option value="page">{{ __('Pages', 'flux-press') }}</option>
-            </select>
+            <div class="flex items-center gap-2">
+                <select
+                    id="{{ $scopeFieldId }}"
+                    wire:model.live="scope"
+                    class="{{ $isMarket ? 'flux-market-search__scope' : 'h-11 min-w-[6.6rem] rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-semibold text-zinc-600 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200' }}"
+                    name="post_type"
+                >
+                    <option value="all">{{ __('All', 'flux-press') }}</option>
+                    <option value="product">{{ __('Products', 'flux-press') }}</option>
+                    <option value="post">{{ __('Posts', 'flux-press') }}</option>
+                    <option value="page">{{ __('Pages', 'flux-press') }}</option>
+                </select>
+                @if($isMarket)
+                    <span class="hidden h-7 w-px shrink-0 bg-zinc-200 md:block dark:bg-zinc-700/80" aria-hidden="true"></span>
+                @endif
+            </div>
         @endif
 
         <flux:input
@@ -155,7 +160,7 @@ new class extends Component
             name="s"
             placeholder="{{ $isMarket ? __('Search for anything', 'flux-press') : _x('Search ...', 'placeholder', 'flux-press') }}"
             aria-label="{{ _x('Search for:', 'label', 'flux-press') }}"
-            class="{{ $isMarket ? 'h-11 flex-1 rounded-xl border-0 bg-transparent text-base font-medium text-zinc-800 placeholder:text-zinc-400 focus:ring-0 dark:text-zinc-100 dark:placeholder:text-zinc-500' : 'flex-1' }}"
+            class="{{ $isMarket ? 'flux-market-search__input' : 'flex-1' }}"
             autocomplete="off"
             @focus="open = true"
             @input="open = true"
@@ -164,7 +169,7 @@ new class extends Component
         @if($isMarket)
             <button
                 type="submit"
-                class="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-600 text-white transition-colors hover:bg-accent-700"
+                class="flux-market-search__submit"
                 aria-label="{{ esc_attr(_x('Search', 'submit button', 'flux-press')) }}"
             >
                 <flux:icon.magnifying-glass class="size-5" />

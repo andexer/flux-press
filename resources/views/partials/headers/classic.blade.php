@@ -92,149 +92,151 @@
 
 <flux:header
     @class([
-        'z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blur dark:border-zinc-800/80 dark:bg-zinc-950/90',
+        'flux-header-shell flux-header-mobile-compact',
         'sticky top-0' => $sticky ?? false,
         'relative' => ! ($sticky ?? false),
     ])
 >
-    @if(! $isAccountSidebarContext)
-        <div class="hidden xl:block border-b border-zinc-200/70 bg-zinc-50/85 dark:border-zinc-800/70 dark:bg-zinc-900/70">
-            <div class="mx-auto flex w-full max-w-[95rem] items-center justify-between gap-4 px-4 py-2 text-xs">
-                <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
-                    @foreach($utilityLeftLinks as $link)
-                        <a href="{{ $link['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
-                            {{ $link['title'] }}
-                        </a>
-                    @endforeach
-                </div>
-
-                <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
-                    @foreach($utilityRightLinks as $link)
-                        <a href="{{ $link['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
-                            {{ $link['title'] }}
-                        </a>
-                    @endforeach
-                </div>
-            </div>
-        </div>
-    @endif
-
-    <div class="mx-auto w-full max-w-[95rem] px-4 py-3">
-        <div class="flex items-center gap-2 sm:gap-3 lg:gap-4">
-            <div class="flex min-w-0 items-center gap-2 lg:gap-3">
-                @if($isAccountSidebarContext)
-                    <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
-                @endif
-
-                @if(! $isAccountSidebarContext && ! empty($topMenuItems))
-                    <flux:modal.trigger name="classic-mobile-menu">
-                        <flux:button
-                            variant="ghost"
-                            size="sm"
-                            icon="bars-3-bottom-left"
-                            class="lg:hidden"
-                            aria-label="{{ esc_attr__('Abrir menu principal', 'flux-press') }}"
-                        />
-                    </flux:modal.trigger>
-                @endif
-
-                <a href="{{ home_url('/') }}" wire:navigate class="inline-flex min-w-0 items-center gap-2 rounded-xl px-1 py-1 text-sm font-black tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-base">
-                    @if(! empty($logoUrl))
-                        <img src="{{ $logoUrl }}" alt="{{ esc_attr($siteName ?? get_bloginfo('name')) }}" class="h-7 w-auto shrink-0">
-                    @else
-                        <span class="size-2 rounded-full bg-accent-500"></span>
-                    @endif
-                    <span class="truncate">{{ $siteName ?? get_bloginfo('name') }}</span>
-                </a>
-
-                @if(! $isAccountSidebarContext && ! $megaMenuEnabled && ! empty($topMenuItems))
-                    <nav class="hidden 2xl:flex items-center gap-1">
-                        @foreach(array_slice($topMenuItems, 0, 6) as $item)
-                            <a href="{{ $item->url }}" wire:navigate class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50">
-                                {{ $item->title }}
+    <div class="w-full">
+        @if(! $isAccountSidebarContext)
+            <div class="flux-header-topbar hidden xl:block">
+                <div class="flex w-full items-center justify-between gap-4 py-2 text-xs">
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
+                        @foreach($utilityLeftLinks as $link)
+                            <a href="{{ $link['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
+                                {{ $link['title'] }}
                             </a>
                         @endforeach
-                    </nav>
-                @endif
+                    </div>
+
+                    <div class="flex flex-wrap items-center gap-x-5 gap-y-1">
+                        @foreach($utilityRightLinks as $link)
+                            <a href="{{ $link['url'] }}" wire:navigate class="font-semibold text-zinc-600 transition-colors hover:text-accent-700 dark:text-zinc-300 dark:hover:text-accent-300">
+                                {{ $link['title'] }}
+                            </a>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+        @endif
+
+        <div class="flux-header-main-wrap">
+            <div class="flex items-center justify-between gap-2 sm:gap-3 lg:gap-4">
+                <div class="flex min-w-0 items-center gap-2 lg:gap-3">
+                    @if($isAccountSidebarContext)
+                        <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
+                    @endif
+
+                    @if(! $isAccountSidebarContext && ! empty($topMenuItems))
+                        <flux:modal.trigger name="classic-mobile-menu">
+                            <flux:button
+                                variant="ghost"
+                                size="sm"
+                                icon="bars-3-bottom-left"
+                                class="lg:hidden"
+                                aria-label="{{ esc_attr__('Abrir menu principal', 'flux-press') }}"
+                            />
+                        </flux:modal.trigger>
+                    @endif
+
+                    <a href="{{ home_url('/') }}" wire:navigate class="inline-flex min-w-0 items-center gap-2 rounded-xl px-1 py-1 text-sm font-black tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-base">
+                        @if(! empty($logoUrl))
+                            <img src="{{ $logoUrl }}" alt="{{ esc_attr($siteName ?? get_bloginfo('name')) }}" class="h-7 w-auto shrink-0">
+                        @else
+                            <span class="size-2 rounded-full bg-accent-500"></span>
+                        @endif
+                        <span class="truncate max-[430px]:hidden">{{ $siteName ?? get_bloginfo('name') }}</span>
+                    </a>
+
+                    @if(! $isAccountSidebarContext && ! $megaMenuEnabled && ! empty($topMenuItems))
+                        <nav class="hidden 2xl:flex items-center gap-1">
+                            @foreach(array_slice($topMenuItems, 0, 6) as $item)
+                                <a href="{{ $item->url }}" wire:navigate class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50">
+                                    {{ $item->title }}
+                                </a>
+                            @endforeach
+                        </nav>
+                    @endif
+                </div>
+
+                <div class="hidden min-w-0 flex-1 md:block">
+                    <livewire:global-search variant="market" :show-scope="true" />
+                </div>
+
+                <div class="flex items-center gap-1 sm:gap-2">
+                    @if($isWooCommerce)
+                        <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
+                            {{ __('Tienda', 'flux-press') }}
+                        </flux:button>
+                        <livewire:cart-icon />
+                    @endif
+
+                    @if(current_user_can('manage_options'))
+                        <livewire:theme-settings />
+                    @endif
+
+                    @if($isLoggedIn)
+                        @php
+                            $currentUser = wp_get_current_user();
+                            $customPhotoId = (int) get_user_meta($currentUser->ID, 'flux_profile_photo_id', true);
+                            $avatarUrl = $customPhotoId
+                                ? wp_get_attachment_image_url($customPhotoId, 'thumbnail')
+                                : null;
+                            $avatarUrl = $avatarUrl ?: get_avatar_url($currentUser->ID, ['size' => 64]);
+                        @endphp
+                        <flux:dropdown position="bottom" align="end">
+                            <flux:profile avatar="{{ $avatarUrl }}" name="{{ $currentUser->display_name }}" />
+
+                            <flux:menu class="w-64">
+                                <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Perfil', 'flux-press') }}</flux:menu.item>
+                                @if($isWooCommerce)
+                                    <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('Mi Cuenta', 'flux-press') }}</flux:menu.item>
+                                @endif
+                                <flux:menu.separator />
+                                <flux:menu.item icon="arrow-right-start-on-rectangle" variant="danger" href="{{ wp_logout_url(home_url('/')) }}">
+                                    {{ __('Cerrar Sesion', 'flux-press') }}
+                                </flux:menu.item>
+                            </flux:menu>
+                        </flux:dropdown>
+                    @else
+                        <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">{{ __('Acceder', 'flux-press') }}</flux:button>
+                    @endif
+                </div>
             </div>
 
-            <div class="hidden min-w-0 flex-1 md:block">
+            <div class="flux-header-mobile-search-row">
                 <livewire:global-search variant="market" :show-scope="true" />
             </div>
 
-            <div class="flex items-center gap-1 sm:gap-2">
-                @if($isWooCommerce)
-                    <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
-                        {{ __('Tienda', 'flux-press') }}
-                    </flux:button>
-                    <livewire:cart-icon />
-                @endif
+            @if(! $isAccountSidebarContext)
+                <div class="flux-header-divider mt-3 hidden lg:flex flex-wrap items-center justify-between gap-2 border-t pt-3">
+                    <div class="flex flex-wrap items-center gap-2">
+                        @foreach(array_slice($highlightLinks, 0, 7) as $item)
+                            <a
+                                href="{{ $item->url }}"
+                                wire:navigate
+                                class="flux-header-chip"
+                            >
+                                <span class="size-1.5 rounded-full bg-accent-500"></span>
+                                <span>{{ $item->title }}</span>
+                            </a>
+                        @endforeach
+                    </div>
 
-                @if(current_user_can('manage_options'))
-                    <livewire:theme-settings />
-                @endif
-
-                @if($isLoggedIn)
-                    @php
-                        $currentUser = wp_get_current_user();
-                        $customPhotoId = (int) get_user_meta($currentUser->ID, 'flux_profile_photo_id', true);
-                        $avatarUrl = $customPhotoId
-                            ? wp_get_attachment_image_url($customPhotoId, 'thumbnail')
-                            : null;
-                        $avatarUrl = $avatarUrl ?: get_avatar_url($currentUser->ID, ['size' => 64]);
-                    @endphp
-                    <flux:dropdown position="bottom" align="end">
-                        <flux:profile avatar="{{ $avatarUrl }}" name="{{ $currentUser->display_name }}" />
-
-                        <flux:menu class="w-64">
-                            <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Perfil', 'flux-press') }}</flux:menu.item>
-                            @if($isWooCommerce)
-                                <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('Mi Cuenta', 'flux-press') }}</flux:menu.item>
-                            @endif
-                            <flux:menu.separator />
-                            <flux:menu.item icon="arrow-right-start-on-rectangle" variant="danger" href="{{ wp_logout_url(home_url('/')) }}">
-                                {{ __('Cerrar Sesion', 'flux-press') }}
-                            </flux:menu.item>
-                        </flux:menu>
-                    </flux:dropdown>
-                @else
-                    <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">{{ __('Acceder', 'flux-press') }}</flux:button>
-                @endif
-            </div>
-        </div>
-
-        <div class="mt-3 md:hidden">
-            <livewire:global-search variant="market" :show-scope="true" />
-        </div>
-
-        @if(! $isAccountSidebarContext)
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200/70 pt-3 dark:border-zinc-800/80">
-                <div class="flex flex-wrap items-center gap-2">
-                    @foreach(array_slice($highlightLinks, 0, 7) as $item)
-                        <a
-                            href="{{ $item->url }}"
-                            wire:navigate
-                            class="inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/90 px-3 py-1.5 text-xs font-bold tracking-wide text-zinc-700 transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700 dark:border-zinc-700 dark:bg-zinc-800/70 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:bg-accent-900/20 dark:hover:text-accent-300"
-                        >
-                            <span class="size-1.5 rounded-full bg-accent-500"></span>
-                            <span>{{ $item->title }}</span>
-                        </a>
-                    @endforeach
+                    <div class="hidden xl:flex items-center gap-4 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
+                        @foreach(array_slice($utilityRightLinks, 0, 3) as $link)
+                            <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-accent-600 dark:hover:text-accent-300">{{ $link['title'] }}</a>
+                        @endforeach
+                    </div>
                 </div>
 
-                <div class="hidden xl:flex items-center gap-4 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
-                    @foreach(array_slice($utilityRightLinks, 0, 3) as $link)
-                        <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-accent-600 dark:hover:text-accent-300">{{ $link['title'] }}</a>
-                    @endforeach
-                </div>
-            </div>
-
-            @if($megaMenuEnabled)
-                <div class="mt-3 hidden lg:flex border-t border-zinc-200/70 pt-3 dark:border-zinc-800/80">
-                    <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
-                </div>
+                @if($megaMenuEnabled)
+                    <div class="flux-header-divider mt-3 hidden lg:flex border-t pt-3">
+                        <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
+                    </div>
+                @endif
             @endif
-        @endif
+        </div>
     </div>
 </flux:header>
 

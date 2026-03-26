@@ -62,30 +62,31 @@
 
 <flux:header
     @class([
-        'z-40 border-b border-teal-950/60 bg-teal-900 text-white shadow-[0_8px_30px_rgba(2,30,30,.25)]',
+        'flux-header-shell flux-header-shell--spotlight flux-header-mobile-compact',
         'sticky top-0' => $sticky ?? false,
         'relative' => ! ($sticky ?? false),
     ])
 >
-    <div class="mx-auto w-full max-w-[95rem] px-4 py-3">
-        <div class="flex w-full items-center gap-2 sm:gap-3">
+    <div class="w-full">
+    <div class="flux-header-main-wrap">
+        <div class="flex w-full items-center justify-between gap-2 sm:gap-3">
             @if($isAccountSidebarContext)
                 <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
             @endif
 
             @if(! $isAccountSidebarContext && ! empty($topMenuItems))
                 <flux:modal.trigger name="extra-minimal-mobile-menu">
-                    <flux:button variant="ghost" size="sm" icon="bars-3-bottom-right" class="lg:hidden !text-white hover:!bg-white/10" aria-label="{{ esc_attr__('Abrir menu', 'flux-press') }}" />
+                    <flux:button variant="ghost" size="sm" icon="bars-3-bottom-right" class="lg:hidden" aria-label="{{ esc_attr__('Abrir menu', 'flux-press') }}" />
                 </flux:modal.trigger>
             @endif
 
-            <a href="{{ home_url('/') }}" wire:navigate class="inline-flex min-w-0 items-center gap-2 rounded-xl px-1 py-1.5 text-sm font-black tracking-tight text-white sm:text-base">
+            <a href="{{ home_url('/') }}" wire:navigate class="inline-flex min-w-0 items-center gap-2 rounded-xl px-1 py-1.5 text-sm font-black tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-base">
                 @if(! empty($logoUrl))
-                    <img src="{{ $logoUrl }}" alt="{{ esc_attr($siteName ?? get_bloginfo('name')) }}" class="h-7 w-auto shrink-0 brightness-0 invert">
+                    <img src="{{ $logoUrl }}" alt="{{ esc_attr($siteName ?? get_bloginfo('name')) }}" class="h-7 w-auto shrink-0">
                 @else
-                    <span class="size-2 rounded-full bg-amber-400"></span>
+                    <span class="size-2 rounded-full bg-accent-500"></span>
                 @endif
-                <span class="truncate">{{ $siteName ?? get_bloginfo('name') }}</span>
+                <span class="truncate max-[430px]:hidden">{{ $siteName ?? get_bloginfo('name') }}</span>
             </a>
 
             <div class="min-w-0 flex-1 max-lg:hidden">
@@ -94,10 +95,10 @@
 
             <div class="flex items-center gap-1 sm:gap-2">
                 @if($isWooCommerce)
-                    <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex !text-white hover:!bg-white/10">
+                    <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
                         {{ __('Shop', 'flux-press') }}
                     </flux:button>
-                    <flux:button variant="ghost" size="sm" href="{{ home_url('/wishlist/') }}" wire:navigate icon="heart" class="hidden xl:inline-flex !text-white hover:!bg-white/10">
+                    <flux:button variant="ghost" size="sm" href="{{ home_url('/wishlist/') }}" wire:navigate icon="heart" class="hidden xl:inline-flex">
                         {{ __('Wishlist', 'flux-press') }}
                     </flux:button>
                     <livewire:cart-icon />
@@ -131,42 +132,43 @@
                         </flux:menu>
                     </flux:dropdown>
                 @else
-                    <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user" class="!bg-amber-500 hover:!bg-amber-600 !text-zinc-900 border-0">
+                    <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">
                         {{ __('Sign in', 'flux-press') }}
                     </flux:button>
                 @endif
             </div>
         </div>
 
-        <div class="mt-3 lg:hidden">
+        <div class="flux-header-mobile-search-row lg:hidden">
             <livewire:global-search variant="market" :show-scope="true" />
         </div>
 
         @if(! $isAccountSidebarContext)
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-white/15 pt-3">
+            <div class="flux-header-divider mt-3 hidden lg:flex flex-wrap items-center justify-between gap-2 border-t pt-3">
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach(array_slice($quickLinks, 0, 7) as $item)
-                        <a href="{{ $item->url }}" wire:navigate class="inline-flex items-center rounded-full border border-white/20 bg-white/10 px-3 py-1.5 text-xs font-semibold text-white transition-colors hover:bg-white/20">
+                        <a href="{{ $item->url }}" wire:navigate class="flux-header-chip flux-header-chip--spotlight">
                             {{ $item->title }}
                         </a>
                     @endforeach
                 </div>
 
-                <div class="hidden xl:flex items-center gap-3 text-xs font-semibold text-teal-100">
+                <div class="hidden xl:flex items-center gap-3 text-xs font-semibold text-zinc-500 dark:text-zinc-400">
                     @foreach(array_slice($utilityRightLinks, 0, 3) as $link)
-                        <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-white">{{ $link['title'] }}</a>
+                        <a href="{{ $link['url'] }}" wire:navigate class="transition-colors hover:text-accent-600 dark:hover:text-accent-300">{{ $link['title'] }}</a>
                     @endforeach
                 </div>
             </div>
 
             @if($megaMenuEnabled)
-                <div class="hidden xl:flex border-t border-white/15 pt-3 mt-3">
-                    <div class="w-full rounded-2xl bg-white/95 px-3 py-2 text-zinc-900 shadow-lg dark:bg-zinc-900 dark:text-zinc-100">
+                <div class="flux-header-divider mt-3 hidden xl:flex justify-center border-t pt-3">
+                    <div class="rounded-2xl border border-zinc-200/80 bg-white/90 px-3 py-2 text-zinc-900 shadow-sm dark:border-zinc-700/80 dark:bg-zinc-900/80 dark:text-zinc-100">
                         <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
                     </div>
                 </div>
             @endif
         @endif
+    </div>
     </div>
 </flux:header>
 

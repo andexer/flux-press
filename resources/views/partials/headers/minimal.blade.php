@@ -42,13 +42,14 @@
 
 <flux:header
     @class([
-        'z-40 border-b border-zinc-200/70 bg-white/95 backdrop-blur dark:border-zinc-800 dark:bg-zinc-950/90',
+        'flux-header-shell flux-header-mobile-compact',
         'sticky top-0' => $sticky ?? false,
         'relative' => ! ($sticky ?? false),
     ])
 >
-    <div class="mx-auto w-full max-w-[95rem] px-4 py-3">
-        <div class="flex w-full items-center gap-2 sm:gap-3">
+    <div class="w-full">
+    <div class="flux-header-main-wrap">
+        <div class="flex w-full items-center justify-between gap-2 sm:gap-3">
             @if($isAccountSidebarContext)
                 <flux:sidebar.toggle class="lg:hidden" icon="bars-2" />
             @endif
@@ -65,7 +66,7 @@
                 @else
                     <span class="size-2 rounded-full bg-accent-500"></span>
                 @endif
-                <span class="truncate">{{ $siteName ?? get_bloginfo('name') }}</span>
+                <span class="truncate max-[430px]:hidden">{{ $siteName ?? get_bloginfo('name') }}</span>
             </a>
 
             <div class="hidden min-w-0 flex-1 md:block">
@@ -114,15 +115,15 @@
             </div>
         </div>
 
-        <div class="mt-3 md:hidden">
+        <div class="flux-header-mobile-search-row">
             <livewire:global-search variant="market" :show-scope="true" />
         </div>
 
         @if(! $isAccountSidebarContext)
-            <div class="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-zinc-200/70 pt-3 dark:border-zinc-800/80">
+            <div class="flux-header-divider mt-3 hidden lg:flex flex-wrap items-center justify-between gap-2 border-t pt-3">
                 <div class="flex flex-wrap items-center gap-2">
                     @foreach(array_slice($highlightLinks, 0, 6) as $item)
-                        <a href="{{ $item->url }}" wire:navigate class="inline-flex items-center rounded-full border border-zinc-200 bg-zinc-100 px-3 py-1.5 text-xs font-bold tracking-wide text-zinc-700 transition-colors hover:border-accent-400 hover:text-accent-700 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:text-accent-300">
+                        <a href="{{ $item->url }}" wire:navigate class="flux-header-chip">
                             {{ $item->title }}
                         </a>
                     @endforeach
@@ -140,11 +141,12 @@
             </div>
 
             @if($megaMenuEnabled)
-                <div class="mt-3 hidden lg:flex border-t border-zinc-200/70 pt-3 dark:border-zinc-800/80">
+                <div class="flux-header-divider mt-3 hidden lg:flex border-t pt-3">
                     <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
                 </div>
             @endif
         @endif
+    </div>
     </div>
 </flux:header>
 

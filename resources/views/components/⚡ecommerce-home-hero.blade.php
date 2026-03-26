@@ -99,9 +99,9 @@ new class extends Component
                                 loading="lazy"
                             />
                         @else
-                            <div class="absolute inset-0 bg-gradient-to-br from-teal-700 via-teal-900 to-zinc-950"></div>
-                            <div class="absolute -left-16 top-8 size-64 rounded-full bg-amber-400/20 blur-3xl"></div>
-                            <div class="absolute -right-16 bottom-8 size-64 rounded-full bg-cyan-300/20 blur-3xl"></div>
+                            <div class="absolute inset-0 bg-gradient-to-br from-accent-700 via-zinc-950 to-zinc-950"></div>
+                            <div class="absolute -left-16 top-8 size-64 rounded-full bg-accent-400/18 blur-3xl"></div>
+                            <div class="absolute -right-16 bottom-8 size-64 rounded-full bg-accent-200/14 blur-3xl"></div>
                         @endif
                         <div class="absolute inset-0 bg-gradient-to-r from-zinc-950/90 via-zinc-950/65 to-zinc-950/20"></div>
                         <div class="absolute inset-0 bg-gradient-to-t from-zinc-950/75 via-zinc-950/30 to-transparent"></div>
@@ -111,7 +111,7 @@ new class extends Component
                         <div class="w-full px-4 pb-10 pt-20 sm:px-8 sm:pb-12 lg:px-14 lg:pb-16">
                             <div class="max-w-3xl rounded-3xl border border-white/20 bg-zinc-950/60 p-6 shadow-2xl backdrop-blur-xl sm:p-8 lg:p-10">
                                 @if(($slide['badge'] ?? '') !== '')
-                                    <flux:badge color="amber" class="w-max uppercase tracking-[0.2em]">{{ $slide['badge'] }}</flux:badge>
+                                    <flux:badge color="accent" class="w-max uppercase tracking-[0.2em]">{{ $slide['badge'] }}</flux:badge>
                                 @endif
 
                                 @if(($slide['title'] ?? '') !== '')
@@ -134,22 +134,22 @@ new class extends Component
 
                                 <div class="mt-6 flex flex-wrap gap-3">
                                     @if(($slide['primary_label'] ?? '') !== '' && ($slide['primary_url'] ?? '') !== '')
-                                        <flux:button href="{{ $slide['primary_url'] }}" wire:navigate icon="arrow-up-right" variant="primary" class="!bg-amber-500 hover:!bg-amber-600 !text-zinc-900 border-0">
+                                        <flux:button href="{{ $slide['primary_url'] }}" wire:navigate icon="arrow-up-right" variant="primary">
                                             {{ $slide['primary_label'] }}
                                         </flux:button>
                                     @endif
 
                                     @if(($slide['secondary_label'] ?? '') !== '' && ($slide['secondary_url'] ?? '') !== '')
-                                        <flux:button href="{{ $slide['secondary_url'] }}" wire:navigate icon="arrow-right" variant="outline" class="!border-white/50 !text-white hover:!bg-white/15">
+                                        <flux:button href="{{ $slide['secondary_url'] }}" wire:navigate icon="arrow-right" variant="outline" class="!border-zinc-300/70 !text-white hover:!bg-white/10 dark:!border-zinc-600">
                                             {{ $slide['secondary_label'] }}
                                         </flux:button>
                                     @endif
                                 </div>
 
                                 <div class="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-zinc-200/90 sm:text-sm">
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-emerald-400"></span>{{ __('Personalizable', 'flux-press') }}</span>
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-sky-400"></span>{{ __('Responsive desktop + mobile', 'flux-press') }}</span>
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-amber-400"></span>{{ __('Listo para conversion', 'flux-press') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-300"></span>{{ __('Personalizable', 'flux-press') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-400"></span>{{ __('Responsive desktop + mobile', 'flux-press') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-500"></span>{{ __('Listo para conversion', 'flux-press') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -181,7 +181,7 @@ new class extends Component
                             type="button"
                             x-on:click="goTo({{ $idx }})"
                             class="h-2.5 rounded-full transition-all"
-                            :class="index === {{ $idx }} ? 'w-10 bg-amber-400' : 'w-2.5 bg-white/50 hover:bg-white/80'"
+                            :class="index === {{ $idx }} ? 'w-10 bg-accent-400' : 'w-2.5 bg-white/50 hover:bg-white/80'"
                             aria-label="{{ sprintf(__('Ir al slide %d', 'flux-press'), $idx + 1) }}"
                         ></button>
                     @endforeach

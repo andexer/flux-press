@@ -173,6 +173,152 @@ select:focus[data-flux-control] {
 
 /* Search form uses Flux UI components via forms/search.blade.php */
 
+/* Header surfaces */
+.flux-header-shell {
+	@apply z-40 border-b border-zinc-200/80 bg-white/95 backdrop-blur dark:border-zinc-800/80 dark:bg-zinc-950/90;
+}
+
+[data-flux-header].flux-header-mobile-compact {
+	padding-inline: 0 !important;
+}
+
+.flux-header-shell--contrast {
+	@apply border-zinc-900/70 bg-zinc-950/96 text-zinc-100 shadow-[0_16px_40px_-28px_rgba(15,23,42,.65)] dark:border-zinc-800/90 dark:bg-zinc-950;
+}
+
+.flux-header-shell--spotlight {
+	@apply border-zinc-200/80 bg-white/97 text-zinc-900 shadow-[0_18px_48px_-36px_rgba(15,23,42,.5)] dark:border-zinc-800/80 dark:bg-zinc-950/94 dark:text-zinc-100;
+}
+
+.flux-header-main-wrap {
+	@apply w-full max-w-none py-2.5 sm:py-3;
+	padding-inline: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.flux-header-mobile-search-row {
+	@apply mt-2 md:hidden;
+}
+
+.flux-header-topbar {
+	@apply border-b border-zinc-200/70 bg-zinc-50/85 dark:border-zinc-800/70 dark:bg-zinc-900/70;
+}
+
+.flux-header-topbar > div {
+	padding-inline: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.flux-header-divider {
+	@apply border-zinc-200/70 dark:border-zinc-800/80;
+}
+
+.flux-header-chip {
+	@apply inline-flex items-center gap-2 rounded-full border border-zinc-200 bg-zinc-100/85 px-3 py-1.5 text-xs font-bold tracking-wide text-zinc-700 transition-colors hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700 dark:border-zinc-700 dark:bg-zinc-800/75 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:bg-accent-500/12 dark:hover:text-accent-300;
+}
+
+.flux-header-chip--contrast {
+	@apply border-zinc-700/80 bg-zinc-900/75 text-zinc-100 hover:border-accent-400 hover:bg-accent-500/16 hover:text-accent-200 dark:border-zinc-700 dark:bg-zinc-900/80;
+}
+
+.flux-header-chip--spotlight {
+	@apply border-zinc-200/80 bg-white/85 text-zinc-700 hover:border-accent-400 hover:bg-accent-50 hover:text-accent-700 dark:border-zinc-700/80 dark:bg-zinc-900/65 dark:text-zinc-200 dark:hover:border-accent-500 dark:hover:bg-accent-500/12 dark:hover:text-accent-300;
+}
+
+.flux-market-search {
+	@apply rounded-[1.35rem] border border-zinc-200/80 bg-white px-2 py-1.5 shadow-[0_10px_30px_-22px_rgba(15,23,42,.55)] transition-[border-color,box-shadow,background-color] focus-within:border-accent-400/70 focus-within:ring-4 focus-within:ring-accent-500/12 dark:border-zinc-700/80 dark:bg-zinc-900 dark:focus-within:border-accent-500/70 dark:focus-within:ring-accent-400/14;
+}
+
+.flux-market-search__scope {
+	@apply h-11 min-w-[6.6rem] rounded-xl border-0 bg-zinc-50 px-3 text-sm font-semibold text-zinc-600 shadow-none outline-hidden focus:bg-zinc-100 focus:ring-0 dark:bg-zinc-800/80 dark:text-zinc-200 dark:focus:bg-zinc-800;
+}
+
+.flux-market-search__input {
+	@apply h-11 flex-1 rounded-xl border-0 bg-transparent text-base font-medium text-zinc-800 shadow-none outline-hidden ring-0 placeholder:text-zinc-400 focus:border-transparent focus:ring-0 dark:text-zinc-100 dark:placeholder:text-zinc-500;
+}
+
+.flux-market-search__submit {
+	@apply inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-accent-600 text-white transition-colors hover:bg-accent-700 dark:bg-accent-500 dark:hover:bg-accent-600;
+}
+
+.flux-header-centered-topbar {
+	@apply w-full;
+	padding-inline: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.flux-header-centered-main {
+	@apply w-full py-2.5 sm:py-3;
+	padding-inline: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.flux-header-centered-bottom {
+	@apply w-full;
+	padding-inline: clamp(0.5rem, 1.2vw, 1rem);
+}
+
+.flux-header-centered-bottom-grid {
+	@apply grid items-center gap-4 lg:grid-cols-[minmax(0,1fr)_auto_minmax(0,1fr)];
+}
+
+.flux-header-centered-bottom-grid > :nth-child(2) {
+	@apply justify-self-center;
+}
+
+.flux-header-centered-bottom-grid > :last-child {
+	@apply justify-self-end;
+}
+
+.flux-mega-menu-centered-panel {
+	@apply w-[min(108rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-[2.5rem] border border-zinc-200/85 bg-white/98 p-8 shadow-[0_40px_120px_-45px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-zinc-700/80 dark:bg-zinc-900/98 dark:shadow-black/45 xl:p-10 2xl:p-12;
+}
+
+.flux-mega-menu-centered-shell {
+	@apply min-h-[32rem] rounded-[2rem] border border-zinc-200/80 bg-zinc-50/70 p-6 dark:border-zinc-700 dark:bg-zinc-800/35 xl:p-7;
+}
+
+.flux-mega-menu-centered-grid {
+	@apply grid gap-4 xl:grid-cols-3 2xl:grid-cols-4;
+}
+
+.flux-mega-menu-centered-product-grid {
+	@apply grid gap-4 xl:grid-cols-2 2xl:grid-cols-3;
+}
+
+@media (max-width: 767px) {
+	[data-flux-header].flux-header-mobile-compact {
+		min-height: 0;
+		padding-inline: 0 !important;
+	}
+
+	.flux-header-main-wrap {
+		@apply py-2;
+		padding-inline: 0.5rem;
+	}
+
+	.flux-header-centered-main {
+		@apply py-2;
+		padding-inline: 0.5rem;
+	}
+
+	.flux-market-search {
+		@apply rounded-xl px-1.5 py-1;
+	}
+
+	.flux-market-search__scope {
+		@apply h-9 min-w-[5.35rem] rounded-lg px-2 text-xs;
+	}
+
+	.flux-market-search__input {
+		@apply h-9 rounded-lg text-sm;
+	}
+
+	.flux-market-search__submit {
+		@apply h-9 w-9 rounded-lg;
+	}
+
+	.flux-header-chip {
+		@apply px-2.5 py-1 text-[11px];
+	}
+}
+
 /* Post Navigation */
 .posts-navigation,
 .post-navigation,

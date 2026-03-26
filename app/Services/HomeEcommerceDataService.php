@@ -1386,7 +1386,7 @@ class HomeEcommerceDataService
     {
         $slides = [];
 
-        for ($index = 1; $index <= 4; $index++) {
+        for ($index = 1; $index <= 6; $index++) {
             $prefix = "home_ecommerce_hero_slide_{$index}";
             $enabled = (bool) get_theme_mod("{$prefix}_enabled", false);
 
@@ -1397,9 +1397,10 @@ class HomeEcommerceDataService
             $slides[] = [
                 'title' => sanitize_text_field((string) get_theme_mod("{$prefix}_title", '')),
                 'subtitle' => sanitize_textarea_field((string) get_theme_mod("{$prefix}_subtitle", '')),
-                'content_html' => '',
+                'content_html' => wp_kses_post((string) get_theme_mod("{$prefix}_content_html", '')),
                 'badge' => sanitize_text_field((string) get_theme_mod("{$prefix}_badge", '')),
                 'image_id' => absint(get_theme_mod("{$prefix}_image_id", 0)),
+                'image_url' => esc_url_raw((string) get_theme_mod("{$prefix}_image_url", '')),
                 'primary_label' => sanitize_text_field((string) get_theme_mod("{$prefix}_primary_label", '')),
                 'primary_url' => esc_url_raw((string) get_theme_mod("{$prefix}_primary_url", '')),
                 'secondary_label' => sanitize_text_field((string) get_theme_mod("{$prefix}_secondary_label", '')),
