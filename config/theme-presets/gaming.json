@@ -1,0 +1,68 @@
+{
+    "name": "Gaming & Streaming",
+    "description": "Diseño vibrante y dinámico para comunidades gaming, streamers y esports. Perfecto para contenido audiovisual.",
+    "category": "gaming",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "minimal",
+            "sticky": true,
+            "mega_menu": {
+                "enabled": true,
+                "show_categories": false,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 4,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 4,
+                "featured_item_text": "Explorar"
+            }
+        },
+        "footer": {
+            "style": "extra-minimal"
+        },
+        "home": {
+            "layout": "gaming",
+            "sections": {
+                "features": false,
+                "stats": true,
+                "cta": true,
+                "posts": true,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "fuchsia",
+            "appearance": "dark"
+        }
+    },
+    "home_builder": {
+        "content_mode": "hybrid",
+        "section_order": ["hero", "promos", "stats", "blog"],
+        "sections": {
+            "hero": true,
+            "categories": false,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": true,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 5,
+            "categories": 6,
+            "products": 6,
+            "brands": 6,
+            "blog": 8
+        },
+        "hero": {
+            "autoplay": true,
+            "interval_ms": 5000
+        }
+    }
+}

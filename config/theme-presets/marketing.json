@@ -1,0 +1,68 @@
+{
+    "name": "Marketing",
+    "description": "Diseño orientado a conversión para landing pages y campañas de marketing digital. CTA prominentes y secciones de testimonios.",
+    "category": "marketing",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "minimal",
+            "sticky": true,
+            "mega_menu": {
+                "enabled": false,
+                "show_categories": false,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 4,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 4,
+                "featured_item_text": "Ver más"
+            }
+        },
+        "footer": {
+            "style": "clean"
+        },
+        "home": {
+            "layout": "marketing",
+            "sections": {
+                "features": true,
+                "stats": true,
+                "cta": true,
+                "posts": false,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "orange",
+            "appearance": "light"
+        }
+    },
+    "home_builder": {
+        "content_mode": "builder",
+        "section_order": ["hero", "features", "stats", "promos", "cta"],
+        "sections": {
+            "hero": true,
+            "categories": false,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": true,
+            "newsletter": true,
+            "blog": false
+        },
+        "limits": {
+            "hero": 3,
+            "categories": 6,
+            "products": 6,
+            "brands": 6,
+            "blog": 4
+        },
+        "hero": {
+            "autoplay": true,
+            "interval_ms": 7000
+        }
+    }
+}

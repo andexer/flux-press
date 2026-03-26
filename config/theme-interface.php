@@ -15,10 +15,10 @@ return [
 	'header' => [
 		'default_style' => 'classic',
 		'styles'        => [
-			'classic'       => 'Classic — Header inteligente',
-			'centered'      => 'Centered — Logo y menu centrados',
-			'minimal'       => 'Minimal — Drawer simple',
-			'extra-minimal' => 'Extra Minimal — Maximo enfoque',
+			'classic'       => 'Marketplace Split — Mega menu + busqueda amplia',
+			'centered'      => 'Marketplace Pro — Utilidades + accesos destacados',
+			'minimal'       => 'Commerce Compact — Header limpio y rapido',
+			'extra-minimal' => 'Spotlight Search — Busqueda protagonista',
 		],
 		'sticky'        => false,
 		'mega_menu'     => [

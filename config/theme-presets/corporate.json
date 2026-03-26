@@ -1,0 +1,68 @@
+{
+    "name": "Corporate",
+    "description": "Plantilla profesional para sitios corporativos y empresas. Diseño limpio con hero impactante y secciones de features.",
+    "category": "business",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "classic",
+            "sticky": false,
+            "mega_menu": {
+                "enabled": true,
+                "show_categories": true,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 6,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 6,
+                "featured_item_text": "Descubrir"
+            }
+        },
+        "footer": {
+            "style": "corporate"
+        },
+        "home": {
+            "layout": "corporate",
+            "sections": {
+                "features": true,
+                "stats": true,
+                "cta": true,
+                "posts": true,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "blue",
+            "appearance": "light"
+        }
+    },
+    "home_builder": {
+        "content_mode": "builder",
+        "section_order": ["hero", "features", "stats", "posts", "cta"],
+        "sections": {
+            "hero": true,
+            "categories": false,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": false,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 3,
+            "categories": 8,
+            "products": 8,
+            "brands": 8,
+            "blog": 6
+        },
+        "hero": {
+            "autoplay": true,
+            "interval_ms": 6500
+        }
+    }
+}

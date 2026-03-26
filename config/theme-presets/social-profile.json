@@ -1,0 +1,68 @@
+{
+    "name": "Social & Profile",
+    "description": "Diseño personal para creadores de contenido, influencers y portfolios. Enfocado en visibilidad y engagement social.",
+    "category": "social",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "minimal",
+            "sticky": true,
+            "mega_menu": {
+                "enabled": false,
+                "show_categories": false,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 4,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 6,
+                "featured_item_text": "Ver más"
+            }
+        },
+        "footer": {
+            "style": "clean"
+        },
+        "home": {
+            "layout": "profile",
+            "sections": {
+                "features": false,
+                "stats": true,
+                "cta": true,
+                "posts": true,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "pink",
+            "appearance": "light"
+        }
+    },
+    "home_builder": {
+        "content_mode": "hybrid",
+        "section_order": ["hero", "stats", "posts", "newsletter"],
+        "sections": {
+            "hero": true,
+            "categories": false,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": false,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 3,
+            "categories": 6,
+            "products": 4,
+            "brands": 4,
+            "blog": 9
+        },
+        "hero": {
+            "autoplay": false,
+            "interval_ms": 7000
+        }
+    }
+}

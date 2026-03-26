@@ -101,6 +101,7 @@ class HomeEcommerceDataService
             2500,
             20000
         );
+        $heroVisualSlides = $this->heroVisualSlidesFromThemeMod();
         $heroSlidesJson = (string) get_theme_mod(
             'home_ecommerce_hero_slides_json',
             (string) ($heroDefaults['slides_json'] ?? '[]')
@@ -114,6 +115,7 @@ class HomeEcommerceDataService
             'hero'          => [
                 'autoplay'    => $heroAutoplay,
                 'interval_ms' => $heroInterval,
+                'visual_slides' => $heroVisualSlides,
                 'slides_json' => $heroSlidesJson,
             ],
             'newsletter'    => [
@@ -173,11 +175,17 @@ class HomeEcommerceDataService
     public function heroSlides(int $limit): array
     {
         $limit = max(1, min(12, $limit));
-        $cacheKey = "hero-slides:{$limit}";
+        $settings = $this->settings();
+        $heroSettings = is_array($settings['hero'] ?? null) ? $settings['hero'] : [];
+        $heroSettingsHash = substr(md5((string) wp_json_encode($heroSettings)), 0, 12);
+        $cacheKey = "hero-slides:{$limit}:{$heroSettingsHash}";
 
-        $data = $this->remember($cacheKey, function () use ($limit) {
-            $settings = $this->settings();
-            $heroSettings = is_array($settings['hero'] ?? null) ? $settings['hero'] : [];
+        $data = $this->remember($cacheKey, function () use ($limit, $heroSettings) {
+            $visualSlides = $this->normalizeHeroSlidesFromVisualSettings($heroSettings['visual_slides'] ?? [], $limit);
+            if (! empty($visualSlides)) {
+                return $visualSlides;
+            }
+
             $json = (string) ($heroSettings['slides_json'] ?? '[]');
 
             $customSlides = $this->normalizeHeroSlidesFromJson($json, $limit);
@@ -1369,6 +1377,68 @@ class HomeEcommerceDataService
                 '...'
             ),
         ];
+    }
+
+    /**
+     * @return array<int,array<string,mixed>>
+     */
+    private function heroVisualSlidesFromThemeMod(): array
+    {
+        $slides = [];
+
+        for ($index = 1; $index <= 4; $index++) {
+            $prefix = "home_ecommerce_hero_slide_{$index}";
+            $enabled = (bool) get_theme_mod("{$prefix}_enabled", false);
+
+            if (! $enabled) {
+                continue;
+            }
+
+            $slides[] = [
+                'title' => sanitize_text_field((string) get_theme_mod("{$prefix}_title", '')),
+                'subtitle' => sanitize_textarea_field((string) get_theme_mod("{$prefix}_subtitle", '')),
+                'content_html' => '',
+                'badge' => sanitize_text_field((string) get_theme_mod("{$prefix}_badge", '')),
+                'image_id' => absint(get_theme_mod("{$prefix}_image_id", 0)),
+                'primary_label' => sanitize_text_field((string) get_theme_mod("{$prefix}_primary_label", '')),
+                'primary_url' => esc_url_raw((string) get_theme_mod("{$prefix}_primary_url", '')),
+                'secondary_label' => sanitize_text_field((string) get_theme_mod("{$prefix}_secondary_label", '')),
+                'secondary_url' => esc_url_raw((string) get_theme_mod("{$prefix}_secondary_url", '')),
+            ];
+        }
+
+        return $slides;
+    }
+
+    /**
+     * @param mixed $slides
+     * @return array<int,array<string,mixed>>
+     */
+    private function normalizeHeroSlidesFromVisualSettings($slides, int $limit): array
+    {
+        if (! is_array($slides)) {
+            return [];
+        }
+
+        $normalized = [];
+        foreach ($slides as $row) {
+            if (! is_array($row)) {
+                continue;
+            }
+
+            $slide = $this->sanitizeHeroSlide($row);
+            if ($slide === null) {
+                continue;
+            }
+
+            $normalized[] = $slide;
+
+            if (count($normalized) >= $limit) {
+                break;
+            }
+        }
+
+        return $normalized;
     }
 
     /**

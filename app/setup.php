@@ -94,9 +94,14 @@ add_action('after_setup_theme', function () {
      */
     register_nav_menus([
         'primary_navigation'   => __('Primary Navigation', 'flux-press'),
+        'header_highlights_navigation' => __('Header Highlights Navigation', 'flux-press'),
+        'header_utility_left_navigation' => __('Header Utility Left Navigation', 'flux-press'),
+        'header_utility_right_navigation' => __('Header Utility Right Navigation', 'flux-press'),
         'footer_navigation'    => __('Footer Navigation', 'flux-press'),
         'footer_navigation_2'  => __('Footer Navigation 2', 'flux-press'),
     ]);
+
+    add_theme_support('menus');
 
     /**
      * Disable the default block patterns.

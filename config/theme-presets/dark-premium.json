@@ -1,0 +1,68 @@
+{
+    "name": "Dark Premium",
+    "description": "Variante oscura elegante para proyectos tech, gaming o portfolio. Diseño sofisticado con acentos vibrantes.",
+    "category": "dark",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "extra-minimal",
+            "sticky": true,
+            "mega_menu": {
+                "enabled": true,
+                "show_categories": true,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 6,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 6,
+                "featured_item_text": "Explorar"
+            }
+        },
+        "footer": {
+            "style": "extra-minimal"
+        },
+        "home": {
+            "layout": "corporate",
+            "sections": {
+                "features": true,
+                "stats": true,
+                "cta": true,
+                "posts": true,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "purple",
+            "appearance": "dark"
+        }
+    },
+    "home_builder": {
+        "content_mode": "builder",
+        "section_order": ["hero", "features", "stats", "posts", "cta"],
+        "sections": {
+            "hero": true,
+            "categories": false,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": false,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 3,
+            "categories": 6,
+            "products": 6,
+            "brands": 6,
+            "blog": 6
+        },
+        "hero": {
+            "autoplay": true,
+            "interval_ms": 6000
+        }
+    }
+}

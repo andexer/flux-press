@@ -1,0 +1,72 @@
+{
+    "name": "Ecommerce",
+    "description": "Tienda online completa con secciones de productos, categorías, marcas y carrito integrado. Ideal para WooCommerce.",
+    "category": "ecommerce",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "centered",
+            "sticky": true,
+            "mega_menu": {
+                "enabled": true,
+                "show_categories": true,
+                "show_top_rated": true,
+                "show_best_selling": true,
+                "show_pages": true,
+                "categories_limit": 8,
+                "top_rated_limit": 6,
+                "best_selling_limit": 6,
+                "pages_limit": 4,
+                "featured_item_text": "Ver ofertas"
+            }
+        },
+        "footer": {
+            "style": "saas"
+        },
+        "home": {
+            "layout": "ecommerce",
+            "sections": {
+                "features": false,
+                "stats": false,
+                "cta": false,
+                "posts": true,
+                "widgets": false
+            }
+        },
+        "colors": {
+            "accent": "violet",
+            "appearance": "light"
+        },
+        "woocommerce": {
+            "show_cart_icon": true,
+            "show_shop_sidebar": true
+        }
+    },
+    "home_builder": {
+        "content_mode": "hybrid",
+        "section_order": ["hero", "categories", "best_sellers", "top_rated", "brands", "promos", "newsletter", "blog"],
+        "sections": {
+            "hero": true,
+            "categories": true,
+            "best_sellers": true,
+            "top_rated": true,
+            "brands": true,
+            "promos": true,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 5,
+            "categories": 12,
+            "products": 12,
+            "brands": 12,
+            "blog": 6
+        },
+        "hero": {
+            "autoplay": true,
+            "interval_ms": 5500
+        }
+    }
+}

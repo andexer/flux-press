@@ -1,0 +1,68 @@
+{
+    "name": "Portal de Noticias",
+    "description": "Diseño editorial para blogs y portales de noticias. Jerarquía visual clara para contenido textual.",
+    "category": "news",
+    "thumbnail": "",
+    "version": "1.0",
+    "schema_version": "1.0",
+    "settings": {
+        "header": {
+            "style": "classic",
+            "sticky": false,
+            "mega_menu": {
+                "enabled": true,
+                "show_categories": true,
+                "show_top_rated": false,
+                "show_best_selling": false,
+                "show_pages": true,
+                "categories_limit": 10,
+                "top_rated_limit": 4,
+                "best_selling_limit": 4,
+                "pages_limit": 8,
+                "featured_item_text": "Explorar"
+            }
+        },
+        "footer": {
+            "style": "clean"
+        },
+        "home": {
+            "layout": "news",
+            "sections": {
+                "features": false,
+                "stats": false,
+                "cta": false,
+                "posts": true,
+                "widgets": true
+            }
+        },
+        "colors": {
+            "accent": "red",
+            "appearance": "light"
+        }
+    },
+    "home_builder": {
+        "content_mode": "editor",
+        "section_order": ["hero", "newsletter", "blog"],
+        "sections": {
+            "hero": true,
+            "categories": true,
+            "best_sellers": false,
+            "top_rated": false,
+            "brands": false,
+            "promos": false,
+            "newsletter": true,
+            "blog": true
+        },
+        "limits": {
+            "hero": 3,
+            "categories": 8,
+            "products": 4,
+            "brands": 4,
+            "blog": 12
+        },
+        "hero": {
+            "autoplay": false,
+            "interval_ms": 8000
+        }
+    }
+}

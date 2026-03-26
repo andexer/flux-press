@@ -1,0 +1,290 @@
+/**
+ * Flux Theme Preset Selector Styles
+ * 
+ * Estilos para el selector de plantillas en el Customizer de WordPress.
+ */
+
+:root {
+    --flux-preset-card-radius: 12px;
+    --flux-preset-transition: 0.2s ease;
+}
+
+/* Contenedor principal */
+.flux-preset-selector {
+    padding: 0;
+}
+
+/* Header de la sección */
+.flux-preset-header {
+    margin-bottom: 1.5rem;
+}
+
+.flux-preset-header h3 {
+    margin: 0 0 0.5rem 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1f2937;
+}
+
+.flux-preset-header .description {
+    margin: 0;
+    color: #6b7280;
+    font-size: 0.875rem;
+}
+
+/* Grid de presets */
+.flux-preset-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+/* Tarjeta de preset */
+.flux-preset-card {
+    position: relative;
+    background: #fff;
+    border: 2px solid #e5e7eb;
+    border-radius: var(--flux-preset-card-radius);
+    overflow: hidden;
+    cursor: pointer;
+    transition: all var(--flux-preset-transition);
+}
+
+.flux-preset-card:hover {
+    border-color: var(--preset-color, #3b82f6);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.flux-preset-card.active {
+    border-color: var(--preset-color, #3b82f6);
+    background: linear-gradient(135deg, rgba(59, 130, 246, 0.05) 0%, rgba(99, 102, 241, 0.05) 100%);
+}
+
+/* Thumbnail del preset */
+.flux-preset-thumbnail {
+    aspect-ratio: 16 / 10;
+    background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+    overflow: hidden;
+}
+
+.flux-preset-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.flux-preset-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+}
+
+.flux-preset-placeholder svg {
+    width: 2.5rem;
+    height: 2.5rem;
+    margin-bottom: 0.5rem;
+    opacity: 0.5;
+}
+
+.flux-preset-category {
+    font-size: 0.625rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: var(--preset-color, #6b7280);
+}
+
+/* Info del preset */
+.flux-preset-info {
+    padding: 1rem;
+}
+
+.flux-preset-info h4 {
+    margin: 0 0 0.25rem 0;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.flux-preset-info p {
+    margin: 0;
+    font-size: 0.75rem;
+    color: #6b7280;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+/* Badge de activo */
+.flux-preset-active-badge {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.5rem;
+    background: var(--preset-color, #22c55e);
+    color: white;
+    font-size: 0.625rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-radius: 9999px;
+}
+
+.flux-preset-active-badge svg {
+    width: 0.75rem;
+    height: 0.75rem;
+}
+
+/* Card personalizada */
+.flux-preset-card.custom {
+    border-style: dashed;
+}
+
+.flux-preset-card.custom .flux-preset-placeholder {
+    color: #9ca3af;
+}
+
+.flux-preset-card.custom .flux-preset-category {
+    color: #6b7280;
+}
+
+/* Acciones */
+.flux-preset-actions {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1rem;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Modal de confirmación */
+.flux-preset-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+}
+
+.flux-preset-modal {
+    background: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    max-width: 400px;
+    width: 90%;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+.flux-preset-modal h3 {
+    margin: 0 0 0.75rem 0;
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: #111827;
+}
+
+.flux-preset-modal p {
+    margin: 0 0 1rem 0;
+    color: #4b5563;
+    font-size: 0.875rem;
+    line-height: 1.5;
+}
+
+.flux-preset-modal p.warning {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #fef3c7;
+    border-radius: 8px;
+    color: #92400e;
+    font-size: 0.8125rem;
+}
+
+.flux-preset-modal p.warning svg {
+    flex-shrink: 0;
+    margin-top: 0.125rem;
+}
+
+.flux-preset-modal-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.75rem;
+    margin-top: 1.5rem;
+}
+
+/* Notice */
+.flux-preset-notice {
+    margin-bottom: 1rem;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+    .flux-preset-header h3 {
+        color: #f9fafb;
+    }
+
+    .flux-preset-header .description {
+        color: #9ca3af;
+    }
+
+    .flux-preset-card {
+        background: #1f2937;
+        border-color: #374151;
+    }
+
+    .flux-preset-card:hover {
+        border-color: var(--preset-color, #3b82f6);
+    }
+
+    .flux-preset-card.active {
+        background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(99, 102, 241, 0.1) 100%);
+    }
+
+    .flux-preset-info h4 {
+        color: #f9fafb;
+    }
+
+    .flux-preset-info p {
+        color: #9ca3af;
+    }
+
+    .flux-preset-actions {
+        border-color: #374151;
+    }
+
+    .flux-preset-modal {
+        background: #1f2937;
+    }
+
+    .flux-preset-modal h3 {
+        color: #f9fafb;
+    }
+
+    .flux-preset-modal p {
+        color: #d1d5db;
+    }
+
+    .flux-preset-modal p.warning {
+        background: #451a03;
+        color: #fde68a;
+    }
+}
+
+/* Responsive */
+@media (max-width: 600px) {
+    .flux-preset-grid {
+        grid-template-columns: 1fr;
+    }
+}
