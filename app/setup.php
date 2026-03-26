@@ -94,6 +94,8 @@ add_action('after_setup_theme', function () {
      */
     register_nav_menus([
         'primary_navigation'   => __('Primary Navigation', 'flux-press'),
+        'header_mega_navigation' => __('Header Mega Navigation', 'flux-press'),
+        'header_actions_navigation' => __('Header Actions Navigation', 'flux-press'),
         'header_highlights_navigation' => __('Header Highlights Navigation', 'flux-press'),
         'header_utility_left_navigation' => __('Header Utility Left Navigation', 'flux-press'),
         'header_utility_right_navigation' => __('Header Utility Right Navigation', 'flux-press'),

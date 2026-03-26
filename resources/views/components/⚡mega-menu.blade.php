@@ -402,7 +402,6 @@ new class extends Component
         togglePanel(id, defaultSection) {
             if (this.openId === id) {
                 this.openId = null;
-
                 return;
             }
 
@@ -436,7 +435,7 @@ new class extends Component
             <a
                 href="{{ $item['url'] }}"
                 wire:navigate
-                class="inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200 {{ $item['current'] ? 'bg-accent-600 text-white shadow-sm shadow-accent-600/30' : 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white' }}"
+                class="inline-flex items-center rounded-2xl px-4 py-2.5 text-sm font-bold tracking-tight transition-all duration-300 {{ $item['current'] ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-zinc-900 dark:hover:text-white' }}"
             >
                 {{ $item['title'] }}
             </a>
@@ -446,16 +445,16 @@ new class extends Component
                 $panelSections = [];
 
                 if (! empty($smartCategories)) {
-                    $panelSections[] = ['key' => 'categories', 'label' => __('Categorias', 'flux-press')];
+                    $panelSections[] = ['key' => 'categories', 'label' => __('Categorias', 'flux-press'), 'icon' => 'squares-2x2'];
                 }
                 if (! empty($smartTopRated)) {
-                    $panelSections[] = ['key' => 'top_rated', 'label' => __('Mejor valorados', 'flux-press')];
+                    $panelSections[] = ['key' => 'top_rated', 'label' => __('Mejor valorados', 'flux-press'), 'icon' => 'star'];
                 }
                 if (! empty($smartBestSelling)) {
-                    $panelSections[] = ['key' => 'best_selling', 'label' => __('Mas vendidos', 'flux-press')];
+                    $panelSections[] = ['key' => 'best_selling', 'label' => __('Mas vendidos', 'flux-press'), 'icon' => 'bolt'];
                 }
                 if (! empty($smartPages)) {
-                    $panelSections[] = ['key' => 'pages', 'label' => __('Paginas', 'flux-press')];
+                    $panelSections[] = ['key' => 'pages', 'label' => __('Paginas', 'flux-press'), 'icon' => 'document-text'];
                 }
 
                 $panelDefaultSection = ! empty($panelSections) ? $panelSections[0]['key'] : 'menu';
@@ -467,198 +466,215 @@ new class extends Component
             >
                 <button
                     type="button"
-                    class="{{ $isCenteredLayout ? 'inline-flex items-center gap-2 rounded-full px-5 py-3 text-base font-black tracking-tight shadow-sm transition-all duration-200' : 'inline-flex items-center gap-1.5 rounded-xl px-3 py-2 text-sm font-semibold transition-all duration-200' }}"
+                    class="{{ $isCenteredLayout ? 'inline-flex items-center gap-2.5 rounded-full px-5 py-3 text-base font-black tracking-tight shadow-sm transition-all duration-300' : 'inline-flex items-center gap-2 rounded-2xl px-4 py-2 text-sm font-bold tracking-tight transition-all duration-300' }}"
                     :class="isOpen(@js($itemId))
-                        ? '{{ $isCenteredLayout ? 'bg-zinc-950 text-white shadow-[0_18px_40px_-24px_rgba(15,23,42,.45)] dark:bg-zinc-100 dark:text-zinc-950' : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' }}'
-                        : '{{ $item['current'] ? 'bg-accent-600 text-white shadow-sm shadow-accent-600/30' : 'text-zinc-700 dark:text-zinc-200 hover:bg-zinc-100 dark:hover:bg-zinc-800 hover:text-zinc-900 dark:hover:text-white' }}'"
+                        ? '{{ $isCenteredLayout ? 'bg-zinc-950 text-white translate-y-[-2px] shadow-[0_12px_32px_-12px_rgba(15,23,42,.5)] dark:bg-white dark:text-zinc-950' : 'bg-zinc-900 text-white dark:bg-zinc-100 dark:text-zinc-900' }}'
+                        : '{{ $item['current'] ? 'bg-accent-600 text-white shadow-lg shadow-accent-600/30' : 'text-zinc-600 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800/80 hover:text-zinc-900 dark:hover:text-white' }}'"
                     @click.prevent="togglePanel(@js($itemId), @js($panelDefaultSection))"
                     aria-haspopup="dialog"
                     :aria-expanded="isOpen(@js($itemId)) ? 'true' : 'false'"
                     aria-controls="mega-panel-{{ $itemId }}"
                 >
                     <span>{{ $item['title'] }}</span>
-                    <flux:icon.chevron-down class="size-4 transition-transform duration-200" :class="isOpen(@js($itemId)) ? 'rotate-180' : ''" />
+                    <flux:icon.chevron-down class="size-4 opacity-60 transition-transform duration-300" :class="isOpen(@js($itemId)) ? 'rotate-180 opacity-100' : ''" />
                 </button>
 
                 <div
                     id="mega-panel-{{ $itemId }}"
                     x-cloak
                     x-show="isOpen(@js($itemId))"
-                    x-transition:enter="transition ease-out duration-220"
-                    x-transition:enter-start="opacity-0 -translate-y-2"
-                    x-transition:enter-end="opacity-100 translate-y-0"
-                    x-transition:leave="transition ease-in duration-160"
-                    x-transition:leave-start="opacity-100 translate-y-0"
-                    x-transition:leave-end="opacity-0 -translate-y-2"
-                    class="absolute left-1/2 top-full z-[60] -translate-x-1/2 {{ $isCenteredLayout ? 'pt-4' : 'pt-3' }}"
+                    x-transition:enter="transition cubic-bezier(0.16, 1, 0.3, 1) duration-400"
+                    x-transition:enter-start="opacity-0 translate-y-4 scale-[0.98]"
+                    x-transition:enter-end="opacity-100 translate-y-0 scale-100"
+                    x-transition:leave="transition cubic-bezier(0.32, 0, 0.67, 0) duration-250"
+                    x-transition:leave-start="opacity-100 translate-y-0 scale-100"
+                    x-transition:leave-end="opacity-0 translate-y-2 scale-[0.99]"
+                    class="absolute left-1/2 top-full z-[60] -translate-x-1/2 {{ $isCenteredLayout ? 'pt-6' : 'pt-4' }}"
                     role="dialog"
                     aria-label="{{ __('Panel de navegacion', 'flux-press') }}"
                 >
-                    <div class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-panel' : 'w-[76rem] max-w-[calc(100vw-2.5rem)] rounded-[2rem] border border-zinc-200/80 bg-white/95 p-6 shadow-2xl shadow-zinc-900/10 backdrop-blur dark:border-zinc-700 dark:bg-zinc-900/95 dark:shadow-black/35' }}">
-                        <div class="{{ $isCenteredLayout ? 'mb-8 flex flex-col gap-5 border-b border-zinc-200/70 pb-6 dark:border-zinc-700 xl:flex-row xl:items-end xl:justify-between' : 'mb-5 flex items-center justify-between border-b border-zinc-200/70 pb-3 dark:border-zinc-700' }}">
+                    <div class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-panel' : 'w-[76rem] max-w-[calc(100vw-3rem)] rounded-[2rem] border border-zinc-200/80 bg-white/95 p-6 shadow-2xl shadow-zinc-900/10 backdrop-blur-3xl dark:border-zinc-700/80 dark:bg-zinc-900/95 dark:shadow-black/40' }}">
+                        <div class="{{ $isCenteredLayout ? 'mb-8 flex flex-col gap-5 border-b border-zinc-200/60 pb-6 dark:border-zinc-700/60 xl:flex-row xl:items-end xl:justify-between' : 'mb-5 flex items-center justify-between border-b border-zinc-200/60 pb-3 dark:border-zinc-700/60' }}">
                             <div>
-                                <p class="{{ $isCenteredLayout ? 'text-xs font-black uppercase tracking-[0.24em] text-zinc-500 dark:text-zinc-400' : 'text-sm font-black uppercase tracking-[0.2em] text-zinc-500 dark:text-zinc-400' }}">{{ $item['title'] }}</p>
+                                <span class="inline-flex items-center gap-2 rounded-full bg-accent-50 px-3 py-0.5 text-[9px] font-black uppercase tracking-widest text-accent-700 dark:bg-accent-500/10 dark:text-accent-400">
+                                    <span class="size-1 rounded-full bg-accent-500 animate-pulse"></span>
+                                    {{ $item['title'] }}
+                                </span>
                                 @if($isCenteredLayout)
-                                    <h3 class="mt-3 text-3xl font-black tracking-tight text-zinc-950 dark:text-zinc-50 xl:text-[2.2rem]">
-                                        {{ __('Explora este espacio con un mega menu protagonista', 'flux-press') }}
+                                    <h3 class="mt-3 text-3xl font-black tracking-tighter text-zinc-950 dark:text-zinc-50 xl:text-[2rem]">
+                                        {{ __('Descubre este espacio', 'flux-press') }}
                                     </h3>
-                                    <p class="mt-3 max-w-3xl text-sm leading-6 text-zinc-500 dark:text-zinc-400 xl:text-base">
-                                        {{ __('Navega categorias, productos destacados y accesos clave desde un panel amplio, centrado y mucho mas facil de recorrer.', 'flux-press') }}
+                                    <p class="mt-2.5 max-w-xl text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
+                                        {{ __('Explora secciones, categorías y productos destacados en un panel compacto guiado paso a paso.', 'flux-press') }}
                                     </p>
                                 @endif
                             </div>
-                            <a href="{{ $item['url'] }}" wire:navigate class="inline-flex items-center gap-1 {{ $isCenteredLayout ? 'rounded-full border border-accent-200 bg-accent-50 px-4 py-2 text-sm font-bold text-accent-700 hover:border-accent-300 hover:bg-accent-100 dark:border-accent-500/40 dark:bg-accent-500/10 dark:text-accent-300 dark:hover:border-accent-500/60 dark:hover:bg-accent-500/15' : 'text-xs font-semibold text-accent-600 dark:text-accent-400 hover:underline' }}">
+                            <a href="{{ $item['url'] }}" wire:navigate class="group inline-flex items-center gap-2 {{ $isCenteredLayout ? 'rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100' : 'text-[11px] font-bold text-accent-600 dark:text-accent-400 hover:text-accent-700' }}">
                                 {{ __('Ver todo', 'flux-press') }}
-                                <flux:icon.arrow-right class="size-3.5" />
+                                <flux:icon.arrow-right class="size-3.5 transition-transform group-hover:translate-x-1" />
                             </a>
                         </div>
 
-                        <div class="{{ $isCenteredLayout ? 'grid gap-8 xl:grid-cols-[19rem_minmax(0,1fr)] 2xl:gap-10' : 'grid grid-cols-12 gap-6' }}">
-                            <section class="{{ $isCenteredLayout ? 'space-y-4' : 'col-span-4 space-y-2' }}">
-                                @if($isCenteredLayout)
-                                    <div class="rounded-[1.75rem] border border-zinc-200/80 bg-zinc-50/75 p-5 dark:border-zinc-700 dark:bg-zinc-800/40">
-                                        <h3 class="text-xs font-black uppercase tracking-[0.22em] text-zinc-500 dark:text-zinc-400">{{ __('Navegacion rapida', 'flux-press') }}</h3>
-                                        <p class="mt-3 text-sm text-zinc-500 dark:text-zinc-400">{{ __('Accesos directos para entrar a secciones, colecciones o paginas relacionadas.', 'flux-press') }}</p>
-                                        <div class="mt-5 space-y-3">
-                                @else
-                                    <h3 class="text-[11px] font-black uppercase tracking-[0.18em] text-zinc-500 dark:text-zinc-400">{{ __('Navegacion', 'flux-press') }}</h3>
-                                @endif
-                                @if(! empty($item['children']))
-                                    @foreach($item['children'] as $child)
-                                        <a
-                                            href="{{ $child['url'] }}"
-                                            wire:navigate
-                                            class="group flex items-center justify-between rounded-xl border {{ $isCenteredLayout ? 'px-4 py-4' : 'px-3 py-2.5' }} transition-all {{ $child['current'] ? 'border-accent-300 bg-accent-50 dark:border-accent-500/60 dark:bg-accent-500/10' : 'border-zinc-200/80 dark:border-zinc-700 hover:border-accent-300 dark:hover:border-accent-500/60 hover:bg-zinc-50 dark:hover:bg-zinc-800/60' }}"
-                                        >
-                                            <span class="{{ $isCenteredLayout ? 'text-base font-bold text-zinc-900 dark:text-zinc-100' : 'text-sm font-semibold text-zinc-900 dark:text-zinc-100' }}">{{ $child['title'] }}</span>
-                                            <flux:icon.arrow-up-right class="size-4 text-zinc-400 group-hover:text-accent-500 transition-colors" />
-                                        </a>
-                                    @endforeach
-                                @else
-                                    <a
-                                        href="{{ $item['url'] }}"
-                                        wire:navigate
-                                        class="group flex items-center justify-between rounded-xl border border-zinc-200/80 dark:border-zinc-700 {{ $isCenteredLayout ? 'px-4 py-4' : 'px-3 py-2.5' }} hover:border-accent-300 dark:hover:border-accent-500/60 hover:bg-zinc-50 dark:hover:bg-zinc-800/60 transition-all"
-                                    >
-                                        <span class="{{ $isCenteredLayout ? 'text-base font-bold text-zinc-900 dark:text-zinc-100' : 'text-sm font-semibold text-zinc-900 dark:text-zinc-100' }}">{{ __('Ir a esta seccion', 'flux-press') }}</span>
-                                        <flux:icon.arrow-up-right class="size-4 text-zinc-400 group-hover:text-accent-500 transition-colors" />
-                                    </a>
-                                @endif
-                                @if($isCenteredLayout)
-                                        </div>
-                                    </div>
-                                @endif
-                            </section>
-
-                            <section class="{{ $isCenteredLayout ? 'min-w-0' : 'col-span-8' }}">
-                                @if(! empty($panelSections))
-                                    <div class="flex flex-wrap gap-3">
+                        <div class="{{ $isCenteredLayout ? 'grid gap-6 xl:grid-cols-[19rem_minmax(0,1fr)] 2xl:gap-8' : 'grid grid-cols-12 gap-6' }}">
+                            <section class="{{ $isCenteredLayout ? 'space-y-4' : 'col-span-4 space-y-3' }}">
+                                <div class="rounded-[1.75rem] border border-zinc-200/60 bg-zinc-100/30 p-5 dark:border-zinc-800/60 dark:bg-zinc-800/20">
+                                    <h3 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Navegación Paso a Paso', 'flux-press') }}</h3>
+                                    <div class="mt-4 space-y-2">
                                         @foreach($panelSections as $section)
                                             <button
                                                 type="button"
-                                                class="inline-flex items-center gap-1.5 rounded-full border {{ $isCenteredLayout ? 'px-4 py-2 text-sm font-black tracking-[0.14em]' : 'px-3 py-1.5 text-xs font-bold uppercase tracking-wide' }} transition-all"
+                                                class="group flex w-full items-center gap-2.5 rounded-xl border px-3.5 py-2.5 text-left transition-all duration-300"
                                                 @click.prevent="setSection(@js($itemId), @js($section['key']))"
                                                 :class="sectionFor(@js($itemId), @js($panelDefaultSection)) === @js($section['key'])
-                                                    ? 'border-accent-300 bg-accent-50 text-accent-700 dark:border-accent-500/70 dark:bg-accent-500/15 dark:text-accent-300'
-                                                    : 'border-zinc-200 bg-white text-zinc-600 hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900 dark:text-zinc-300 dark:hover:border-zinc-500 dark:hover:text-zinc-100'"
+                                                    ? 'border-accent-500/30 bg-white text-accent-700 shadow-lg shadow-accent-950/5 ring-1 ring-accent-500/10 dark:bg-zinc-800 dark:text-accent-400'
+                                                    : 'border-transparent text-zinc-500 hover:bg-white/80 hover:text-zinc-900 dark:hover:bg-zinc-800/80 dark:hover:text-zinc-200'"
                                             >
-                                                {{ $section['label'] }}
+                                                <div class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-zinc-100 transition-colors group-hover:bg-accent-50 dark:bg-zinc-800 dark:group-hover:bg-accent-500/10"
+                                                    :class="sectionFor(@js($itemId), @js($panelDefaultSection)) === @js($section['key']) ? '!bg-accent-600 !text-white' : 'text-zinc-500'"
+                                                >
+                                                    @switch($section['icon'])
+                                                        @case('squares-2x2') <flux:icon.squares-2x2 class="size-4" /> @break
+                                                        @case('star') <flux:icon.star class="size-4" /> @break
+                                                        @case('bolt') <flux:icon.bolt class="size-4" /> @break
+                                                        @case('document-text') <flux:icon.document-text class="size-4" /> @break
+                                                    @endswitch
+                                                </div>
+                                                <span class="text-xs font-bold tracking-tight">{{ $section['label'] }}</span>
+                                                <flux:icon.chevron-right class="ml-auto size-3.5 opacity-0 transition-all group-hover:opacity-100" />
                                             </button>
                                         @endforeach
                                     </div>
 
-                                    <div class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-shell mt-5' : 'mt-4 rounded-2xl border border-zinc-200/80 bg-zinc-50/70 p-4 dark:border-zinc-700 dark:bg-zinc-800/35' }}">
-                                        <div
-                                            x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'categories'"
-                                            class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-grid' : 'grid grid-cols-2 gap-2 xl:grid-cols-3' }}"
-                                        >
-                                            @foreach($smartCategories as $category)
-                                                <a href="{{ $category['url'] }}" wire:navigate class="{{ $isCenteredLayout ? 'group rounded-2xl border border-zinc-200/80 bg-white px-4 py-4 text-zinc-700 transition-colors hover:border-accent-300 hover:bg-white dark:border-zinc-700 dark:bg-zinc-900/80 dark:text-zinc-200 dark:hover:border-accent-500/60' : 'rounded-lg border border-transparent px-2 py-1.5 text-sm text-zinc-700 transition-colors hover:border-zinc-200 hover:bg-white dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900' }}">
-                                                    <span class="{{ $isCenteredLayout ? 'block text-base font-bold text-zinc-900 dark:text-zinc-100' : 'font-semibold' }}">{{ $category['name'] }}</span>
-                                                    <span class="{{ $isCenteredLayout ? 'mt-2 inline-flex rounded-full bg-zinc-100 px-2.5 py-1 text-xs font-semibold text-zinc-500 dark:bg-zinc-800 dark:text-zinc-300' : 'ml-1 text-xs text-zinc-500 dark:text-zinc-400' }}">{{ $isCenteredLayout ? sprintf(_n('%d producto', '%d productos', $category['count'], 'flux-press'), $category['count']) : '(' . $category['count'] . ')' }}</span>
-                                                </a>
-                                            @endforeach
-                                        </div>
-
-                                        <div
-                                            x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'top_rated'"
-                                            class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-product-grid' : 'grid grid-cols-1 gap-3 xl:grid-cols-2' }}"
-                                        >
-                                            @foreach($smartTopRated as $product)
-                                                <a href="{{ $product['url'] }}" wire:navigate class="flex items-center gap-3 rounded-2xl border {{ $isCenteredLayout ? 'border-zinc-200/80 bg-white px-4 py-4 hover:border-accent-300 dark:border-zinc-700 dark:bg-zinc-900/80 dark:hover:border-accent-500/60' : 'border-transparent px-2 py-2 hover:border-zinc-200 hover:bg-white dark:hover:border-zinc-700 dark:hover:bg-zinc-900' }} transition-colors">
-                                                    @if($product['image'])
-                                                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="{{ $isCenteredLayout ? 'size-16 rounded-2xl border border-zinc-200/60 object-cover dark:border-zinc-700/60' : 'size-10 rounded-lg border border-zinc-200/60 object-cover dark:border-zinc-700/60' }}" />
-                                                    @else
-                                                        <div class="flex {{ $isCenteredLayout ? 'size-16 rounded-2xl' : 'size-10 rounded-lg' }} items-center justify-center border border-zinc-200/60 bg-zinc-100 dark:border-zinc-700/60 dark:bg-zinc-800">
-                                                            <flux:icon.photo class="size-4 text-zinc-400" />
-                                                        </div>
-                                                    @endif
-                                                    <div class="min-w-0 flex-1">
-                                                        <p class="line-clamp-1 {{ $isCenteredLayout ? 'text-base font-bold leading-tight text-zinc-900 dark:text-zinc-100' : 'text-sm font-semibold leading-tight text-zinc-900 dark:text-zinc-100' }}">{{ $product['name'] }}</p>
-                                                        @if($product['price'] !== '')
-                                                            <p class="{{ $isCenteredLayout ? 'mt-1 text-sm font-black text-accent-600 dark:text-accent-400' : 'mt-0.5 text-[11px] font-bold text-accent-600 dark:text-accent-400' }}">{!! $product['price'] !!}</p>
-                                                        @endif
-                                                    </div>
-                                                </a>
-                                            @endforeach
-                                        </div>
-
-                                        <div
-                                            x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'best_selling'"
-                                            class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-product-grid' : 'grid grid-cols-1 gap-3 xl:grid-cols-2' }}"
-                                        >
-                                            @if(! empty($smartBestSelling))
-                                                @foreach($smartBestSelling as $product)
-                                                    <a href="{{ $product['url'] }}" wire:navigate class="flex items-center gap-3 rounded-2xl border {{ $isCenteredLayout ? 'border-zinc-200/80 bg-white px-4 py-4 hover:border-accent-300 dark:border-zinc-700 dark:bg-zinc-900/80 dark:hover:border-accent-500/60' : 'border-transparent px-2 py-2 hover:border-zinc-200 hover:bg-white dark:hover:border-zinc-700 dark:hover:bg-zinc-900' }} transition-colors">
-                                                        @if($product['image'])
-                                                            <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="{{ $isCenteredLayout ? 'size-16 rounded-2xl border border-zinc-200/60 object-cover dark:border-zinc-700/60' : 'size-10 rounded-lg border border-zinc-200/60 object-cover dark:border-zinc-700/60' }}" />
-                                                        @else
-                                                            <div class="flex {{ $isCenteredLayout ? 'size-16 rounded-2xl' : 'size-10 rounded-lg' }} items-center justify-center border border-zinc-200/60 bg-zinc-100 dark:border-zinc-700/60 dark:bg-zinc-800">
-                                                                <flux:icon.photo class="size-4 text-zinc-400" />
-                                                            </div>
-                                                        @endif
-                                                        <div class="min-w-0 flex-1">
-                                                            <p class="line-clamp-1 {{ $isCenteredLayout ? 'text-base font-bold leading-tight text-zinc-900 dark:text-zinc-100' : 'text-sm font-semibold leading-tight text-zinc-900 dark:text-zinc-100' }}">{{ $product['name'] }}</p>
-                                                            <div class="mt-0.5 flex items-center gap-2">
-                                                                @if($product['price'] !== '')
-                                                                    <p class="{{ $isCenteredLayout ? 'text-sm font-black text-accent-600 dark:text-accent-400' : 'text-[11px] font-bold text-accent-600 dark:text-accent-400' }}">{!! $product['price'] !!}</p>
-                                                                @endif
-                                                                @if($product['total_sales'] > 0)
-                                                                    <span class="{{ $isCenteredLayout ? 'rounded-full bg-zinc-100 px-2 py-1 text-[11px] font-semibold tabular-nums text-zinc-500 dark:bg-zinc-800 dark:text-zinc-300' : 'text-[10px] font-medium tabular-nums text-zinc-500 dark:text-zinc-400' }}">
-                                                                        {{ sprintf(_n('%d venta', '%d ventas', $product['total_sales'], 'flux-press'), $product['total_sales']) }}
-                                                                    </span>
-                                                                @endif
-                                                            </div>
-                                                        </div>
+                                    <div class="mt-6 border-t border-zinc-200/60 pt-5 dark:border-zinc-800/60">
+                                        <h4 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Accesos Rápidos', 'flux-press') }}</h4>
+                                        <div class="mt-3 space-y-1.5">
+                                            @if(! empty($item['children']))
+                                                @foreach($item['children'] as $child)
+                                                    <a href="{{ $child['url'] }}" wire:navigate class="group flex items-center justify-between rounded-lg px-2 py-1.5 text-[13px] font-bold text-zinc-600 transition-all hover:bg-accent-50 hover:text-accent-700 dark:text-zinc-400 dark:hover:bg-accent-500/5 dark:hover:text-accent-300">
+                                                        <span>{{ $child['title'] }}</span>
+                                                        <flux:icon.arrow-up-right class="size-3 opacity-0 transition-all group-hover:opacity-100" />
                                                     </a>
                                                 @endforeach
                                             @else
-                                                <p class="rounded-lg border border-dashed border-zinc-200 px-3 py-3 text-xs text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-                                                    {{ __('Aun no hay ventas registradas.', 'flux-press') }}
-                                                </p>
+                                                <a href="{{ $item['url'] }}" wire:navigate class="group flex items-center justify-between rounded-lg px-2 py-1.5 text-[13px] font-bold text-zinc-600 transition-all hover:bg-accent-50 hover:text-accent-700 dark:text-zinc-400 dark:hover:bg-accent-500/5 dark:hover:text-accent-300">
+                                                    <span>{{ __('Ver sección', 'flux-press') }}</span>
+                                                    <flux:icon.arrow-up-right class="size-3 opacity-0 transition-all group-hover:opacity-100" />
+                                                </a>
                                             @endif
                                         </div>
+                                    </div>
+                                </div>
+                            </section>
 
-                                        <div
-                                            x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'pages'"
-                                            class="{{ $isCenteredLayout ? 'grid gap-4 xl:grid-cols-2 2xl:grid-cols-3' : 'grid grid-cols-1 gap-2 xl:grid-cols-2' }}"
-                                        >
-                                            @foreach($smartPages as $page)
-                                                <a
-                                                    href="{{ $page['url'] }}"
-                                                    wire:navigate
-                                                    class="{{ $isCenteredLayout ? 'rounded-2xl border px-4 py-4 text-base font-semibold transition-colors' : 'rounded-lg border border-transparent px-2 py-1.5 text-sm transition-colors' }} {{ $page['current'] ? 'border-accent-300 bg-accent-50 font-semibold text-accent-700 dark:border-accent-500/40 dark:bg-accent-500/10 dark:text-accent-400' : 'border-transparent text-zinc-700 hover:border-zinc-200 hover:bg-white dark:text-zinc-200 dark:hover:border-zinc-700 dark:hover:bg-zinc-900' }}"
-                                                >
-                                                    {{ $page['title'] }}
-                                                </a>
-                                            @endforeach
-                                        </div>
+                            <section class="{{ $isCenteredLayout ? 'min-w-0' : 'col-span-8' }}">
+                                <div class="flux-mega-menu-centered-shell">
+                                    <div
+                                        x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'categories'"
+                                        x-transition:enter="transition ease-out duration-500 delay-100"
+                                        x-transition:enter-start="opacity-0 translate-x-4"
+                                        x-transition:enter-end="opacity-100 translate-x-0"
+                                        class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-grid' : 'grid grid-cols-2 gap-4 xl:grid-cols-3' }}"
+                                    >
+                                        @foreach($smartCategories as $category)
+                                            <a href="{{ $category['url'] }}" wire:navigate class="group relative flex flex-col justify-between overflow-hidden rounded-2xl border border-zinc-200/60 bg-white p-5 transition-all duration-300 hover:border-accent-300 hover:shadow-xl hover:shadow-accent-950/5 dark:border-zinc-800/60 dark:bg-zinc-900 dark:hover:border-accent-500/50">
+                                                <div class="mb-3 flex size-10 items-center justify-center rounded-xl bg-zinc-50 transition-colors group-hover:bg-accent-50 dark:bg-zinc-800 dark:group-hover:bg-accent-500/10">
+                                                    <flux:icon.tag class="size-5 text-zinc-400 group-hover:text-accent-600 dark:text-zinc-500 dark:group-hover:text-accent-400" />
+                                                </div>
+                                                <div>
+                                                    <span class="block text-base font-black tracking-tight text-zinc-900 dark:text-zinc-100">{{ $category['name'] }}</span>
+                                                    <span class="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-zinc-500 dark:text-zinc-400">
+                                                        {{ sprintf(_n('%d producto', '%d productos', $category['count'], 'flux-press'), $category['count']) }}
+                                                        <flux:icon.arrow-right class="size-3 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+                                                    </span>
+                                                </div>
+                                            </a>
+                                        @endforeach
                                     </div>
-                                @else
-                                    <div class="rounded-2xl border border-dashed border-zinc-200 px-4 py-6 text-sm text-zinc-500 dark:border-zinc-700 dark:text-zinc-400">
-                                        {{ __('Agrega categorias, productos o paginas para enriquecer este panel.', 'flux-press') }}
+
+                                    <div
+                                        x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'top_rated'"
+                                        x-transition:enter="transition ease-out duration-500 delay-100"
+                                        x-transition:enter-start="opacity-0 translate-x-4"
+                                        x-transition:enter-end="opacity-100 translate-x-0"
+                                        class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-product-grid' : 'grid grid-cols-1 gap-4 xl:grid-cols-2' }}"
+                                    >
+                                        @foreach($smartTopRated as $product)
+                                            <a href="{{ $product['url'] }}" wire:navigate class="group flex items-center gap-4 rounded-2xl border border-zinc-200/60 bg-white p-3 transition-all duration-300 hover:border-accent-300 hover:shadow-lg dark:border-zinc-800/60 dark:bg-zinc-900 dark:hover:border-accent-500/50">
+                                                @if($product['image'])
+                                                    <div class="relative size-16 shrink-0 overflow-hidden rounded-xl border border-zinc-100 dark:border-zinc-800">
+                                                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="size-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                    </div>
+                                                @else
+                                                    <div class="flex size-16 shrink-0 items-center justify-center rounded-xl border border-zinc-100 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/50">
+                                                        <flux:icon.photo class="size-5 text-zinc-300" />
+                                                    </div>
+                                                @endif
+                                                <div class="min-w-0 flex-1">
+                                                    <p class="line-clamp-2 text-[15px] font-black leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">{{ $product['name'] }}</p>
+                                                    <div class="mt-2.5 flex items-center justify-between">
+                                                        <p class="text-[13px] font-black text-accent-600 dark:text-accent-400">{!! $product['price'] !!}</p>
+                                                        <div class="flex items-center gap-1">
+                                                            <flux:icon.star class="size-2.5 text-amber-400" variant="solid" />
+                                                            <span class="text-[9px] font-black text-zinc-400">{{ $product['rating'] }}</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endforeach
                                     </div>
-                                @endif
+
+                                    <div
+                                        x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'best_selling'"
+                                        x-transition:enter="transition ease-out duration-500 delay-100"
+                                        x-transition:enter-start="opacity-0 translate-x-4"
+                                        x-transition:enter-end="opacity-100 translate-x-0"
+                                        class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-product-grid' : 'grid grid-cols-1 gap-4 xl:grid-cols-2' }}"
+                                    >
+                                        @foreach($smartBestSelling as $product)
+                                            <a href="{{ $product['url'] }}" wire:navigate class="group flex items-center gap-4 rounded-2xl border border-zinc-200/60 bg-white p-3 transition-all duration-300 hover:border-accent-300 hover:shadow-lg dark:border-zinc-800/60 dark:bg-zinc-900 dark:hover:border-accent-500/50">
+                                                @if($product['image'])
+                                                    <div class="relative size-16 shrink-0 overflow-hidden rounded-xl border border-zinc-100 dark:border-zinc-800">
+                                                        <img src="{{ $product['image'] }}" alt="{{ $product['name'] }}" class="size-full object-cover transition-transform duration-500 group-hover:scale-110" />
+                                                    </div>
+                                                @else
+                                                    <div class="flex size-16 shrink-0 items-center justify-center rounded-xl border border-zinc-100 bg-zinc-50 dark:border-zinc-800 dark:bg-zinc-800/50">
+                                                        <flux:icon.photo class="size-5 text-zinc-300" />
+                                                    </div>
+                                                @endif
+                                                <div class="min-w-0 flex-1"
+                                                    <p class="line-clamp-2 text-[15px] font-black leading-tight tracking-tight text-zinc-900 dark:text-zinc-100">{{ $product['name'] }}</p>
+                                                    <div class="mt-2.5 flex items-center justify-between">
+                                                        <p class="text-[13px] font-black text-accent-600 dark:text-accent-400">{!! $product['price'] !!}</p>
+                                                        @if($product['total_sales'] > 0)
+                                                            <span class="rounded-full bg-accent-50 px-2 py-0.5 text-[9px] font-black uppercase tracking-tight text-accent-700 dark:bg-accent-500/10 dark:text-accent-400">
+                                                                {{ sprintf(_n('%d vta', '%d vtas', $product['total_sales'], 'flux-press'), $product['total_sales']) }}
+                                                            </span>
+                                                        @endif
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        @endforeach
+                                    </div>
+
+                                    <div
+                                        x-show="sectionFor(@js($itemId), @js($panelDefaultSection)) === 'pages'"
+                                        x-transition:enter="transition ease-out duration-500 delay-100"
+                                        x-transition:enter-start="opacity-0 translate-x-4"
+                                        x-transition:enter-end="opacity-100 translate-x-0"
+                                        class="{{ $isCenteredLayout ? 'grid gap-5 xl:grid-cols-2 2xl:grid-cols-3' : 'grid grid-cols-1 gap-4 xl:grid-cols-2' }}"
+                                    >
+                                        @foreach($smartPages as $page)
+                                            <a
+                                                href="{{ $page['url'] }}"
+                                                wire:navigate
+                                                class="group relative flex items-center justify-between overflow-hidden rounded-xl border px-5 py-4 transition-all duration-300 {{ $page['current'] ? 'border-accent-500/30 bg-accent-50 text-accent-700 dark:bg-accent-500/10 dark:text-accent-400' : 'border-zinc-200/60 bg-white text-zinc-700 hover:border-accent-300 hover:bg-zinc-50 dark:border-zinc-800/60 dark:bg-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800' }}"
+                                            >
+                                                <span class="text-[15px] font-black tracking-tight">{{ $page['title'] }}</span>
+                                                <flux:icon.chevron-right class="size-3.5 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
+                                            </a>
+                                        @endforeach
+                                    </div>
+                                </div>
                             </section>
                         </div>
                     </div>

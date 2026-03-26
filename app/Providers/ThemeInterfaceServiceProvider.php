@@ -301,7 +301,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         // ─── Sección: Header ───────────────────────────────────
         $wp_customize->add_section('flux_header_section', [
             'title' => __('Flux Press: Header', 'flux-press'),
-            'description' => __('Edita titulos y URLs desde Apariencia > Menus usando: Primary Navigation, Header Highlights Navigation y Header Utility (Left/Right).', 'flux-press'),
+            'description' => __('Edita titulos y URLs desde Apariencia > Menus usando: Primary Navigation, Header Mega Navigation, Header Actions Navigation, Header Highlights Navigation y Header Utility (Left/Right).', 'flux-press'),
             'priority' => 30,
         ]);
 

@@ -267,11 +267,12 @@ select:focus[data-flux-control] {
 }
 
 .flux-mega-menu-centered-panel {
-	@apply w-[min(108rem,calc(100vw-2rem))] max-w-[calc(100vw-2rem)] rounded-[2.5rem] border border-zinc-200/85 bg-white/98 p-8 shadow-[0_40px_120px_-45px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-zinc-700/80 dark:bg-zinc-900/98 dark:shadow-black/45 xl:p-10 2xl:p-12;
+	@apply w-[min(100rem,calc(100vw-3rem))] max-w-[calc(100vw-3rem)] rounded-[2.5rem] border border-zinc-200/80 bg-white/95 p-6 shadow-[0_40px_120px_-32px_rgba(15,23,42,.3)] backdrop-blur-3xl dark:border-zinc-700/70 dark:bg-zinc-900/96 dark:shadow-black/50 xl:p-8 2xl:p-10;
+	transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .flux-mega-menu-centered-shell {
-	@apply min-h-[32rem] rounded-[2rem] border border-zinc-200/80 bg-zinc-50/70 p-6 dark:border-zinc-700 dark:bg-zinc-800/35 xl:p-7;
+	@apply relative min-h-[32rem] overflow-hidden rounded-[2rem] border border-zinc-200/60 bg-zinc-50/50 p-6 dark:border-zinc-700/60 dark:bg-zinc-800/25 xl:p-7;
 }
 
 .flux-mega-menu-centered-grid {

@@ -27,29 +27,16 @@ class HeaderComposer extends Composer
 			'variant'   => $this->variant(),
 			'sticky'    => $this->sticky(),
 			'menuItems' => MenuService::items('primary_navigation'),
-            'highlightMenuItems' => $this->topLevelMenuItems('header_highlights_navigation'),
-            'utilityLeftMenuItems' => $this->topLevelMenuItems('header_utility_left_navigation'),
-            'utilityRightMenuItems' => $this->topLevelMenuItems('header_utility_right_navigation'),
+            'megaMenuItems' => MenuService::itemsWithFallback('header_mega_navigation', 'primary_navigation'),
+            'actionMenuItems' => MenuService::topLevelItems('header_actions_navigation'),
+            'highlightMenuItems' => MenuService::topLevelItems('header_highlights_navigation'),
+            'utilityLeftMenuItems' => MenuService::topLevelItems('header_utility_left_navigation'),
+            'utilityRightMenuItems' => MenuService::topLevelItems('header_utility_right_navigation'),
             'cta'       => $this->ctaData(),
             'megaMenuConfig' => $this->megaMenuConfig(),
             'renderedByHook' => did_action('get_header') > 0,
 		];
 	}
-
-    /**
-     * @return array<int,object>
-     */
-    protected function topLevelMenuItems(string $location): array
-    {
-        $items = MenuService::items($location);
-        if (! is_array($items)) {
-            return [];
-        }
-
-        return array_values(array_filter($items, static function ($item): bool {
-            return is_object($item) && empty($item->menu_item_parent);
-        }));
-    }
 
     /**
      * Get dynamic CTA data from Customizer or fallback.

@@ -38,6 +38,17 @@
     $shopUrl = $isWooCommerce ? wc_get_page_permalink('shop') : home_url('/');
     $accountUrl = $isWooCommerce ? wc_get_account_endpoint_url('dashboard') : admin_url('profile.php');
     $loginUrl = $isWooCommerce ? wc_get_account_endpoint_url('dashboard') : wp_login_url();
+
+    $actionMenuItemsResolved = [];
+    if (isset($actionMenuItems) && is_array($actionMenuItems)) {
+        foreach ($actionMenuItems as $item) {
+            if (is_object($item) && ! empty($item->title) && ! empty($item->url)) {
+                $actionMenuItemsResolved[] = $item;
+            }
+        }
+    }
+
+    $hasActionMenuItems = ! empty($actionMenuItemsResolved);
 @endphp
 
 <flux:header
@@ -74,10 +85,19 @@
             </div>
 
             <div class="flex items-center gap-1 sm:gap-2">
-                @if($isWooCommerce)
+                @if($hasActionMenuItems)
+                    @include('partials.headers.action-links', [
+                        'items' => $actionMenuItemsResolved,
+                        'containerClass' => 'hidden xl:flex items-center gap-1',
+                        'linkClass' => 'inline-flex items-center rounded-xl px-3 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-200 dark:hover:bg-zinc-800 dark:hover:text-zinc-50',
+                    ])
+                @elseif($isWooCommerce)
                     <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
                         {{ __('Tienda', 'flux-press') }}
                     </flux:button>
+                @endif
+
+                @if($isWooCommerce)
                     <livewire:cart-icon />
                 @endif
 
@@ -142,7 +162,7 @@
 
             @if($megaMenuEnabled)
                 <div class="flux-header-divider mt-3 hidden lg:flex border-t pt-3">
-                    <livewire:mega-menu :items="$menuItems ?? []" :config="$megaMenuOptions" />
+                    <livewire:mega-menu :items="$megaMenuItems ?? []" :config="$megaMenuOptions" />
                 </div>
             @endif
         @endif
@@ -190,20 +210,34 @@
             </div>
 
             <div class="mt-auto border-t border-zinc-200 dark:border-zinc-800 px-4 py-4">
-                <div @class([
-                    'grid gap-2',
-                    'grid-cols-2' => $isWooCommerce,
-                    'grid-cols-1' => ! $isWooCommerce,
-                ])>
-                    @if($isWooCommerce)
-                        <flux:button href="{{ $shopUrl }}" wire:navigate variant="ghost" icon="building-storefront" class="justify-center">
-                            {{ __('Tienda', 'flux-press') }}
+                @if($hasActionMenuItems)
+                    @include('partials.headers.action-links', [
+                        'items' => $actionMenuItemsResolved,
+                        'containerClass' => 'grid gap-2',
+                        'linkClass' => 'inline-flex items-center justify-center rounded-xl border border-zinc-200 bg-zinc-50 px-3 py-2 text-sm font-semibold text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200 dark:hover:bg-zinc-700',
+                    ])
+
+                    <div class="mt-2">
+                        <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="w-full justify-center">
+                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
                         </flux:button>
-                    @endif
-                    <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="justify-center">
-                        {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
-                    </flux:button>
-                </div>
+                    </div>
+                @else
+                    <div @class([
+                        'grid gap-2',
+                        'grid-cols-2' => $isWooCommerce,
+                        'grid-cols-1' => ! $isWooCommerce,
+                    ])>
+                        @if($isWooCommerce)
+                            <flux:button href="{{ $shopUrl }}" wire:navigate variant="ghost" icon="building-storefront" class="justify-center">
+                                {{ __('Tienda', 'flux-press') }}
+                            </flux:button>
+                        @endif
+                        <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="justify-center">
+                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
+                        </flux:button>
+                    </div>
+                @endif
             </div>
         </div>
     </flux:modal>
