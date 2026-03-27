@@ -44,8 +44,8 @@ new class extends Component
 
                 <div x-ref="track" class="flex gap-4 sm:gap-5 overflow-x-auto snap-x snap-mandatory pb-2">
                     @foreach($this->products as $product)
-                        <div class="snap-start min-w-[200px] sm:min-w-[220px] max-w-[240px]">
-                            <livewire:product-card :product-id="$product['id']" variant="compact" :key="'best-seller-'.$product['id'].'-'.$loop->index" />
+                        <div class="snap-start min-w-[260px] sm:min-w-[280px] max-w-[320px]">
+                            <livewire:product-card :product-id="$product['id']" variant="shop" :key="'best-seller-'.$product['id'].'-'.$loop->index" />
                         </div>
                     @endforeach
                 </div>

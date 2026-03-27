@@ -30,9 +30,9 @@ new class extends Component
                 <flux:callout.text>{{ __('Cuando existan ratings en WooCommerce, esta seccion se llenara automaticamente.', 'flux-press') }}</flux:callout.text>
             </flux:callout>
         @else
-            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
                 @foreach($this->products as $product)
-                    <livewire:product-card :product-id="$product['id']" variant="compact" :key="'top-rated-'.$product['id'].'-'.$loop->index" />
+                    <livewire:product-card :product-id="$product['id']" variant="shop" :key="'top-rated-'.$product['id'].'-'.$loop->index" />
                 @endforeach
             </div>
         @endif
