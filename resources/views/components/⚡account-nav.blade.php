@@ -76,7 +76,7 @@ new class extends Component
     {
         if (! class_exists('WooCommerce')) {
             return [
-                'label' => __('Cerrar sesión', 'flux-press'),
+                'label' => __('Cerrar sesión', 'sage'),
                 'url'   => wp_logout_url(home_url('/')),
                 'icon'  => 'arrow-right-start-on-rectangle',
             ];
@@ -85,7 +85,7 @@ new class extends Component
         $iconMap = apply_filters('woocommerce_account_menu_icons', []);
 
         return [
-            'label' => __('Cerrar sesión', 'flux-press'),
+            'label' => __('Cerrar sesión', 'sage'),
             'url'   => wc_get_account_endpoint_url('customer-logout'),
             'icon'  => $iconMap['customer-logout'] ?? 'arrow-right-start-on-rectangle',
         ];
@@ -115,7 +115,7 @@ new class extends Component
         <a
             href="{{ $this->profileUrl }}"
             wire:navigate
-            aria-label="{{ esc_attr__('Editar perfil', 'flux-press') }}"
+            aria-label="{{ esc_attr__('Editar perfil', 'sage') }}"
             class="hidden in-data-flux-sidebar-collapsed-desktop:inline-flex w-full items-center justify-center"
         >
             <img

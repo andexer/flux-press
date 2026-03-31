@@ -36,10 +36,10 @@ new class extends Component
 }; ?>
 
 @php
-    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Promociones destacadas', 'flux-press');
+    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Promociones destacadas', 'sage');
     $resolvedSubtitle = $sectionSubtitle !== ''
         ? $sectionSubtitle
-        : __('Ofertas y lanzamientos en una vista mas visual', 'flux-press');
+        : __('Ofertas y lanzamientos en una vista mas visual', 'sage');
     $sectionClasses = $embedded
         ? 'py-4 sm:py-5 bg-transparent border-0'
         : 'py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800';
@@ -61,8 +61,8 @@ new class extends Component
 
         @if(empty($this->promos))
             <flux:callout color="zinc" icon="tag">
-                <flux:callout.heading>{{ __('No hay promociones activas en este momento.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Agrega tarjetas manuales desde Gutenberg o configura ofertas en WooCommerce.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay promociones activas en este momento.', 'sage') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Agrega tarjetas manuales desde Gutenberg o configura ofertas en WooCommerce.', 'sage') }}</flux:callout.text>
             </flux:callout>
         @else
             <div class="grid gap-4 lg:gap-6 md:grid-cols-2">
@@ -70,7 +70,7 @@ new class extends Component
                     @php
                         $theme = (string) ($promo['theme'] ?? 'dark');
                         $isLight = $theme === 'light';
-                        $ctaLabel = (string) ($promo['cta_label'] ?? __('Ver mas', 'flux-press'));
+                        $ctaLabel = (string) ($promo['cta_label'] ?? __('Ver mas', 'sage'));
                         $ctaUrl = (string) ($promo['cta_url'] ?? '#');
                     @endphp
                     <article class="group relative overflow-hidden rounded-[2rem] border border-zinc-200/70 dark:border-zinc-700 min-h-[320px] sm:min-h-[360px]">

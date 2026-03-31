@@ -40,10 +40,10 @@ Opciones:
 
 Si en el contenido del Home existe alguno de estos bloques/shortcodes:
 
-- `flux-press/featured-categories` o `[flux_featured_categories]`
-- `flux-press/featured-brands` o `[flux_featured_brands]`
-- `flux-press/featured-promos` o `[flux_featured_promos]`
-- `flux-press/home-sections-carousel` o `[flux_home_sections_carousel]`
+- `sage/featured-categories` o `[flux_featured_categories]`
+- `sage/featured-brands` o `[flux_featured_brands]`
+- `sage/featured-promos` o `[flux_featured_promos]`
+- `sage/home-sections-carousel` o `[flux_home_sections_carousel]`
 
 el builder ocultara automaticamente esa seccion para no duplicarla.
 
@@ -51,10 +51,10 @@ el builder ocultara automaticamente esa seccion para no duplicarla.
 
 ### Bloques padre (secciones)
 
-- `flux-press/featured-categories`
-- `flux-press/featured-brands`
-- `flux-press/featured-promos`
-- `flux-press/home-sections-carousel`
+- `sage/featured-categories`
+- `sage/featured-brands`
+- `sage/featured-promos`
+- `sage/home-sections-carousel`
 
 Cada bloque padre permite:
 
@@ -62,7 +62,7 @@ Cada bloque padre permite:
 - `subtitle` (subtitulo)
 - `limit` (cantidad maxima de tarjetas)
 
-El bloque `flux-press/home-sections-carousel` permite:
+El bloque `sage/home-sections-carousel` permite:
 
 - `sections` (`categories,brands,promos` en el orden que quieras)
 - `autoplay` (`true/false`)
@@ -71,15 +71,15 @@ El bloque `flux-press/home-sections-carousel` permite:
 
 ### Bloques hijo (tarjetas)
 
-- `flux-press/category-card` (hijo de featured-categories)
-- `flux-press/brand-card` (hijo de featured-brands)
-- `flux-press/promo-card` (hijo de featured-promos)
+- `sage/category-card` (hijo de featured-categories)
+- `sage/brand-card` (hijo de featured-brands)
+- `sage/promo-card` (hijo de featured-promos)
 
 Puedes arrastrar/reordenar tarjetas dentro de cada bloque padre usando `InnerBlocks`.
 
 ## 5. Contrato de datos por tarjeta
 
-## 5.1 Categoria (`flux-press/category-card`)
+## 5.1 Categoria (`sage/category-card`)
 
 Campos:
 
@@ -88,7 +88,7 @@ Campos:
 - `image_url`
 - `badge`
 
-## 5.2 Marca (`flux-press/brand-card`)
+## 5.2 Marca (`sage/brand-card`)
 
 Campos:
 
@@ -98,7 +98,7 @@ Campos:
 - `logo_url`
 - `badge`
 
-## 5.3 Promo (`flux-press/promo-card`)
+## 5.3 Promo (`sage/promo-card`)
 
 Campos:
 
@@ -248,13 +248,13 @@ Incluye:
 ## 12. Referencia rapida de nombres tecnicos
 
 - Bloques:
-  - `flux-press/featured-categories`
-  - `flux-press/featured-brands`
-  - `flux-press/featured-promos`
-  - `flux-press/home-sections-carousel`
-  - `flux-press/category-card`
-  - `flux-press/brand-card`
-  - `flux-press/promo-card`
+  - `sage/featured-categories`
+  - `sage/featured-brands`
+  - `sage/featured-promos`
+  - `sage/home-sections-carousel`
+  - `sage/category-card`
+  - `sage/brand-card`
+  - `sage/promo-card`
 - Shortcodes:
   - `[flux_featured_categories]`
   - `[flux_featured_brands]`

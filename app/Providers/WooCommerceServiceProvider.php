@@ -79,9 +79,9 @@ class WooCommerceServiceProvider extends ServiceProvider
     {
         add_action('widgets_init', function () {
             register_sidebar([
-                'name'          => __('Shop Sidebar', 'flux-press'),
+                'name'          => __('Shop Sidebar', 'sage'),
                 'id'            => 'sidebar-shop',
-                'description'   => __('Widget area for WooCommerce shop pages.', 'flux-press'),
+                'description'   => __('Widget area for WooCommerce shop pages.', 'sage'),
                 'before_widget' => '<section class="widget %1$s %2$s">',
                 'after_widget'  => '</section>',
                 'before_title'  => '<h3>',
@@ -568,8 +568,8 @@ class WooCommerceServiceProvider extends ServiceProvider
     {
         add_action('customize_register', function (\WP_Customize_Manager $wp_customize) {
             $wp_customize->add_section('flux_woocommerce_section', [
-                'title'       => __('Flux Press: WooCommerce', 'flux-press'),
-                'description' => __('WooCommerce integration settings for the theme.', 'flux-press'),
+                'title'       => __('Flux Press: WooCommerce', 'sage'),
+                'description' => __('WooCommerce integration settings for the theme.', 'sage'),
                 'priority'    => 32,
             ]);
 
@@ -581,7 +581,7 @@ class WooCommerceServiceProvider extends ServiceProvider
             ]);
 
             $wp_customize->add_control('woocommerce_show_cart_icon', [
-                'label'   => __('Show cart icon in header', 'flux-press'),
+                'label'   => __('Show cart icon in header', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
@@ -594,7 +594,7 @@ class WooCommerceServiceProvider extends ServiceProvider
             ]);
 
             $wp_customize->add_control('woocommerce_show_shop_sidebar', [
-                'label'   => __('Show sidebar on shop pages', 'flux-press'),
+                'label'   => __('Show sidebar on shop pages', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
@@ -606,7 +606,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_enabled', [
-                'label'   => __('Mostrar banner de tienda', 'flux-press'),
+                'label'   => __('Mostrar banner de tienda', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'checkbox',
             ]);
@@ -617,7 +617,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_title', [
-                'label'   => __('Titulo del banner', 'flux-press'),
+                'label'   => __('Titulo del banner', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'text',
             ]);
@@ -628,7 +628,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_subtitle', [
-                'label'   => __('Subtitulo del banner', 'flux-press'),
+                'label'   => __('Subtitulo del banner', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'text',
             ]);
@@ -639,8 +639,8 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_content_html', [
-                'label'       => __('Contenido HTML del banner', 'flux-press'),
-                'description' => __('Permite texto enriquecido basico.', 'flux-press'),
+                'label'       => __('Contenido HTML del banner', 'sage'),
+                'description' => __('Permite texto enriquecido basico.', 'sage'),
                 'section'     => 'flux_woocommerce_section',
                 'type'        => 'textarea',
             ]);
@@ -651,7 +651,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_image_url', [
-                'label'   => __('Imagen del banner (URL)', 'flux-press'),
+                'label'   => __('Imagen del banner (URL)', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'url',
             ]);
@@ -662,7 +662,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_primary_cta_label', [
-                'label'   => __('Texto boton principal', 'flux-press'),
+                'label'   => __('Texto boton principal', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'text',
             ]);
@@ -673,7 +673,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_primary_cta_url', [
-                'label'   => __('URL boton principal', 'flux-press'),
+                'label'   => __('URL boton principal', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'url',
             ]);
@@ -684,7 +684,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_secondary_cta_label', [
-                'label'   => __('Texto boton secundario', 'flux-press'),
+                'label'   => __('Texto boton secundario', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'text',
             ]);
@@ -695,7 +695,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_banner_secondary_cta_url', [
-                'label'   => __('URL boton secundario', 'flux-press'),
+                'label'   => __('URL boton secundario', 'sage'),
                 'section' => 'flux_woocommerce_section',
                 'type'    => 'url',
             ]);
@@ -707,7 +707,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_filters_categories_limit', [
-                'label'       => __('Limite de categorias en filtros', 'flux-press'),
+                'label'       => __('Limite de categorias en filtros', 'sage'),
                 'section'     => 'flux_woocommerce_section',
                 'type'        => 'number',
                 'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],
@@ -719,7 +719,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_filters_brands_limit', [
-                'label'       => __('Limite de marcas en filtros', 'flux-press'),
+                'label'       => __('Limite de marcas en filtros', 'sage'),
                 'section'     => 'flux_woocommerce_section',
                 'type'        => 'number',
                 'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],
@@ -731,7 +731,7 @@ class WooCommerceServiceProvider extends ServiceProvider
                 'transport'         => 'refresh',
             ]);
             $wp_customize->add_control('woocommerce_shop_filters_vendors_limit', [
-                'label'       => __('Limite de vendedores en filtros', 'flux-press'),
+                'label'       => __('Limite de vendedores en filtros', 'sage'),
                 'section'     => 'flux_woocommerce_section',
                 'type'        => 'number',
                 'input_attrs' => ['min' => 1, 'max' => 30, 'step' => 1],

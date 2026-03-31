@@ -28,7 +28,7 @@ new class extends Component {
 	public function addToCart(): void
 	{
 		if (!function_exists('WC') || !WC()->cart) {
-			\Flux::toast(__('El carrito no esta disponible.', 'flux-press'), variant: 'danger');
+			\Flux::toast(__('El carrito no esta disponible.', 'sage'), variant: 'danger');
 
 			return;
 		}
@@ -37,19 +37,19 @@ new class extends Component {
 			$product = $this->product;
 
 			if (!$product) {
-				\Flux::toast(__('No pudimos cargar este producto.', 'flux-press'), variant: 'danger');
+				\Flux::toast(__('No pudimos cargar este producto.', 'sage'), variant: 'danger');
 
 				return;
 			}
 
 			if (!$product->is_purchasable()) {
-				\Flux::toast(__('Este producto no se puede comprar en este momento.', 'flux-press'), variant: 'danger');
+				\Flux::toast(__('Este producto no se puede comprar en este momento.', 'sage'), variant: 'danger');
 
 				return;
 			}
 
 			if (!$product->is_in_stock()) {
-				\Flux::toast(__('Este producto esta agotado.', 'flux-press'), variant: 'danger');
+				\Flux::toast(__('Este producto esta agotado.', 'sage'), variant: 'danger');
 
 				return;
 			}
@@ -63,7 +63,7 @@ new class extends Component {
 			$added = WC()->cart->add_to_cart($product->get_id(), 1);
 
 			if (!$added) {
-				\Flux::toast(__('No se pudo agregar al carrito.', 'flux-press'), variant: 'danger');
+				\Flux::toast(__('No se pudo agregar al carrito.', 'sage'), variant: 'danger');
 
 				return;
 			}
@@ -75,9 +75,9 @@ new class extends Component {
 			$this->dispatch('cart-updated');
 			$this->dispatch('wc-cart-fragments-refresh');
 
-			\Flux::toast(sprintf(__('%s fue agregado a tu carrito.', 'flux-press'), $product->get_name()), variant: 'success');
+			\Flux::toast(sprintf(__('%s fue agregado a tu carrito.', 'sage'), $product->get_name()), variant: 'success');
 		} catch (\Throwable $e) {
-			\Flux::toast(__('No se pudo agregar el producto al carrito.', 'flux-press'), variant: 'danger');
+			\Flux::toast(__('No se pudo agregar el producto al carrito.', 'sage'), variant: 'danger');
 			Log::error('WooCommerce add_to_cart error', [
 				'product_id' => $this->productId,
 				'message' => $e->getMessage(),
@@ -126,7 +126,7 @@ new class extends Component {
 		}
 		$hasPrice = trim((string) wp_strip_all_tags((string) $priceHtml)) !== '';
 
-		$primaryCategoryName = __('Sin categoria', 'flux-press');
+		$primaryCategoryName = __('Sin categoria', 'sage');
 		$productTerms = get_the_terms($product->get_id(), 'product_cat');
 		if (is_array($productTerms) && isset($productTerms[0]) && $productTerms[0] instanceof \WP_Term) {
 			$primaryCategoryName = $productTerms[0]->name;
@@ -159,7 +159,7 @@ new class extends Component {
 							alt="{{ esc_attr($product->get_name()) }}" loading="lazy"
 							class="h-full w-full object-cover transition-transform duration-500 group-hover:scale-[1.035]" />
 					@else
-						<img src="{{ wc_placeholder_img_src('woocommerce_thumbnail') }}" alt="{{ __('Placeholder', 'flux-press') }}"
+						<img src="{{ wc_placeholder_img_src('woocommerce_thumbnail') }}" alt="{{ __('Placeholder', 'sage') }}"
 							class="h-full w-full object-cover opacity-50" />
 					@endif
 				</a>
@@ -177,7 +177,7 @@ new class extends Component {
 					@if($product->is_in_stock())
 						<span
 							class="inline-flex items-center rounded-full bg-emerald-500/90 px-2.5 py-1 text-[10px] font-semibold uppercase tracking-[0.08em] text-white shadow-sm">
-							{{ __('Stock', 'flux-press') }}
+							{{ __('Stock', 'sage') }}
 						</span>
 					@endif
 				</div>
@@ -187,7 +187,7 @@ new class extends Component {
 						<span
 							class="inline-flex items-center gap-1 rounded-full border border-emerald-200/80 bg-emerald-50/95 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.09em] text-emerald-700 shadow-sm dark:border-emerald-700/80 dark:bg-emerald-900/85 dark:text-emerald-200">
 							<flux:icon.check-circle class="size-3.5" />
-							{{ __('Agregado al carrito', 'flux-press') }}
+							{{ __('Agregado al carrito', 'sage') }}
 						</span>
 					</div>
 				@endif
@@ -251,7 +251,7 @@ new class extends Component {
 						@if($showSalesMeta)
 							<span class="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-1 dark:bg-zinc-800/80">
 								<flux:icon.shopping-bag class="size-3.5" />
-								{{ sprintf(_n('%s vendido', '%s vendidos', $totalSales, 'flux-press'), number_format_i18n($totalSales)) }}
+								{{ sprintf(_n('%s vendido', '%s vendidos', $totalSales, 'sage'), number_format_i18n($totalSales)) }}
 							</span>
 						@endif
 
@@ -261,7 +261,7 @@ new class extends Component {
 								@if($averageRating > 0)
 									{{ number_format_i18n($averageRating, 1) }}
 								@else
-									{{ __('Sin rating', 'flux-press') }}
+									{{ __('Sin rating', 'sage') }}
 								@endif
 								@if($showReviewMeta)
 									<span class="text-zinc-400 dark:text-zinc-500">({{ number_format_i18n($reviewCount) }})</span>
@@ -271,7 +271,7 @@ new class extends Component {
 
 						@if(!$showSalesMeta && !$showRatingMeta)
 							<span class="inline-flex items-center gap-1 rounded-full bg-zinc-100 px-2 py-1 dark:bg-zinc-800/80">
-								{{ __('Nuevo', 'flux-press') }}
+								{{ __('Nuevo', 'sage') }}
 							</span>
 						@endif
 					</div>
@@ -291,7 +291,7 @@ new class extends Component {
 									'h-10 text-[11px]' => $isShop,
 									'h-10 text-xs' => $isCompact,
 								])>
-									<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Ver producto', 'flux-press') }}</span>
+									<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Ver producto', 'sage') }}</span>
 								</flux:button>
 							@else
 								@if($showAddedState)
@@ -306,9 +306,9 @@ new class extends Component {
 											'h-10 text-xs' => $isCompact,
 										])>
 											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading.remove wire:target="addToCart">
-												{{ __('Agregar +1', 'flux-press') }}
+												{{ __('Agregar +1', 'sage') }}
 											</span>
-											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading wire:target="addToCart">{{ __('Agregando...', 'flux-press') }}</span>
+											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading wire:target="addToCart">{{ __('Agregando...', 'sage') }}</span>
 										</flux:button>
 
 										<flux:button href="{{ $cartUrl }}" wire:navigate variant="outline" @class([
@@ -316,14 +316,14 @@ new class extends Component {
 											'h-10 text-[11px]' => $isShop,
 											'h-10 text-xs' => $isCompact,
 										])>
-											<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Ver carrito', 'flux-press') }}</span>
+											<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Ver carrito', 'sage') }}</span>
 										</flux:button>
 									</div>
 
 								@if($this->justAdded)
 									<button type="button" wire:click="clearAddedState"
 										class="text-left text-[10px] font-medium text-zinc-500 transition-colors hover:text-zinc-700 dark:text-zinc-400 dark:hover:text-zinc-200">
-										{{ __('Seguir comprando', 'flux-press') }}
+										{{ __('Seguir comprando', 'sage') }}
 									</button>
 								@endif
 							@else
@@ -339,15 +339,15 @@ new class extends Component {
 												'h-10 text-xs' => $isCompact,
 											])>
 											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading.remove wire:target="addToCart">
-												{{ __('Agregar', 'flux-press') }}
+												{{ __('Agregar', 'sage') }}
 											</span>
-											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading wire:target="addToCart">{{ __('Agregando...', 'flux-press') }}</span>
+											<span class="block min-w-0 truncate whitespace-nowrap" wire:loading wire:target="addToCart">{{ __('Agregando...', 'sage') }}</span>
 										</flux:button>
 
 										@if($isShop)
 											<a href="{{ $product->get_permalink() }}" wire:navigate
 												class="inline-flex h-10 w-full min-w-0 items-center justify-center rounded-xl border border-zinc-200/85 bg-zinc-50/85 px-2 text-[11px] font-semibold leading-none text-zinc-600 no-underline transition-colors hover:border-zinc-300 hover:text-zinc-900 dark:border-zinc-700 dark:bg-zinc-900/70 dark:text-zinc-300 dark:hover:border-zinc-600 dark:hover:text-zinc-100">
-												<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Detalles', 'flux-press') }}</span>
+												<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Detalles', 'sage') }}</span>
 											</a>
 										@endif
 									</div>
@@ -356,7 +356,7 @@ new class extends Component {
 						@else
 							<flux:button disabled variant="ghost"
 								class="w-full min-w-0 justify-center rounded-xl border border-zinc-200 bg-zinc-100 h-10 text-[11px] font-semibold leading-none text-zinc-500 cursor-not-allowed dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-400">
-								<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Agotado', 'flux-press') }}</span>
+								<span class="block min-w-0 truncate whitespace-nowrap">{{ __('Agotado', 'sage') }}</span>
 							</flux:button>
 						@endif
 				</div>

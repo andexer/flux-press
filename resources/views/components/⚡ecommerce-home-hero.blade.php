@@ -35,8 +35,8 @@ new class extends Component
     @if(empty($this->slides))
         <div class="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
             <flux:callout color="zinc" icon="shopping-bag">
-                <flux:callout.heading>{{ __('No hay contenido para el carrusel.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Configura slides visuales o JSON en el Customizer para personalizar este hero.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay contenido para el carrusel.', 'sage') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Configura slides visuales o JSON en el Customizer para personalizar este hero.', 'sage') }}</flux:callout.text>
             </flux:callout>
         </div>
     @else
@@ -94,7 +94,7 @@ new class extends Component
                         @if(($slide['image_url'] ?? '') !== '')
                             <img
                                 src="{{ $slide['image_url'] }}"
-                                alt="{{ $slide['title'] ?? __('Slide', 'flux-press') }}"
+                                alt="{{ $slide['title'] ?? __('Slide', 'sage') }}"
                                 class="h-full w-full object-cover"
                                 loading="lazy"
                             />
@@ -147,9 +147,9 @@ new class extends Component
                                 </div>
 
                                 <div class="mt-6 flex flex-wrap items-center gap-4 text-xs font-semibold text-zinc-200/90 sm:text-sm">
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-300"></span>{{ __('Personalizable', 'flux-press') }}</span>
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-400"></span>{{ __('Responsive desktop + mobile', 'flux-press') }}</span>
-                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-500"></span>{{ __('Listo para conversion', 'flux-press') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-300"></span>{{ __('Personalizable', 'sage') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-400"></span>{{ __('Responsive desktop + mobile', 'sage') }}</span>
+                                    <span class="inline-flex items-center gap-2"><span class="size-1.5 rounded-full bg-accent-500"></span>{{ __('Listo para conversion', 'sage') }}</span>
                                 </div>
                             </div>
                         </div>
@@ -162,7 +162,7 @@ new class extends Component
                     type="button"
                     x-on:click="prev()"
                     class="absolute left-3 sm:left-5 top-1/2 -translate-y-1/2 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 text-white backdrop-blur transition hover:bg-zinc-900/70"
-                    aria-label="{{ __('Anterior', 'flux-press') }}"
+                    aria-label="{{ __('Anterior', 'sage') }}"
                 >
                     <flux:icon.chevron-left class="size-5" />
                 </button>
@@ -170,7 +170,7 @@ new class extends Component
                     type="button"
                     x-on:click="next()"
                     class="absolute right-3 sm:right-5 top-1/2 -translate-y-1/2 z-20 inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/30 bg-zinc-950/40 text-white backdrop-blur transition hover:bg-zinc-900/70"
-                    aria-label="{{ __('Siguiente', 'flux-press') }}"
+                    aria-label="{{ __('Siguiente', 'sage') }}"
                 >
                     <flux:icon.chevron-right class="size-5" />
                 </button>
@@ -182,7 +182,7 @@ new class extends Component
                             x-on:click="goTo({{ $idx }})"
                             class="h-2.5 rounded-full transition-all"
                             :class="index === {{ $idx }} ? 'w-10 bg-accent-400' : 'w-2.5 bg-white/50 hover:bg-white/80'"
-                            aria-label="{{ sprintf(__('Ir al slide %d', 'flux-press'), $idx + 1) }}"
+                            aria-label="{{ sprintf(__('Ir al slide %d', 'sage'), $idx + 1) }}"
                         ></button>
                     @endforeach
                 </div>
@@ -196,8 +196,8 @@ new class extends Component
                                 class="group min-w-0 flex-1 rounded-xl px-3 py-2 text-left transition"
                                 :class="index === {{ $idx }} ? 'bg-white/15' : 'hover:bg-white/10'"
                             >
-                                <p class="truncate text-[11px] uppercase tracking-widest text-zinc-300">{{ sprintf(__('Slide %d', 'flux-press'), $idx + 1) }}</p>
-                                <p class="mt-1 truncate text-sm font-semibold text-white/95">{{ $slide['title'] ?? __('Sin titulo', 'flux-press') }}</p>
+                                <p class="truncate text-[11px] uppercase tracking-widest text-zinc-300">{{ sprintf(__('Slide %d', 'sage'), $idx + 1) }}</p>
+                                <p class="mt-1 truncate text-sm font-semibold text-white/95">{{ $slide['title'] ?? __('Sin titulo', 'sage') }}</p>
                             </button>
                         @endforeach
                     </div>

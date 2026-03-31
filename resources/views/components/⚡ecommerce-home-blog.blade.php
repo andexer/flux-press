@@ -21,21 +21,21 @@ new class extends Component
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="mb-6 sm:mb-8 flex items-end justify-between gap-4">
             <div>
-                <flux:badge color="sky" class="mb-2 uppercase tracking-widest">{{ __('Blog', 'flux-press') }}</flux:badge>
-                <flux:heading size="3xl" class="!font-black tracking-tight">{{ __('Contenido reciente', 'flux-press') }}</flux:heading>
+                <flux:badge color="sky" class="mb-2 uppercase tracking-widest">{{ __('Blog', 'sage') }}</flux:badge>
+                <flux:heading size="3xl" class="!font-black tracking-tight">{{ __('Contenido reciente', 'sage') }}</flux:heading>
             </div>
             @php $postsPage = get_permalink(get_option('page_for_posts')); @endphp
             @if(is_string($postsPage) && $postsPage !== '')
                 <flux:button href="{{ $postsPage }}" wire:navigate variant="ghost" icon="arrow-right" class="max-sm:hidden">
-                    {{ __('Ver blog', 'flux-press') }}
+                    {{ __('Ver blog', 'sage') }}
                 </flux:button>
             @endif
         </div>
 
         @if(empty($this->posts))
             <flux:callout color="zinc" icon="document-text">
-                <flux:callout.heading>{{ __('No hay entradas publicadas.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Publica posts para mostrar esta seccion en el Home ecommerce.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay entradas publicadas.', 'sage') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Publica posts para mostrar esta seccion en el Home ecommerce.', 'sage') }}</flux:callout.text>
             </flux:callout>
         @else
             <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-5">

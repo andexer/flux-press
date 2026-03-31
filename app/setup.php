@@ -71,7 +71,7 @@ add_filter('should_load_separate_core_block_assets', '__return_false');
  * @return void
  */
 add_action('after_setup_theme', function () {
-    load_theme_textdomain('flux-press', get_theme_file_path('/resources/lang'));
+    load_theme_textdomain('sage', get_theme_file_path('/resources/lang'));
 }, 0);
 
 /**
@@ -93,14 +93,14 @@ add_action('after_setup_theme', function () {
      * @link https://developer.wordpress.org/reference/functions/register_nav_menus/
      */
     register_nav_menus([
-        'primary_navigation'   => __('Primary Navigation', 'flux-press'),
-        'header_mega_navigation' => __('Header Mega Navigation', 'flux-press'),
-        'header_actions_navigation' => __('Header Actions Navigation', 'flux-press'),
-        'header_highlights_navigation' => __('Header Highlights Navigation', 'flux-press'),
-        'header_utility_left_navigation' => __('Header Utility Left Navigation', 'flux-press'),
-        'header_utility_right_navigation' => __('Header Utility Right Navigation', 'flux-press'),
-        'footer_navigation'    => __('Footer Navigation', 'flux-press'),
-        'footer_navigation_2'  => __('Footer Navigation 2', 'flux-press'),
+        'primary_navigation'   => __('Primary Navigation', 'sage'),
+        'header_mega_navigation' => __('Header Mega Navigation', 'sage'),
+        'header_actions_navigation' => __('Header Actions Navigation', 'sage'),
+        'header_highlights_navigation' => __('Header Highlights Navigation', 'sage'),
+        'header_utility_left_navigation' => __('Header Utility Left Navigation', 'sage'),
+        'header_utility_right_navigation' => __('Header Utility Right Navigation', 'sage'),
+        'footer_navigation'    => __('Footer Navigation', 'sage'),
+        'footer_navigation_2'  => __('Footer Navigation 2', 'sage'),
     ]);
 
     add_theme_support('menus');
@@ -184,19 +184,19 @@ add_action('widgets_init', function () {
     ];
 
     register_sidebar([
-        'name' => __('Primary', 'flux-press'),
+        'name' => __('Primary', 'sage'),
         'id' => 'sidebar-primary',
     ] + $config);
 
     register_sidebar([
-        'name' => __('Footer', 'flux-press'),
+        'name' => __('Footer', 'sage'),
         'id' => 'sidebar-footer',
     ] + $config);
 
     register_sidebar([
-        'name' => __('Home Widgets', 'flux-press'),
+        'name' => __('Home Widgets', 'sage'),
         'id' => 'sidebar-home',
-        'description' => __('Area de widgets para la landing/home dinamica.', 'flux-press'),
+        'description' => __('Area de widgets para la landing/home dinamica.', 'sage'),
     ] + $config);
 });
 /**

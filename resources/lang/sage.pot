@@ -3,7 +3,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Flux Press 1.0.0\n"
-"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/flux-press\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/theme/sage\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
@@ -12,7 +12,7 @@ msgstr ""
 "POT-Creation-Date: 2026-03-19T19:32:10-04:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
-"X-Domain: flux-press\n"
+"X-Domain: sage\n"
 
 #. Theme Name of the theme
 #: style.css
@@ -21,7 +21,7 @@ msgstr ""
 
 #. Theme URI of the theme
 #: style.css
-msgid "https://github.com/andexer/flux-press"
+msgid "https://github.com/andexer/sage"
 msgstr ""
 
 #. Description of the theme
@@ -36,7 +36,7 @@ msgstr ""
 
 #. Author URI of the theme
 #: style.css
-msgid "https://andexer.com/"
+msgid "https://andexer.github.io/my-profile"
 msgstr ""
 
 #. Template Name of the theme

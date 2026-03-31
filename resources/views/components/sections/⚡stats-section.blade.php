@@ -23,28 +23,28 @@ new class extends Component {
                 @php
                     $statsMap = [
                         'red-social' => [
-                            ['label' => __('Cuentas Activas', 'flux-press'), 'value' => '2M+'],
-                            ['label' => __('Posts Diarios', 'flux-press'), 'value' => '800k'],
-                            ['label' => __('Interacciones', 'flux-press'), 'value' => '15M'],
-                            ['label' => __('Países', 'flux-press'), 'value' => '190+'],
+                            ['label' => __('Cuentas Activas', 'sage'), 'value' => '2M+'],
+                            ['label' => __('Posts Diarios', 'sage'), 'value' => '800k'],
+                            ['label' => __('Interacciones', 'sage'), 'value' => '15M'],
+                            ['label' => __('Países', 'sage'), 'value' => '190+'],
                         ],
                         'ecommerce' => [
-                            ['label' => __('Productos', 'flux-press'), 'value' => '15k+'],
-                            ['label' => __('Ventas Totales', 'flux-press'), 'value' => '$4.2M'],
-                            ['label' => __('Clientes Felices', 'flux-press'), 'value' => '50k'],
-                            ['label' => __('Conversión', 'flux-press'), 'value' => '4.5%'],
+                            ['label' => __('Productos', 'sage'), 'value' => '15k+'],
+                            ['label' => __('Ventas Totales', 'sage'), 'value' => '$4.2M'],
+                            ['label' => __('Clientes Felices', 'sage'), 'value' => '50k'],
+                            ['label' => __('Conversión', 'sage'), 'value' => '4.5%'],
                         ],
                         'gaming' => [
-                            ['label' => __('Jugadores', 'flux-press'), 'value' => '120k'],
-                            ['label' => __('Torneos', 'flux-press'), 'value' => '500'],
-                            ['label' => __('Premios', 'flux-press'), 'value' => '$1M'],
-                            ['label' => __('Matchmaking', 'flux-press'), 'value' => '0.5s'],
+                            ['label' => __('Jugadores', 'sage'), 'value' => '120k'],
+                            ['label' => __('Torneos', 'sage'), 'value' => '500'],
+                            ['label' => __('Premios', 'sage'), 'value' => '$1M'],
+                            ['label' => __('Matchmaking', 'sage'), 'value' => '0.5s'],
                         ],
                         'default' => [
-                            ['label' => __('Satisfacción', 'flux-press'), 'value' => '99%'],
-                            ['label' => __('Soporte', 'flux-press'), 'value' => '24/7'],
-                            ['label' => __('Usuarios', 'flux-press'), 'value' => '10k+'],
-                            ['label' => __('Velocidad', 'flux-press'), 'value' => '50x'],
+                            ['label' => __('Satisfacción', 'sage'), 'value' => '99%'],
+                            ['label' => __('Soporte', 'sage'), 'value' => '24/7'],
+                            ['label' => __('Usuarios', 'sage'), 'value' => '10k+'],
+                            ['label' => __('Velocidad', 'sage'), 'value' => '50x'],
                         ]
                     ];
                     $currentStats = $statsMap[$demo] ?? $statsMap['default'];

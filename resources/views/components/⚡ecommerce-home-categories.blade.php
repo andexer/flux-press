@@ -54,10 +54,10 @@ new class extends Component
 }; ?>
 
 @php
-    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Categorias destacadas', 'flux-press');
+    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Categorias destacadas', 'sage');
     $resolvedSubtitle = $sectionSubtitle !== ''
         ? $sectionSubtitle
-        : __('Explora las mejores tendencias del momento', 'flux-press');
+        : __('Explora las mejores tendencias del momento', 'sage');
     $sectionClasses = $embedded
         ? 'py-4 sm:py-5 bg-transparent border-0'
         : 'py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800';
@@ -79,15 +79,15 @@ new class extends Component
             </div>
             @if(function_exists('wc_get_page_permalink'))
                 <flux:button href="{{ wc_get_page_permalink('shop') }}" wire:navigate variant="ghost" icon="arrow-right" class="max-sm:hidden shrink-0">
-                    {{ __('Ver todo el catalogo', 'flux-press') }}
+                    {{ __('Ver todo el catalogo', 'sage') }}
                 </flux:button>
             @endif
         </div>
 
         @if(empty($this->categories))
             <flux:callout color="zinc" icon="squares-2x2">
-                <flux:callout.heading>{{ __('No hay categorias de producto disponibles.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Crea categorias en WooCommerce o agrega tarjetas manuales desde Gutenberg.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay categorias de producto disponibles.', 'sage') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Crea categorias en WooCommerce o agrega tarjetas manuales desde Gutenberg.', 'sage') }}</flux:callout.text>
             </flux:callout>
         @else
             <div
@@ -108,7 +108,7 @@ new class extends Component
                 <button
                     type="button"
                     x-on:click="scrollCategories(-1)"
-                    aria-label="{{ esc_attr__('Desplazar categorias a la izquierda', 'flux-press') }}"
+                    aria-label="{{ esc_attr__('Desplazar categorias a la izquierda', 'sage') }}"
                     class="hidden md:inline-flex absolute left-0 top-1/2 -translate-y-1/2 z-10 size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 dark:hover:border-accent-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors backdrop-blur"
                 >
                     <flux:icon.chevron-left class="size-5" />
@@ -125,7 +125,7 @@ new class extends Component
                             $categoryBadge = trim((string) ($category['badge'] ?? ''));
                             if ($categoryBadge === '' && (int) ($category['count'] ?? 0) > 0) {
                                 $categoryBadge = sprintf(
-                                    _n('%d producto', '%d productos', (int) $category['count'], 'flux-press'),
+                                    _n('%d producto', '%d productos', (int) $category['count'], 'sage'),
                                     (int) $category['count']
                                 );
                             }
@@ -167,7 +167,7 @@ new class extends Component
                 <button
                     type="button"
                     x-on:click="scrollCategories(1)"
-                    aria-label="{{ esc_attr__('Desplazar categorias a la derecha', 'flux-press') }}"
+                    aria-label="{{ esc_attr__('Desplazar categorias a la derecha', 'sage') }}"
                     class="hidden md:inline-flex absolute right-0 top-1/2 -translate-y-1/2 z-10 size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 dark:hover:border-accent-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors backdrop-blur"
                 >
                     <flux:icon.chevron-right class="size-5" />
@@ -176,7 +176,7 @@ new class extends Component
 
             @if($this->canManageCatalog)
                 <p class="mt-4 text-xs text-zinc-500 dark:text-zinc-400">
-                    {{ __('Tip: puedes editar imagenes de categorias en Productos > Categorias para mejorar esta seccion.', 'flux-press') }}
+                    {{ __('Tip: puedes editar imagenes de categorias en Productos > Categorias para mejorar esta seccion.', 'sage') }}
                 </p>
             @endif
         @endif

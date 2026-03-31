@@ -86,7 +86,7 @@
                         @endif
                     @endforeach
                     <flux:separator />
-                    <flux:menu.item icon="{{ $accountIcons['customer-logout'] ?? 'arrow-right-start-on-rectangle' }}" href="{{ wp_logout_url(home_url('/')) }}">{{ __('Cerrar Sesión', 'flux-press') }}</flux:menu.item>
+                    <flux:menu.item icon="{{ $accountIcons['customer-logout'] ?? 'arrow-right-start-on-rectangle' }}" href="{{ wp_logout_url(home_url('/')) }}">{{ __('Cerrar Sesión', 'sage') }}</flux:menu.item>
                 </flux:menu>
             </flux:dropdown>
         </flux:sidebar>

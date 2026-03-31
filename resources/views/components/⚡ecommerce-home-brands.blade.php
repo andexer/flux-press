@@ -47,10 +47,10 @@ new class extends Component
     $myAccountUrl = function_exists('wc_get_page_permalink')
         ? (string) wc_get_page_permalink('myaccount')
         : (string) home_url('/');
-    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Tus marcas favoritas', 'flux-press');
+    $resolvedTitle = $sectionTitle !== '' ? $sectionTitle : __('Tus marcas favoritas', 'sage');
     $resolvedSubtitle = $sectionSubtitle !== ''
         ? $sectionSubtitle
-        : __('Inicia sesion para obtener beneficios exclusivos', 'flux-press');
+        : __('Inicia sesion para obtener beneficios exclusivos', 'sage');
     $sectionClasses = $embedded
         ? 'py-4 sm:py-5 bg-transparent border-0'
         : 'py-10 sm:py-12 bg-white dark:bg-zinc-950 border-b border-zinc-200 dark:border-zinc-800';
@@ -72,14 +72,14 @@ new class extends Component
             </div>
 
             <flux:button href="{{ esc_url($myAccountUrl) }}" wire:navigate icon="arrow-right" class="shrink-0 max-sm:w-full">
-                {{ __('Ver tiendas oficiales', 'flux-press') }}
+                {{ __('Ver tiendas oficiales', 'sage') }}
             </flux:button>
         </div>
 
         @if(empty($this->brands))
             <flux:callout color="zinc" icon="building-storefront">
-                <flux:callout.heading>{{ __('No hay marcas para mostrar.', 'flux-press') }}</flux:callout.heading>
-                <flux:callout.text>{{ __('Agrega marcas en WooCommerce o crea tarjetas manuales desde Gutenberg.', 'flux-press') }}</flux:callout.text>
+                <flux:callout.heading>{{ __('No hay marcas para mostrar.', 'sage') }}</flux:callout.heading>
+                <flux:callout.text>{{ __('Agrega marcas en WooCommerce o crea tarjetas manuales desde Gutenberg.', 'sage') }}</flux:callout.text>
             </flux:callout>
         @else
             <div
@@ -100,7 +100,7 @@ new class extends Component
                 <button
                     type="button"
                     x-on:click="scrollBrands(-1)"
-                    aria-label="{{ esc_attr__('Desplazar marcas a la izquierda', 'flux-press') }}"
+                    aria-label="{{ esc_attr__('Desplazar marcas a la izquierda', 'sage') }}"
                     class="hidden md:inline-flex absolute left-0 top-1/2 -translate-y-1/2 z-10 size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 dark:hover:border-accent-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors backdrop-blur"
                 >
                     <flux:icon.chevron-left class="size-5" />
@@ -116,7 +116,7 @@ new class extends Component
                             $brandImage = (string) ($brand['image'] ?? '');
                             $brandLogo = (string) ($brand['logo'] ?? '');
                             $brandCount = (int) ($brand['count'] ?? 0);
-                            $brandBadge = trim((string) ($brand['badge'] ?? __('Marca afiliada', 'flux-press')));
+                            $brandBadge = trim((string) ($brand['badge'] ?? __('Marca afiliada', 'sage')));
                             $brandInitials = strtoupper(function_exists('mb_substr') ? (string) mb_substr($brandName, 0, 2) : substr($brandName, 0, 2));
                         @endphp
 
@@ -166,7 +166,7 @@ new class extends Component
                 <button
                     type="button"
                     x-on:click="scrollBrands(1)"
-                    aria-label="{{ esc_attr__('Desplazar marcas a la derecha', 'flux-press') }}"
+                    aria-label="{{ esc_attr__('Desplazar marcas a la derecha', 'sage') }}"
                     class="hidden md:inline-flex absolute right-0 top-1/2 -translate-y-1/2 z-10 size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white/90 dark:bg-zinc-900/90 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 dark:hover:border-accent-500 hover:text-accent-600 dark:hover:text-accent-400 transition-colors backdrop-blur"
                 >
                     <flux:icon.chevron-right class="size-5" />

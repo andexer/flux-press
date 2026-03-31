@@ -26,19 +26,19 @@ const createParentEdit = ({
       null,
       el(
         PanelBody,
-        { title: __('Contenido', 'flux-press'), initialOpen: true },
+        { title: __('Contenido', 'sage'), initialOpen: true },
         el(TextControl, {
-          label: __('Titulo', 'flux-press'),
+          label: __('Titulo', 'sage'),
           value: attributes.title || '',
           onChange: (value) => setAttributes({ title: value }),
         }),
         el(TextControl, {
-          label: __('Subtitulo', 'flux-press'),
+          label: __('Subtitulo', 'sage'),
           value: attributes.subtitle || '',
           onChange: (value) => setAttributes({ subtitle: value }),
         }),
         el(RangeControl, {
-          label: __('Limite de tarjetas', 'flux-press'),
+          label: __('Limite de tarjetas', 'sage'),
           min: limitMin,
           max: limitMax,
           value: Number(attributes.limit || limitMin),
@@ -72,24 +72,24 @@ const createCategoryCardEdit = ({ attributes, setAttributes }) => {
       null,
       el(
         PanelBody,
-        { title: __('Tarjeta de categoria', 'flux-press'), initialOpen: true },
+        { title: __('Tarjeta de categoria', 'sage'), initialOpen: true },
         el(TextControl, {
-          label: __('Nombre', 'flux-press'),
+          label: __('Nombre', 'sage'),
           value: attributes.name || '',
           onChange: (value) => setAttributes({ name: value }),
         }),
         el(TextControl, {
-          label: __('URL', 'flux-press'),
+          label: __('URL', 'sage'),
           value: attributes.url || '',
           onChange: (value) => setAttributes({ url: value }),
         }),
         el(TextControl, {
-          label: __('Imagen (URL o ruta)', 'flux-press'),
+          label: __('Imagen (URL o ruta)', 'sage'),
           value: attributes.image_url || '',
           onChange: (value) => setAttributes({ image_url: value }),
         }),
         el(TextControl, {
-          label: __('Badge', 'flux-press'),
+          label: __('Badge', 'sage'),
           value: attributes.badge || '',
           onChange: (value) => setAttributes({ badge: value }),
         }),
@@ -98,8 +98,8 @@ const createCategoryCardEdit = ({ attributes, setAttributes }) => {
     el(
       'div',
       blockProps,
-      el('strong', { className: 'block text-sm' }, attributes.name || __('Categoria', 'flux-press')),
-      el('span', { className: 'block text-xs text-zinc-500' }, attributes.badge || __('Tarjeta manual', 'flux-press')),
+      el('strong', { className: 'block text-sm' }, attributes.name || __('Categoria', 'sage')),
+      el('span', { className: 'block text-xs text-zinc-500' }, attributes.badge || __('Tarjeta manual', 'sage')),
     ),
   );
 };
@@ -117,29 +117,29 @@ const createBrandCardEdit = ({ attributes, setAttributes }) => {
       null,
       el(
         PanelBody,
-        { title: __('Tarjeta de marca', 'flux-press'), initialOpen: true },
+        { title: __('Tarjeta de marca', 'sage'), initialOpen: true },
         el(TextControl, {
-          label: __('Nombre', 'flux-press'),
+          label: __('Nombre', 'sage'),
           value: attributes.name || '',
           onChange: (value) => setAttributes({ name: value }),
         }),
         el(TextControl, {
-          label: __('URL', 'flux-press'),
+          label: __('URL', 'sage'),
           value: attributes.url || '',
           onChange: (value) => setAttributes({ url: value }),
         }),
         el(TextControl, {
-          label: __('Imagen de fondo (URL o ruta)', 'flux-press'),
+          label: __('Imagen de fondo (URL o ruta)', 'sage'),
           value: attributes.image_url || '',
           onChange: (value) => setAttributes({ image_url: value }),
         }),
         el(TextControl, {
-          label: __('Logo (URL o ruta)', 'flux-press'),
+          label: __('Logo (URL o ruta)', 'sage'),
           value: attributes.logo_url || '',
           onChange: (value) => setAttributes({ logo_url: value }),
         }),
         el(TextControl, {
-          label: __('Badge', 'flux-press'),
+          label: __('Badge', 'sage'),
           value: attributes.badge || '',
           onChange: (value) => setAttributes({ badge: value }),
         }),
@@ -148,8 +148,8 @@ const createBrandCardEdit = ({ attributes, setAttributes }) => {
     el(
       'div',
       blockProps,
-      el('strong', { className: 'block text-sm' }, attributes.name || __('Marca', 'flux-press')),
-      el('span', { className: 'block text-xs text-zinc-500' }, attributes.badge || __('Tarjeta manual', 'flux-press')),
+      el('strong', { className: 'block text-sm' }, attributes.name || __('Marca', 'sage')),
+      el('span', { className: 'block text-xs text-zinc-500' }, attributes.badge || __('Tarjeta manual', 'sage')),
     ),
   );
 };
@@ -167,44 +167,44 @@ const createPromoCardEdit = ({ attributes, setAttributes }) => {
       null,
       el(
         PanelBody,
-        { title: __('Tarjeta promocional', 'flux-press'), initialOpen: true },
+        { title: __('Tarjeta promocional', 'sage'), initialOpen: true },
         el(TextControl, {
-          label: __('Etiqueta', 'flux-press'),
+          label: __('Etiqueta', 'sage'),
           value: attributes.eyebrow || '',
           onChange: (value) => setAttributes({ eyebrow: value }),
         }),
         el(TextControl, {
-          label: __('Titulo', 'flux-press'),
+          label: __('Titulo', 'sage'),
           value: attributes.title || '',
           onChange: (value) => setAttributes({ title: value }),
         }),
         el(TextareaControl, {
-          label: __('Descripcion', 'flux-press'),
+          label: __('Descripcion', 'sage'),
           value: attributes.description || '',
           onChange: (value) => setAttributes({ description: value }),
         }),
         el(TextControl, {
-          label: __('Boton CTA', 'flux-press'),
+          label: __('Boton CTA', 'sage'),
           value: attributes.cta_label || '',
           onChange: (value) => setAttributes({ cta_label: value }),
         }),
         el(TextControl, {
-          label: __('URL CTA', 'flux-press'),
+          label: __('URL CTA', 'sage'),
           value: attributes.cta_url || '',
           onChange: (value) => setAttributes({ cta_url: value }),
         }),
         el(TextControl, {
-          label: __('Imagen (URL o ruta)', 'flux-press'),
+          label: __('Imagen (URL o ruta)', 'sage'),
           value: attributes.image_url || '',
           onChange: (value) => setAttributes({ image_url: value }),
         }),
         el(SelectControl, {
-          label: __('Tema visual', 'flux-press'),
+          label: __('Tema visual', 'sage'),
           value: attributes.theme || 'dark',
           options: [
-            { label: __('Oscuro', 'flux-press'), value: 'dark' },
-            { label: __('Claro', 'flux-press'), value: 'light' },
-            { label: __('Acento', 'flux-press'), value: 'accent' },
+            { label: __('Oscuro', 'sage'), value: 'dark' },
+            { label: __('Claro', 'sage'), value: 'light' },
+            { label: __('Acento', 'sage'), value: 'accent' },
           ],
           onChange: (value) => setAttributes({ theme: value }),
         }),
@@ -213,8 +213,8 @@ const createPromoCardEdit = ({ attributes, setAttributes }) => {
     el(
       'div',
       blockProps,
-      el('strong', { className: 'block text-sm' }, attributes.title || __('Promocion', 'flux-press')),
-      el('span', { className: 'block text-xs text-zinc-500' }, attributes.eyebrow || __('Tarjeta manual', 'flux-press')),
+      el('strong', { className: 'block text-sm' }, attributes.title || __('Promocion', 'sage')),
+      el('span', { className: 'block text-xs text-zinc-500' }, attributes.eyebrow || __('Tarjeta manual', 'sage')),
     ),
   );
 };
@@ -233,23 +233,23 @@ const createSectionBlockEdit = ({ title, description }) => () => {
 };
 
 domReady(() => {
-  registerBlockType('flux-press/featured-categories', {
+  registerBlockType('sage/featured-categories', {
     apiVersion: 3,
-    title: __('Categorias destacadas', 'flux-press'),
-    description: __('Carrusel compacto de categorias para home ecommerce.', 'flux-press'),
+    title: __('Categorias destacadas', 'sage'),
+    description: __('Carrusel compacto de categorias para home ecommerce.', 'sage'),
     category: 'widgets',
     icon: 'screenoptions',
     attributes: {
-      title: { type: 'string', default: __('Categorias destacadas', 'flux-press') },
-      subtitle: { type: 'string', default: __('Explora las mejores tendencias del momento', 'flux-press') },
+      title: { type: 'string', default: __('Categorias destacadas', 'sage') },
+      subtitle: { type: 'string', default: __('Explora las mejores tendencias del momento', 'sage') },
       limit: { type: 'number', default: 8 },
     },
     edit: createParentEdit({
-      description: __('Arrastra y ordena tarjetas de categoria.', 'flux-press'),
-      allowedBlocks: ['flux-press/category-card'],
+      description: __('Arrastra y ordena tarjetas de categoria.', 'sage'),
+      allowedBlocks: ['sage/category-card'],
       template: [
-        ['flux-press/category-card', { name: __('Tecnologia', 'flux-press') }],
-        ['flux-press/category-card', { name: __('Hogar', 'flux-press') }],
+        ['sage/category-card', { name: __('Tecnologia', 'sage') }],
+        ['sage/category-card', { name: __('Hogar', 'sage') }],
       ],
       limitMin: 1,
       limitMax: 24,
@@ -257,23 +257,23 @@ domReady(() => {
     save: () => el(InnerBlocks.Content),
   });
 
-  registerBlockType('flux-press/featured-brands', {
+  registerBlockType('sage/featured-brands', {
     apiVersion: 3,
-    title: __('Marcas destacadas', 'flux-press'),
-    description: __('Carrusel de marcas afiliadas para home ecommerce.', 'flux-press'),
+    title: __('Marcas destacadas', 'sage'),
+    description: __('Carrusel de marcas afiliadas para home ecommerce.', 'sage'),
     category: 'widgets',
     icon: 'tag',
     attributes: {
-      title: { type: 'string', default: __('Tus marcas favoritas', 'flux-press') },
-      subtitle: { type: 'string', default: __('Inicia sesion para obtener beneficios exclusivos', 'flux-press') },
+      title: { type: 'string', default: __('Tus marcas favoritas', 'sage') },
+      subtitle: { type: 'string', default: __('Inicia sesion para obtener beneficios exclusivos', 'sage') },
       limit: { type: 'number', default: 8 },
     },
     edit: createParentEdit({
-      description: __('Arrastra y ordena tarjetas de marca.', 'flux-press'),
-      allowedBlocks: ['flux-press/brand-card'],
+      description: __('Arrastra y ordena tarjetas de marca.', 'sage'),
+      allowedBlocks: ['sage/brand-card'],
       template: [
-        ['flux-press/brand-card', { name: 'Adidas' }],
-        ['flux-press/brand-card', { name: 'Nike' }],
+        ['sage/brand-card', { name: 'Adidas' }],
+        ['sage/brand-card', { name: 'Nike' }],
       ],
       limitMin: 1,
       limitMax: 24,
@@ -281,23 +281,23 @@ domReady(() => {
     save: () => el(InnerBlocks.Content),
   });
 
-  registerBlockType('flux-press/featured-promos', {
+  registerBlockType('sage/featured-promos', {
     apiVersion: 3,
-    title: __('Promociones destacadas', 'flux-press'),
-    description: __('Bloque de promociones visuales para home ecommerce.', 'flux-press'),
+    title: __('Promociones destacadas', 'sage'),
+    description: __('Bloque de promociones visuales para home ecommerce.', 'sage'),
     category: 'widgets',
     icon: 'megaphone',
     attributes: {
-      title: { type: 'string', default: __('Promociones destacadas', 'flux-press') },
-      subtitle: { type: 'string', default: __('Ofertas y lanzamientos en una vista mas visual', 'flux-press') },
+      title: { type: 'string', default: __('Promociones destacadas', 'sage') },
+      subtitle: { type: 'string', default: __('Ofertas y lanzamientos en una vista mas visual', 'sage') },
       limit: { type: 'number', default: 2 },
     },
     edit: createParentEdit({
-      description: __('Arrastra y ordena tarjetas promocionales.', 'flux-press'),
-      allowedBlocks: ['flux-press/promo-card'],
+      description: __('Arrastra y ordena tarjetas promocionales.', 'sage'),
+      allowedBlocks: ['sage/promo-card'],
       template: [
-        ['flux-press/promo-card', { title: __('Novedades y lanzamientos', 'flux-press') }],
-        ['flux-press/promo-card', { title: __('Ofertas relampago', 'flux-press') }],
+        ['sage/promo-card', { title: __('Novedades y lanzamientos', 'sage') }],
+        ['sage/promo-card', { title: __('Ofertas relampago', 'sage') }],
       ],
       limitMin: 1,
       limitMax: 6,
@@ -305,15 +305,15 @@ domReady(() => {
     save: () => el(InnerBlocks.Content),
   });
 
-  registerBlockType('flux-press/home-sections-carousel', {
+  registerBlockType('sage/home-sections-carousel', {
     apiVersion: 3,
-    title: __('Carrusel de secciones', 'flux-press'),
-    description: __('Carrusel completo para reordenar categorias, marcas y promos en un solo bloque.', 'flux-press'),
+    title: __('Carrusel de secciones', 'sage'),
+    description: __('Carrusel completo para reordenar categorias, marcas y promos en un solo bloque.', 'sage'),
     category: 'widgets',
     icon: 'images-alt2',
     attributes: {
-      title: { type: 'string', default: __('Carrusel de secciones', 'flux-press') },
-      subtitle: { type: 'string', default: __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press') },
+      title: { type: 'string', default: __('Carrusel de secciones', 'sage') },
+      subtitle: { type: 'string', default: __('Mueve, activa y reagrupa secciones ecommerce', 'sage') },
       sections: { type: 'string', default: 'categories,brands,promos' },
       autoplay: { type: 'boolean', default: true },
       interval: { type: 'number', default: 6500 },
@@ -332,30 +332,30 @@ domReady(() => {
           null,
           el(
             PanelBody,
-            { title: __('Carrusel', 'flux-press'), initialOpen: true },
+            { title: __('Carrusel', 'sage'), initialOpen: true },
             el(TextControl, {
-              label: __('Titulo', 'flux-press'),
+              label: __('Titulo', 'sage'),
               value: attributes.title || '',
               onChange: (value) => setAttributes({ title: value }),
             }),
             el(TextControl, {
-              label: __('Subtitulo', 'flux-press'),
+              label: __('Subtitulo', 'sage'),
               value: attributes.subtitle || '',
               onChange: (value) => setAttributes({ subtitle: value }),
             }),
             el(TextControl, {
-              label: __('Secciones (coma separadas)', 'flux-press'),
-              help: __('Usa: categories,brands,promos', 'flux-press'),
+              label: __('Secciones (coma separadas)', 'sage'),
+              help: __('Usa: categories,brands,promos', 'sage'),
               value: attributes.sections || 'categories,brands,promos',
               onChange: (value) => setAttributes({ sections: value }),
             }),
             el(ToggleControl, {
-              label: __('Autoplay', 'flux-press'),
+              label: __('Autoplay', 'sage'),
               checked: !!attributes.autoplay,
               onChange: (value) => setAttributes({ autoplay: !!value }),
             }),
             el(RangeControl, {
-              label: __('Intervalo (ms)', 'flux-press'),
+              label: __('Intervalo (ms)', 'sage'),
               min: 2500,
               max: 20000,
               step: 100,
@@ -363,7 +363,7 @@ domReady(() => {
               onChange: (value) => setAttributes({ interval: Number(value || 6500) }),
             }),
             el(ToggleControl, {
-              label: __('Mostrar controles', 'flux-press'),
+              label: __('Mostrar controles', 'sage'),
               checked: !!attributes.show_controls,
               onChange: (value) => setAttributes({ show_controls: !!value }),
             }),
@@ -372,8 +372,8 @@ domReady(() => {
         el(
           'div',
           blockProps,
-          el('p', { className: 'm-0 text-xs font-semibold uppercase tracking-wide text-zinc-500' }, __('Carrusel de secciones ecommerce', 'flux-press')),
-          el('strong', { className: 'block mt-2 text-sm' }, attributes.title || __('Carrusel de secciones', 'flux-press')),
+          el('p', { className: 'm-0 text-xs font-semibold uppercase tracking-wide text-zinc-500' }, __('Carrusel de secciones ecommerce', 'sage')),
+          el('strong', { className: 'block mt-2 text-sm' }, attributes.title || __('Carrusel de secciones', 'sage')),
           el('span', { className: 'block mt-1 text-xs text-zinc-500' }, attributes.sections || 'categories,brands,promos'),
         ),
       );
@@ -381,75 +381,75 @@ domReady(() => {
     save: () => null,
   });
 
-  registerBlockType('flux-press/home-hero', {
+  registerBlockType('sage/home-hero', {
     apiVersion: 3,
-    title: __('Home: Hero', 'flux-press'),
-    description: __('Seccion hero ecommerce del tema.', 'flux-press'),
+    title: __('Home: Hero', 'sage'),
+    description: __('Seccion hero ecommerce del tema.', 'sage'),
     category: 'widgets',
     icon: 'slides',
     edit: createSectionBlockEdit({
-      title: __('Hero principal', 'flux-press'),
-      description: __('Mueve este bloque para cambiar el orden del hero en el Home.', 'flux-press'),
+      title: __('Hero principal', 'sage'),
+      description: __('Mueve este bloque para cambiar el orden del hero en el Home.', 'sage'),
     }),
     save: () => null,
   });
 
-  registerBlockType('flux-press/home-best-sellers', {
+  registerBlockType('sage/home-best-sellers', {
     apiVersion: 3,
-    title: __('Home: Mas Vendidos', 'flux-press'),
-    description: __('Seccion de productos mas vendidos.', 'flux-press'),
+    title: __('Home: Mas Vendidos', 'sage'),
+    description: __('Seccion de productos mas vendidos.', 'sage'),
     category: 'widgets',
     icon: 'cart',
     edit: createSectionBlockEdit({
-      title: __('Productos mas vendidos', 'flux-press'),
-      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'flux-press'),
+      title: __('Productos mas vendidos', 'sage'),
+      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'sage'),
     }),
     save: () => null,
   });
 
-  registerBlockType('flux-press/home-top-rated', {
+  registerBlockType('sage/home-top-rated', {
     apiVersion: 3,
-    title: __('Home: Mejor Valorados', 'flux-press'),
-    description: __('Seccion de productos top rated.', 'flux-press'),
+    title: __('Home: Mejor Valorados', 'sage'),
+    description: __('Seccion de productos top rated.', 'sage'),
     category: 'widgets',
     icon: 'star-filled',
     edit: createSectionBlockEdit({
-      title: __('Productos mejor valorados', 'flux-press'),
-      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'flux-press'),
+      title: __('Productos mejor valorados', 'sage'),
+      description: __('Mueve este bloque para reordenar la seccion en el Home.', 'sage'),
     }),
     save: () => null,
   });
 
-  registerBlockType('flux-press/home-newsletter', {
+  registerBlockType('sage/home-newsletter', {
     apiVersion: 3,
-    title: __('Home: Newsletter', 'flux-press'),
-    description: __('Seccion de newsletter del home.', 'flux-press'),
+    title: __('Home: Newsletter', 'sage'),
+    description: __('Seccion de newsletter del home.', 'sage'),
     category: 'widgets',
     icon: 'email',
     edit: createSectionBlockEdit({
-      title: __('Newsletter', 'flux-press'),
-      description: __('Mueve este bloque para reordenar la newsletter en el Home.', 'flux-press'),
+      title: __('Newsletter', 'sage'),
+      description: __('Mueve este bloque para reordenar la newsletter en el Home.', 'sage'),
     }),
     save: () => null,
   });
 
-  registerBlockType('flux-press/home-blog', {
+  registerBlockType('sage/home-blog', {
     apiVersion: 3,
-    title: __('Home: Blog', 'flux-press'),
-    description: __('Seccion de entradas recientes del blog.', 'flux-press'),
+    title: __('Home: Blog', 'sage'),
+    description: __('Seccion de entradas recientes del blog.', 'sage'),
     category: 'widgets',
     icon: 'admin-post',
     edit: createSectionBlockEdit({
-      title: __('Contenido reciente', 'flux-press'),
-      description: __('Mueve este bloque para reordenar la seccion de blog en el Home.', 'flux-press'),
+      title: __('Contenido reciente', 'sage'),
+      description: __('Mueve este bloque para reordenar la seccion de blog en el Home.', 'sage'),
     }),
     save: () => null,
   });
 
-  registerBlockType('flux-press/category-card', {
+  registerBlockType('sage/category-card', {
     apiVersion: 3,
-    title: __('Tarjeta de categoria', 'flux-press'),
-    parent: ['flux-press/featured-categories'],
+    title: __('Tarjeta de categoria', 'sage'),
+    parent: ['sage/featured-categories'],
     category: 'widgets',
     icon: 'index-card',
     attributes: {
@@ -462,10 +462,10 @@ domReady(() => {
     save: () => null,
   });
 
-  registerBlockType('flux-press/brand-card', {
+  registerBlockType('sage/brand-card', {
     apiVersion: 3,
-    title: __('Tarjeta de marca', 'flux-press'),
-    parent: ['flux-press/featured-brands'],
+    title: __('Tarjeta de marca', 'sage'),
+    parent: ['sage/featured-brands'],
     category: 'widgets',
     icon: 'tag',
     attributes: {
@@ -479,10 +479,10 @@ domReady(() => {
     save: () => null,
   });
 
-  registerBlockType('flux-press/promo-card', {
+  registerBlockType('sage/promo-card', {
     apiVersion: 3,
-    title: __('Tarjeta promocional', 'flux-press'),
-    parent: ['flux-press/featured-promos'],
+    title: __('Tarjeta promocional', 'sage'),
+    parent: ['sage/featured-promos'],
     category: 'widgets',
     icon: 'megaphone',
     attributes: {

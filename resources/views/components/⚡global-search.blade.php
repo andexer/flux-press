@@ -135,7 +135,7 @@ new class extends Component
         action="{{ home_url('/') }}"
     >
         @if($showScope)
-            <label class="sr-only" for="{{ $scopeFieldId }}">{{ __('Alcance', 'flux-press') }}</label>
+            <label class="sr-only" for="{{ $scopeFieldId }}">{{ __('Alcance', 'sage') }}</label>
             <div class="flex items-center gap-2">
                 <select
                     id="{{ $scopeFieldId }}"
@@ -143,10 +143,10 @@ new class extends Component
                     class="{{ $isMarket ? 'flux-market-search__scope' : 'h-11 min-w-[6.6rem] rounded-xl border border-zinc-200 bg-zinc-50 px-3 text-sm font-semibold text-zinc-600 focus:border-accent-500 focus:outline-none focus:ring-2 focus:ring-accent-500/20 dark:border-zinc-700 dark:bg-zinc-800 dark:text-zinc-200' }}"
                     name="post_type"
                 >
-                    <option value="all">{{ __('All', 'flux-press') }}</option>
-                    <option value="product">{{ __('Products', 'flux-press') }}</option>
-                    <option value="post">{{ __('Posts', 'flux-press') }}</option>
-                    <option value="page">{{ __('Pages', 'flux-press') }}</option>
+                    <option value="all">{{ __('All', 'sage') }}</option>
+                    <option value="product">{{ __('Products', 'sage') }}</option>
+                    <option value="post">{{ __('Posts', 'sage') }}</option>
+                    <option value="page">{{ __('Pages', 'sage') }}</option>
                 </select>
                 @if($isMarket)
                     <span class="hidden h-7 w-px shrink-0 bg-zinc-200 md:block dark:bg-zinc-700/80" aria-hidden="true"></span>
@@ -158,8 +158,8 @@ new class extends Component
             wire:model.live.debounce.300ms="query"
             type="search"
             name="s"
-            placeholder="{{ $isMarket ? __('Search for anything', 'flux-press') : _x('Search ...', 'placeholder', 'flux-press') }}"
-            aria-label="{{ _x('Search for:', 'label', 'flux-press') }}"
+            placeholder="{{ $isMarket ? __('Search for anything', 'sage') : _x('Search ...', 'placeholder', 'sage') }}"
+            aria-label="{{ _x('Search for:', 'label', 'sage') }}"
             class="{{ $isMarket ? 'flux-market-search__input' : 'flex-1' }}"
             autocomplete="off"
             @focus="open = true"
@@ -170,13 +170,13 @@ new class extends Component
             <button
                 type="submit"
                 class="flux-market-search__submit"
-                aria-label="{{ esc_attr(_x('Search', 'submit button', 'flux-press')) }}"
+                aria-label="{{ esc_attr(_x('Search', 'submit button', 'sage')) }}"
             >
                 <flux:icon.magnifying-glass class="size-5" />
             </button>
         @else
             <flux:button type="submit" variant="primary">
-                {{ _x('Search', 'submit button', 'flux-press') }}
+                {{ _x('Search', 'submit button', 'sage') }}
             </flux:button>
         @endif
     </form>
@@ -209,7 +209,7 @@ new class extends Component
                 </ul>
                 <div class="border-t border-zinc-100 bg-zinc-50 p-2 text-center dark:border-zinc-800 dark:bg-zinc-900/50">
                     <button type="button" wire:click="submitSearch" class="w-full py-1 text-center text-sm font-medium text-accent-600 hover:text-accent-700 dark:text-accent-400">
-                        {{ __('View all results', 'flux-press') }}
+                        {{ __('View all results', 'sage') }}
                     </button>
                 </div>
             @else
@@ -217,7 +217,7 @@ new class extends Component
                     <svg class="mb-3 h-8 w-8 text-zinc-300 dark:text-zinc-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
                     </svg>
-                    <span>{{ __('No results found for', 'flux-press') }} "<span class="font-medium text-zinc-900 dark:text-zinc-100">{{ $query }}</span>"</span>
+                    <span>{{ __('No results found for', 'sage') }} "<span class="font-medium text-zinc-900 dark:text-zinc-100">{{ $query }}</span>"</span>
                 </div>
             @endif
         </div>

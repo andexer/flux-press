@@ -61,6 +61,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         // Visual Builder del Home ecommerce en barra/admin.
         add_action('admin_menu', [$this, 'registerFluxVisualBuilderAdminMenu']);
         add_action('admin_bar_menu', [$this, 'registerFluxVisualBuilderAdminBarMenu'], 90);
+        add_action('load-toplevel_page_flux-visual-builder', [$this, 'redirectFluxVisualBuilderAdminPage']);
         add_action('admin_head', [$this, 'renderFluxVisualBuilderAdminHead']);
         add_action('admin_footer', [$this, 'renderFluxVisualBuilderAdminFooter']);
         add_action('template_redirect', [$this, 'ensureFluxBuilderAccess'], 1);
@@ -158,8 +159,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     public function registerFluxVisualBuilderAdminMenu(): void
     {
         add_menu_page(
-            __('Flux Visual Builder', 'flux-press'),
-            __('Flux Builder', 'flux-press'),
+            __('Flux Visual Builder', 'sage'),
+            __('Flux Builder', 'sage'),
             'edit_theme_options',
             'flux-visual-builder',
             [$this, 'renderFluxVisualBuilderAdminPage'],
@@ -174,10 +175,23 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     public function renderFluxVisualBuilderAdminPage(): void
     {
         if (! current_user_can('edit_theme_options')) {
-            wp_die(esc_html__('No tienes permisos para acceder a esta pantalla.', 'flux-press'));
+            wp_die(esc_html__('No tienes permisos para acceder a esta pantalla.', 'sage'));
         }
 
-        echo View::make('admin.flux-visual-builder')->render();
+        $targetUrl = add_query_arg('flux_builder', '1', home_url('/'));
+        wp_safe_redirect($targetUrl);
+        exit;
+    }
+
+    public function redirectFluxVisualBuilderAdminPage(): void
+    {
+        if (! current_user_can('edit_theme_options')) {
+            wp_die(esc_html__('No tienes permisos para acceder a esta pantalla.', 'sage'));
+        }
+
+        $targetUrl = add_query_arg('flux_builder', '1', home_url('/'));
+        wp_safe_redirect($targetUrl);
+        exit;
     }
 
     /**
@@ -193,11 +207,11 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         $adminBar->add_node([
             'id' => 'flux-visual-builder-live',
-            'title' => __('Flux Builder', 'flux-press'),
+            'title' => __('Flux Builder', 'sage'),
             'href' => $targetUrl,
             'meta' => [
                 'class' => 'flux-visual-builder-live',
-                'title' => __('Abrir Flux Visual Builder', 'flux-press'),
+                'title' => __('Abrir Flux Visual Builder', 'sage'),
             ],
         ]);
     }
@@ -257,8 +271,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         }
 
         wp_die(
-            esc_html__('No tienes permisos para usar Flux Visual Builder.', 'flux-press'),
-            esc_html__('Acceso denegado', 'flux-press'),
+            esc_html__('No tienes permisos para usar Flux Visual Builder.', 'sage'),
+            esc_html__('Acceso denegado', 'sage'),
             ['response' => 403]
         );
     }
@@ -381,8 +395,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         // ─── Sección: Header ───────────────────────────────────
         $wp_customize->add_section('flux_header_section', [
-            'title' => __('Flux Press: Header', 'flux-press'),
-            'description' => __('Edita titulos y URLs desde Apariencia > Menus usando: Primary Navigation, Header Mega Navigation, Header Actions Navigation, Header Highlights Navigation y Header Utility (Left/Right).', 'flux-press'),
+            'title' => __('Flux Press: Header', 'sage'),
+            'description' => __('Edita titulos y URLs desde Apariencia > Menus usando: Primary Navigation, Header Mega Navigation, Header Actions Navigation, Header Highlights Navigation y Header Utility (Left/Right).', 'sage'),
             'priority' => 30,
         ]);
 
@@ -393,7 +407,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_style', [
-            'label' => __('Estilo del Header', 'flux-press'),
+            'label' => __('Estilo del Header', 'sage'),
             'section' => 'flux_header_section',
             'type' => 'select',
             'choices' => $this->styleChoices('header'),
@@ -406,7 +420,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_sticky', [
-            'label' => __('Header Sticky (fijo al hacer scroll)', 'flux-press'),
+            'label' => __('Header Sticky (fijo al hacer scroll)', 'sage'),
             'section' => 'flux_header_section',
             'type' => 'checkbox',
         ]);
@@ -415,7 +429,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         // ─── Sección: Footer ───────────────────────────────────
         $wp_customize->add_section('flux_footer_section', [
-            'title' => __('Flux Press: Footer', 'flux-press'),
+            'title' => __('Flux Press: Footer', 'sage'),
             'priority' => 31,
         ]);
 
@@ -426,7 +440,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('footer_style', [
-            'label' => __('Estilo del Footer', 'flux-press'),
+            'label' => __('Estilo del Footer', 'sage'),
             'section' => 'flux_footer_section',
             'type' => 'select',
             'choices' => $this->styleChoices('footer'),
@@ -441,8 +455,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerMegaMenuCustomizerSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_header_megamenu_section', [
-            'title' => __('Flux Press: Mega Menu', 'flux-press'),
-            'description' => __('Configura el mega menu inteligente del header.', 'flux-press'),
+            'title' => __('Flux Press: Mega Menu', 'sage'),
+            'description' => __('Configura el mega menu inteligente del header.', 'sage'),
             'priority' => 31,
         ]);
 
@@ -453,7 +467,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_enable_mega_menu', [
-            'label' => __('Activar Mega Menu', 'flux-press'),
+            'label' => __('Activar Mega Menu', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'checkbox',
         ]);
@@ -465,7 +479,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_show_categories', [
-            'label' => __('Mostrar categorias de producto', 'flux-press'),
+            'label' => __('Mostrar categorias de producto', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'checkbox',
         ]);
@@ -477,7 +491,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_show_top_rated', [
-            'label' => __('Mostrar productos mejor valorados', 'flux-press'),
+            'label' => __('Mostrar productos mejor valorados', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'checkbox',
         ]);
@@ -489,7 +503,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_show_best_selling', [
-            'label' => __('Mostrar productos mas vendidos', 'flux-press'),
+            'label' => __('Mostrar productos mas vendidos', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'checkbox',
         ]);
@@ -501,7 +515,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_show_pages', [
-            'label' => __('Mostrar paginas de WordPress', 'flux-press'),
+            'label' => __('Mostrar paginas de WordPress', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'checkbox',
         ]);
@@ -513,7 +527,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_categories_limit', [
-            'label' => __('Limite de categorias', 'flux-press'),
+            'label' => __('Limite de categorias', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'number',
             'input_attrs' => [
@@ -530,7 +544,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_top_rated_limit', [
-            'label' => __('Limite de productos destacados', 'flux-press'),
+            'label' => __('Limite de productos destacados', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'number',
             'input_attrs' => [
@@ -547,7 +561,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_best_selling_limit', [
-            'label' => __('Limite de productos mas vendidos', 'flux-press'),
+            'label' => __('Limite de productos mas vendidos', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'number',
             'input_attrs' => [
@@ -564,7 +578,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('header_megamenu_pages_limit', [
-            'label' => __('Limite de paginas', 'flux-press'),
+            'label' => __('Limite de paginas', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'number',
             'input_attrs' => [
@@ -575,14 +589,14 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_setting('header_megamenu_featured_item_text', [
-            'default' => config('theme-interface.header.mega_menu.featured_item_text', __('Descubrir', 'flux-press')),
+            'default' => config('theme-interface.header.mega_menu.featured_item_text', __('Descubrir', 'sage')),
             'sanitize_callback' => 'sanitize_text_field',
             'transport' => 'refresh',
         ]);
 
         $wp_customize->add_control('header_megamenu_featured_item_text', [
-            'label' => __('Etiqueta de item destacado', 'flux-press'),
-            'description' => __('Texto mostrado en el acceso principal del mega menu si no hay menu asignado.', 'flux-press'),
+            'label' => __('Etiqueta de item destacado', 'sage'),
+            'description' => __('Texto mostrado en el acceso principal del mega menu si no hay menu asignado.', 'sage'),
             'section' => 'flux_header_megamenu_section',
             'type' => 'text',
         ]);
@@ -594,8 +608,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerHomeCustomizerSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_home_section', [
-            'title' => __('Flux Press: Home Builder', 'flux-press'),
-            'description' => __('Selecciona variante de home y activa/desactiva secciones.', 'flux-press'),
+            'title' => __('Flux Press: Home Builder', 'sage'),
+            'description' => __('Selecciona variante de home y activa/desactiva secciones.', 'sage'),
             'priority' => 32,
         ]);
 
@@ -606,7 +620,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_layout', [
-            'label' => __('Layout del Home', 'flux-press'),
+            'label' => __('Layout del Home', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'select',
             'choices' => $this->homeLayoutChoices(),
@@ -619,7 +633,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_show_features', [
-            'label' => __('Mostrar seccion Features', 'flux-press'),
+            'label' => __('Mostrar seccion Features', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'checkbox',
         ]);
@@ -631,7 +645,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_show_stats', [
-            'label' => __('Mostrar seccion Stats', 'flux-press'),
+            'label' => __('Mostrar seccion Stats', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'checkbox',
         ]);
@@ -643,7 +657,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_show_cta', [
-            'label' => __('Mostrar seccion CTA', 'flux-press'),
+            'label' => __('Mostrar seccion CTA', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'checkbox',
         ]);
@@ -655,7 +669,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_show_posts', [
-            'label' => __('Mostrar seccion de entradas recientes', 'flux-press'),
+            'label' => __('Mostrar seccion de entradas recientes', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'checkbox',
         ]);
@@ -667,7 +681,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_posts_limit', [
-            'label' => __('Cantidad de entradas en Home', 'flux-press'),
+            'label' => __('Cantidad de entradas en Home', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'number',
             'input_attrs' => [
@@ -684,7 +698,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_show_widgets', [
-            'label' => __('Mostrar area de widgets Home', 'flux-press'),
+            'label' => __('Mostrar area de widgets Home', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'checkbox',
         ]);
@@ -696,8 +710,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_sections_order', [
-            'label' => __('Orden de secciones', 'flux-press'),
-            'description' => __('Orden en que aparecen las secciones. Usa: hero,features,stats,posts,cta,widgets', 'flux-press'),
+            'label' => __('Orden de secciones', 'sage'),
+            'description' => __('Orden en que aparecen las secciones. Usa: hero,features,stats,posts,cta,widgets', 'sage'),
             'section' => 'flux_home_section',
             'type' => 'text',
         ]);
@@ -713,8 +727,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerThemePresetsCustomizerSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_presets_section', [
-            'title' => __('Flux Press: Plantillas', 'flux-press'),
-            'description' => __('Aplica una plantilla predefinida para configurar rápidamente el tema completo.', 'flux-press'),
+            'title' => __('Flux Press: Plantillas', 'sage'),
+            'description' => __('Aplica una plantilla predefinida para configurar rápidamente el tema completo.', 'sage'),
             'priority' => 20,
         ]);
 
@@ -737,7 +751,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_preset_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'sage'));
 
             return;
         }
@@ -745,7 +759,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $presetKey = sanitize_key($_POST['preset_key'] ?? '');
 
         if (empty($presetKey)) {
-            wp_send_json_error(__('Preset no especificado.', 'flux-press'));
+            wp_send_json_error(__('Preset no especificado.', 'sage'));
 
             return;
         }
@@ -768,7 +782,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_preset_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'sage'));
 
             return;
         }
@@ -788,7 +802,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_preset_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos para realizar esta acción.', 'sage'));
 
             return;
         }
@@ -796,7 +810,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $index = absint($_POST['backup_index'] ?? -1);
 
         if ($index < 0) {
-            wp_send_json_error(__('Índice de backup inválido.', 'flux-press'));
+            wp_send_json_error(__('Índice de backup inválido.', 'sage'));
 
             return;
         }
@@ -805,9 +819,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $result = $presetService->restoreBackup($index);
 
         if ($result) {
-            wp_send_json_success(__('Backup restaurado correctamente.', 'flux-press'));
+            wp_send_json_success(__('Backup restaurado correctamente.', 'sage'));
         } else {
-            wp_send_json_error(__('No se pudo restaurar el backup.', 'flux-press'));
+            wp_send_json_error(__('No se pudo restaurar el backup.', 'sage'));
         }
     }
 
@@ -817,8 +831,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerHomeEcommerceCustomizerSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_home_ecommerce_section', [
-            'title' => __('Flux Press: Home Ecommerce', 'flux-press'),
-            'description' => __('Configura orden, visibilidad y contenido dinamico del Home ecommerce.', 'flux-press'),
+            'title' => __('Flux Press: Home Ecommerce', 'sage'),
+            'description' => __('Configura orden, visibilidad y contenido dinamico del Home ecommerce.', 'sage'),
             'priority' => 33,
         ]);
 
@@ -829,8 +843,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_ecommerce_section_order', [
-            'label' => __('Orden de secciones (CSV)', 'flux-press'),
-            'description' => __('Usa: hero,categories,best_sellers,top_rated,brands,promos,newsletter,blog', 'flux-press'),
+            'label' => __('Orden de secciones (CSV)', 'sage'),
+            'description' => __('Usa: hero,categories,best_sellers,top_rated,brands,promos,newsletter,blog', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'text',
         ]);
@@ -842,26 +856,26 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         ]);
 
         $wp_customize->add_control('home_ecommerce_content_mode', [
-            'label' => __('Modo de contenido Home Ecommerce', 'flux-press'),
-            'description' => __('Builder: solo secciones del tema. Hibrido: bloques del editor + builder. Editor: solo Gutenberg/Elementor.', 'flux-press'),
+            'label' => __('Modo de contenido Home Ecommerce', 'sage'),
+            'description' => __('Builder: solo secciones del tema. Hibrido: bloques del editor + builder. Editor: solo Gutenberg/Elementor.', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'select',
             'choices' => [
-                'builder' => __('Builder del tema', 'flux-press'),
-                'hybrid' => __('Hibrido (editor + builder)', 'flux-press'),
-                'editor' => __('Solo editor de bloques/Elementor', 'flux-press'),
+                'builder' => __('Builder del tema', 'sage'),
+                'hybrid' => __('Hibrido (editor + builder)', 'sage'),
+                'editor' => __('Solo editor de bloques/Elementor', 'sage'),
             ],
         ]);
 
         $sectionLabels = [
-            'hero' => __('Mostrar Hero dinamico', 'flux-press'),
-            'categories' => __('Mostrar categorias', 'flux-press'),
-            'best_sellers' => __('Mostrar mas vendidos', 'flux-press'),
-            'top_rated' => __('Mostrar mejor valorados', 'flux-press'),
-            'brands' => __('Mostrar marcas', 'flux-press'),
-            'promos' => __('Mostrar promociones', 'flux-press'),
-            'newsletter' => __('Mostrar newsletter', 'flux-press'),
-            'blog' => __('Mostrar blog', 'flux-press'),
+            'hero' => __('Mostrar Hero dinamico', 'sage'),
+            'categories' => __('Mostrar categorias', 'sage'),
+            'best_sellers' => __('Mostrar mas vendidos', 'sage'),
+            'top_rated' => __('Mostrar mejor valorados', 'sage'),
+            'brands' => __('Mostrar marcas', 'sage'),
+            'promos' => __('Mostrar promociones', 'sage'),
+            'newsletter' => __('Mostrar newsletter', 'sage'),
+            'blog' => __('Mostrar blog', 'sage'),
         ];
 
         foreach ($sectionLabels as $sectionKey => $label) {
@@ -885,7 +899,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_hero_limit', [
-            'label' => __('Cantidad de productos Hero', 'flux-press'),
+            'label' => __('Cantidad de productos Hero', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 1, 'max' => 8, 'step' => 1],
@@ -897,7 +911,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_categories_limit', [
-            'label' => __('Cantidad de categorias', 'flux-press'),
+            'label' => __('Cantidad de categorias', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 1, 'max' => 18, 'step' => 1],
@@ -909,7 +923,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_products_limit', [
-            'label' => __('Cantidad de productos por grid', 'flux-press'),
+            'label' => __('Cantidad de productos por grid', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 1, 'max' => 24, 'step' => 1],
@@ -921,7 +935,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_brands_limit', [
-            'label' => __('Cantidad de marcas', 'flux-press'),
+            'label' => __('Cantidad de marcas', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 1, 'max' => 18, 'step' => 1],
@@ -933,7 +947,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_blog_limit', [
-            'label' => __('Cantidad de entradas blog', 'flux-press'),
+            'label' => __('Cantidad de entradas blog', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 1, 'max' => 12, 'step' => 1],
@@ -945,7 +959,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_hero_autoplay', [
-            'label' => __('Autoplay del carrusel Hero', 'flux-press'),
+            'label' => __('Autoplay del carrusel Hero', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'checkbox',
         ]);
@@ -956,8 +970,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_hero_interval_ms', [
-            'label' => __('Intervalo del carrusel (ms)', 'flux-press'),
-            'description' => __('Rango recomendado: 3500 - 9000', 'flux-press'),
+            'label' => __('Intervalo del carrusel (ms)', 'sage'),
+            'description' => __('Rango recomendado: 3500 - 9000', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'number',
             'input_attrs' => ['min' => 2500, 'max' => 20000, 'step' => 100],
@@ -971,8 +985,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_hero_slides_json', [
-            'label' => __('Slides del Hero (JSON)', 'flux-press'),
-            'description' => __('Campos por slide: title, subtitle, content_html, image_url, badge, primary_label, primary_url, secondary_label, secondary_url. Solo se usa si no hay Slides Visuales activos.', 'flux-press'),
+            'label' => __('Slides del Hero (JSON)', 'sage'),
+            'description' => __('Campos por slide: title, subtitle, content_html, image_url, badge, primary_label, primary_url, secondary_label, secondary_url. Solo se usa si no hay Slides Visuales activos.', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'textarea',
         ]);
@@ -983,7 +997,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_newsletter_title', [
-            'label' => __('Titulo newsletter', 'flux-press'),
+            'label' => __('Titulo newsletter', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'text',
         ]);
@@ -994,7 +1008,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_newsletter_text', [
-            'label' => __('Texto newsletter', 'flux-press'),
+            'label' => __('Texto newsletter', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'textarea',
         ]);
@@ -1005,7 +1019,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_newsletter_button_label', [
-            'label' => __('Etiqueta boton newsletter', 'flux-press'),
+            'label' => __('Etiqueta boton newsletter', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'text',
         ]);
@@ -1016,7 +1030,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_newsletter_button_url', [
-            'label' => __('URL boton newsletter', 'flux-press'),
+            'label' => __('URL boton newsletter', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'url',
         ]);
@@ -1027,8 +1041,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_featured_categories_json', [
-            'label' => __('Categorias destacadas (JSON)', 'flux-press'),
-            'description' => __('Campos por card: name, url, image_url, badge', 'flux-press'),
+            'label' => __('Categorias destacadas (JSON)', 'sage'),
+            'description' => __('Campos por card: name, url, image_url, badge', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'textarea',
         ]);
@@ -1039,8 +1053,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_featured_brands_json', [
-            'label' => __('Marcas destacadas (JSON)', 'flux-press'),
-            'description' => __('Campos por card: name, url, image_url, logo_url, badge', 'flux-press'),
+            'label' => __('Marcas destacadas (JSON)', 'sage'),
+            'description' => __('Campos por card: name, url, image_url, logo_url, badge', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'textarea',
         ]);
@@ -1051,8 +1065,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_ecommerce_featured_promos_json', [
-            'label' => __('Promociones destacadas (JSON)', 'flux-press'),
-            'description' => __('Campos por card: eyebrow, title, description, cta_label, cta_url, image_url, theme', 'flux-press'),
+            'label' => __('Promociones destacadas (JSON)', 'sage'),
+            'description' => __('Campos por card: eyebrow, title, description, cta_label, cta_url, image_url, theme', 'sage'),
             'section' => 'flux_home_ecommerce_section',
             'type' => 'textarea',
         ]);
@@ -1073,7 +1087,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_enabled", [
-                'label' => sprintf(__('Slide visual %d activo', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d activo', 'sage'), $index),
                 'section' => $section,
                 'type' => 'checkbox',
                 'priority' => $basePriority,
@@ -1085,7 +1099,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_badge", [
-                'label' => sprintf(__('Slide visual %d badge', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d badge', 'sage'), $index),
                 'section' => $section,
                 'type' => 'text',
                 'priority' => $basePriority + 1,
@@ -1097,7 +1111,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_title", [
-                'label' => sprintf(__('Slide visual %d titulo', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d titulo', 'sage'), $index),
                 'section' => $section,
                 'type' => 'text',
                 'priority' => $basePriority + 2,
@@ -1109,7 +1123,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_subtitle", [
-                'label' => sprintf(__('Slide visual %d subtitulo', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d subtitulo', 'sage'), $index),
                 'section' => $section,
                 'type' => 'textarea',
                 'priority' => $basePriority + 3,
@@ -1121,8 +1135,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control(new WP_Customize_Cropped_Image_Control($wp_customize, "{$prefix}_image_id", [
-                'label' => sprintf(__('Slide visual %d imagen (con recorte)', 'flux-press'), $index),
-                'description' => __('Sube imagen personalizada y ajusta el recorte sin salir del personalizador.', 'flux-press'),
+                'label' => sprintf(__('Slide visual %d imagen (con recorte)', 'sage'), $index),
+                'description' => __('Sube imagen personalizada y ajusta el recorte sin salir del personalizador.', 'sage'),
                 'section' => $section,
                 'priority' => $basePriority + 4,
                 'width' => 1920,
@@ -1137,7 +1151,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_primary_label", [
-                'label' => sprintf(__('Slide visual %d boton principal', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d boton principal', 'sage'), $index),
                 'section' => $section,
                 'type' => 'text',
                 'priority' => $basePriority + 5,
@@ -1149,7 +1163,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_primary_url", [
-                'label' => sprintf(__('Slide visual %d URL principal', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d URL principal', 'sage'), $index),
                 'section' => $section,
                 'type' => 'url',
                 'priority' => $basePriority + 6,
@@ -1161,7 +1175,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_secondary_label", [
-                'label' => sprintf(__('Slide visual %d boton secundario', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d boton secundario', 'sage'), $index),
                 'section' => $section,
                 'type' => 'text',
                 'priority' => $basePriority + 7,
@@ -1173,7 +1187,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("{$prefix}_secondary_url", [
-                'label' => sprintf(__('Slide visual %d URL secundaria', 'flux-press'), $index),
+                'label' => sprintf(__('Slide visual %d URL secundaria', 'sage'), $index),
                 'section' => $section,
                 'type' => 'url',
                 'priority' => $basePriority + 8,
@@ -1240,8 +1254,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerHomeCustomSectionsSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_home_custom_sections', [
-            'title' => __('Flux Press: Secciones Personalizadas', 'flux-press'),
-            'description' => __('Crea y organiza secciones personalizadas para tu Home con el builder visual.', 'flux-press'),
+            'title' => __('Flux Press: Secciones Personalizadas', 'sage'),
+            'description' => __('Crea y organiza secciones personalizadas para tu Home con el builder visual.', 'sage'),
             'priority' => 34,
         ]);
 
@@ -1460,8 +1474,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     protected function registerHomeEditableContentSettings(\WP_Customize_Manager $wp_customize): void
     {
         $wp_customize->add_section('flux_home_content_section', [
-            'title' => __('Flux Press: Contenido del Home', 'flux-press'),
-            'description' => __('Personaliza los textos de cada sección. Deja vacío para usar los valores por defecto del layout.', 'flux-press'),
+            'title' => __('Flux Press: Contenido del Home', 'sage'),
+            'description' => __('Personaliza los textos de cada sección. Deja vacío para usar los valores por defecto del layout.', 'sage'),
             'priority' => 32.5,
         ]);
 
@@ -1472,7 +1486,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_hero_title', [
-            'label' => __('Titulo del Hero', 'flux-press'),
+            'label' => __('Titulo del Hero', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1483,7 +1497,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_hero_subtitle', [
-            'label' => __('Subtitulo del Hero', 'flux-press'),
+            'label' => __('Subtitulo del Hero', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'textarea',
         ]);
@@ -1494,7 +1508,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_hero_badge', [
-            'label' => __('Badge del Hero', 'flux-press'),
+            'label' => __('Badge del Hero', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1505,16 +1519,16 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_hero_badge_color', [
-            'label' => __('Color del Badge', 'flux-press'),
+            'label' => __('Color del Badge', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'select',
             'choices' => [
-                'sky' => __('Sky (Azul)', 'flux-press'),
-                'lime' => __('Lime (Verde)', 'flux-press'),
-                'orange' => __('Orange (Naranja)', 'flux-press'),
-                'cyan' => __('Cyan', 'flux-press'),
-                'violet' => __('Violet', 'flux-press'),
-                'rose' => __('Rose (Rosa)', 'flux-press'),
+                'sky' => __('Sky (Azul)', 'sage'),
+                'lime' => __('Lime (Verde)', 'sage'),
+                'orange' => __('Orange (Naranja)', 'sage'),
+                'cyan' => __('Cyan', 'sage'),
+                'violet' => __('Violet', 'sage'),
+                'rose' => __('Rose (Rosa)', 'sage'),
             ],
         ]);
 
@@ -1525,7 +1539,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_features_title', [
-            'label' => __('Titulo de Features', 'flux-press'),
+            'label' => __('Titulo de Features', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1537,7 +1551,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_1_title', [
-            'label' => __('Feature 1 - Titulo', 'flux-press'),
+            'label' => __('Feature 1 - Titulo', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1548,7 +1562,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_1_text', [
-            'label' => __('Feature 1 - Descripcion', 'flux-press'),
+            'label' => __('Feature 1 - Descripcion', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'textarea',
         ]);
@@ -1559,8 +1573,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_1_icon', [
-            'label' => __('Feature 1 - Icono (nombre)', 'flux-press'),
-            'description' => __('Icono de Heroicons: briefcase, shield-check, chart-bar, megaphone, etc.', 'flux-press'),
+            'label' => __('Feature 1 - Icono (nombre)', 'sage'),
+            'description' => __('Icono de Heroicons: briefcase, shield-check, chart-bar, megaphone, etc.', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1572,7 +1586,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_2_title', [
-            'label' => __('Feature 2 - Titulo', 'flux-press'),
+            'label' => __('Feature 2 - Titulo', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1583,7 +1597,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_2_text', [
-            'label' => __('Feature 2 - Descripcion', 'flux-press'),
+            'label' => __('Feature 2 - Descripcion', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'textarea',
         ]);
@@ -1594,7 +1608,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_2_icon', [
-            'label' => __('Feature 2 - Icono (nombre)', 'flux-press'),
+            'label' => __('Feature 2 - Icono (nombre)', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1606,7 +1620,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_3_title', [
-            'label' => __('Feature 3 - Titulo', 'flux-press'),
+            'label' => __('Feature 3 - Titulo', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1617,7 +1631,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_3_text', [
-            'label' => __('Feature 3 - Descripcion', 'flux-press'),
+            'label' => __('Feature 3 - Descripcion', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'textarea',
         ]);
@@ -1628,7 +1642,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_feature_3_icon', [
-            'label' => __('Feature 3 - Icono (nombre)', 'flux-press'),
+            'label' => __('Feature 3 - Icono (nombre)', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1640,7 +1654,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_stats_title', [
-            'label' => __('Titulo de Stats', 'flux-press'),
+            'label' => __('Titulo de Stats', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1653,7 +1667,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("home_stat_{$i}_value", [
-                'label' => sprintf(__('Stat %d - Valor', 'flux-press'), $i),
+                'label' => sprintf(__('Stat %d - Valor', 'sage'), $i),
                 'section' => 'flux_home_content_section',
                 'type' => 'text',
             ]);
@@ -1664,7 +1678,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
                 'transport' => 'refresh',
             ]);
             $wp_customize->add_control("home_stat_{$i}_label", [
-                'label' => sprintf(__('Stat %d - Etiqueta', 'flux-press'), $i),
+                'label' => sprintf(__('Stat %d - Etiqueta', 'sage'), $i),
                 'section' => 'flux_home_content_section',
                 'type' => 'text',
             ]);
@@ -1677,7 +1691,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_cta_title', [
-            'label' => __('Titulo del CTA', 'flux-press'),
+            'label' => __('Titulo del CTA', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1688,7 +1702,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_cta_description', [
-            'label' => __('Descripcion del CTA', 'flux-press'),
+            'label' => __('Descripcion del CTA', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'textarea',
         ]);
@@ -1699,7 +1713,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_cta_button_text', [
-            'label' => __('Texto del boton CTA', 'flux-press'),
+            'label' => __('Texto del boton CTA', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'text',
         ]);
@@ -1710,7 +1724,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_cta_button_url', [
-            'label' => __('URL del boton CTA', 'flux-press'),
+            'label' => __('URL del boton CTA', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'url',
         ]);
@@ -1721,19 +1735,19 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'transport' => 'refresh',
         ]);
         $wp_customize->add_control('home_cta_bg_color', [
-            'label' => __('Color de fondo del CTA', 'flux-press'),
-            'description' => __('Deja vacío para usar el color por defecto del layout', 'flux-press'),
+            'label' => __('Color de fondo del CTA', 'sage'),
+            'description' => __('Deja vacío para usar el color por defecto del layout', 'sage'),
             'section' => 'flux_home_content_section',
             'type' => 'select',
             'choices' => [
-                '' => __('Por defecto del layout', 'flux-press'),
-                'bg-slate-900' => __('Negro', 'flux-press'),
-                'bg-lime-600' => __('Verde Lima', 'flux-press'),
-                'bg-orange-600' => __('Naranja', 'flux-press'),
-                'bg-cyan-700' => __('Cyan Oscuro', 'flux-press'),
-                'bg-violet-600' => __('Violeta', 'flux-press'),
-                'bg-rose-600' => __('Rosa', 'flux-press'),
-                'bg-emerald-600' => __('Esmeralda', 'flux-press'),
+                '' => __('Por defecto del layout', 'sage'),
+                'bg-slate-900' => __('Negro', 'sage'),
+                'bg-lime-600' => __('Verde Lima', 'sage'),
+                'bg-orange-600' => __('Naranja', 'sage'),
+                'bg-cyan-700' => __('Cyan Oscuro', 'sage'),
+                'bg-violet-600' => __('Violeta', 'sage'),
+                'bg-rose-600' => __('Rosa', 'sage'),
+                'bg-emerald-600' => __('Esmeralda', 'sage'),
             ],
         ]);
     }
@@ -1761,38 +1775,38 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             return;
         }
 
-        register_block_type('flux-press/featured-categories', [
+        register_block_type('sage/featured-categories', [
             'render_callback' => [$this, 'renderFeaturedCategoriesBlock'],
             'attributes' => [
-                'title' => ['type' => 'string', 'default' => __('Categorias destacadas', 'flux-press')],
-                'subtitle' => ['type' => 'string', 'default' => __('Explora las mejores tendencias del momento', 'flux-press')],
+                'title' => ['type' => 'string', 'default' => __('Categorias destacadas', 'sage')],
+                'subtitle' => ['type' => 'string', 'default' => __('Explora las mejores tendencias del momento', 'sage')],
                 'limit' => ['type' => 'number', 'default' => 8],
             ],
         ]);
 
-        register_block_type('flux-press/featured-brands', [
+        register_block_type('sage/featured-brands', [
             'render_callback' => [$this, 'renderFeaturedBrandsBlock'],
             'attributes' => [
-                'title' => ['type' => 'string', 'default' => __('Tus marcas favoritas', 'flux-press')],
-                'subtitle' => ['type' => 'string', 'default' => __('Inicia sesion para obtener beneficios exclusivos', 'flux-press')],
+                'title' => ['type' => 'string', 'default' => __('Tus marcas favoritas', 'sage')],
+                'subtitle' => ['type' => 'string', 'default' => __('Inicia sesion para obtener beneficios exclusivos', 'sage')],
                 'limit' => ['type' => 'number', 'default' => 8],
             ],
         ]);
 
-        register_block_type('flux-press/featured-promos', [
+        register_block_type('sage/featured-promos', [
             'render_callback' => [$this, 'renderFeaturedPromosBlock'],
             'attributes' => [
-                'title' => ['type' => 'string', 'default' => __('Promociones destacadas', 'flux-press')],
-                'subtitle' => ['type' => 'string', 'default' => __('Ofertas y lanzamientos en una vista mas visual', 'flux-press')],
+                'title' => ['type' => 'string', 'default' => __('Promociones destacadas', 'sage')],
+                'subtitle' => ['type' => 'string', 'default' => __('Ofertas y lanzamientos en una vista mas visual', 'sage')],
                 'limit' => ['type' => 'number', 'default' => 2],
             ],
         ]);
 
-        register_block_type('flux-press/home-sections-carousel', [
+        register_block_type('sage/home-sections-carousel', [
             'render_callback' => [$this, 'renderHomeSectionsCarouselBlock'],
             'attributes' => [
-                'title' => ['type' => 'string', 'default' => __('Carrusel de secciones', 'flux-press')],
-                'subtitle' => ['type' => 'string', 'default' => __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press')],
+                'title' => ['type' => 'string', 'default' => __('Carrusel de secciones', 'sage')],
+                'subtitle' => ['type' => 'string', 'default' => __('Mueve, activa y reagrupa secciones ecommerce', 'sage')],
                 'sections' => ['type' => 'string', 'default' => 'categories,brands,promos'],
                 'autoplay' => ['type' => 'boolean', 'default' => true],
                 'interval' => ['type' => 'number', 'default' => 6500],
@@ -1800,27 +1814,27 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             ],
         ]);
 
-        register_block_type('flux-press/home-hero', [
+        register_block_type('sage/home-hero', [
             'render_callback' => [$this, 'renderHomeHeroBlock'],
         ]);
 
-        register_block_type('flux-press/home-best-sellers', [
+        register_block_type('sage/home-best-sellers', [
             'render_callback' => [$this, 'renderHomeBestSellersBlock'],
         ]);
 
-        register_block_type('flux-press/home-top-rated', [
+        register_block_type('sage/home-top-rated', [
             'render_callback' => [$this, 'renderHomeTopRatedBlock'],
         ]);
 
-        register_block_type('flux-press/home-newsletter', [
+        register_block_type('sage/home-newsletter', [
             'render_callback' => [$this, 'renderHomeNewsletterBlock'],
         ]);
 
-        register_block_type('flux-press/home-blog', [
+        register_block_type('sage/home-blog', [
             'render_callback' => [$this, 'renderHomeBlogBlock'],
         ]);
 
-        register_block_type('flux-press/category-card', [
+        register_block_type('sage/category-card', [
             'render_callback' => static fn (): string => '',
             'attributes' => [
                 'name' => ['type' => 'string', 'default' => ''],
@@ -1830,7 +1844,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             ],
         ]);
 
-        register_block_type('flux-press/brand-card', [
+        register_block_type('sage/brand-card', [
             'render_callback' => static fn (): string => '',
             'attributes' => [
                 'name' => ['type' => 'string', 'default' => ''],
@@ -1841,7 +1855,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             ],
         ]);
 
-        register_block_type('flux-press/promo-card', [
+        register_block_type('sage/promo-card', [
             'render_callback' => static fn (): string => '',
             'attributes' => [
                 'eyebrow' => ['type' => 'string', 'default' => ''],
@@ -1859,8 +1873,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     {
         add_shortcode('flux_featured_categories', function ($atts): string {
             $atts = shortcode_atts([
-                'title' => __('Categorias destacadas', 'flux-press'),
-                'subtitle' => __('Explora las mejores tendencias del momento', 'flux-press'),
+                'title' => __('Categorias destacadas', 'sage'),
+                'subtitle' => __('Explora las mejores tendencias del momento', 'sage'),
                 'limit' => 8,
                 'cards_json' => '',
             ], (array) $atts, 'flux_featured_categories');
@@ -1875,8 +1889,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         add_shortcode('flux_featured_brands', function ($atts): string {
             $atts = shortcode_atts([
-                'title' => __('Tus marcas favoritas', 'flux-press'),
-                'subtitle' => __('Inicia sesion para obtener beneficios exclusivos', 'flux-press'),
+                'title' => __('Tus marcas favoritas', 'sage'),
+                'subtitle' => __('Inicia sesion para obtener beneficios exclusivos', 'sage'),
                 'limit' => 8,
                 'cards_json' => '',
             ], (array) $atts, 'flux_featured_brands');
@@ -1891,8 +1905,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         add_shortcode('flux_featured_promos', function ($atts): string {
             $atts = shortcode_atts([
-                'title' => __('Promociones destacadas', 'flux-press'),
-                'subtitle' => __('Ofertas y lanzamientos en una vista mas visual', 'flux-press'),
+                'title' => __('Promociones destacadas', 'sage'),
+                'subtitle' => __('Ofertas y lanzamientos en una vista mas visual', 'sage'),
                 'limit' => 2,
                 'cards_json' => '',
             ], (array) $atts, 'flux_featured_promos');
@@ -1907,8 +1921,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         add_shortcode('flux_home_sections_carousel', function ($atts): string {
             $atts = shortcode_atts([
-                'title' => __('Carrusel de secciones', 'flux-press'),
-                'subtitle' => __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press'),
+                'title' => __('Carrusel de secciones', 'sage'),
+                'subtitle' => __('Mueve, activa y reagrupa secciones ecommerce', 'sage'),
                 'sections' => 'categories,brands,promos',
                 'autoplay' => '1',
                 'interval' => 6500,
@@ -1952,9 +1966,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
      */
     public function renderFeaturedCategoriesBlock(array $attributes = [], string $content = '', $block = null): string
     {
-        $manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/category-card');
-        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Categorias destacadas', 'flux-press')));
-        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Explora las mejores tendencias del momento', 'flux-press')));
+        $manualCards = $this->extractManualCardsFromBlock($block, 'sage/category-card');
+        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Categorias destacadas', 'sage')));
+        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Explora las mejores tendencias del momento', 'sage')));
         $limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
 
         return $this->renderLivewireSection('ecommerce-home-categories', [
@@ -1971,9 +1985,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
      */
     public function renderFeaturedBrandsBlock(array $attributes = [], string $content = '', $block = null): string
     {
-        $manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/brand-card');
-        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Tus marcas favoritas', 'flux-press')));
-        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Inicia sesion para obtener beneficios exclusivos', 'flux-press')));
+        $manualCards = $this->extractManualCardsFromBlock($block, 'sage/brand-card');
+        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Tus marcas favoritas', 'sage')));
+        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Inicia sesion para obtener beneficios exclusivos', 'sage')));
         $limit = max(1, min(24, (int) ($attributes['limit'] ?? 8)));
 
         return $this->renderLivewireSection('ecommerce-home-brands', [
@@ -1990,9 +2004,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
      */
     public function renderFeaturedPromosBlock(array $attributes = [], string $content = '', $block = null): string
     {
-        $manualCards = $this->extractManualCardsFromBlock($block, 'flux-press/promo-card');
-        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Promociones destacadas', 'flux-press')));
-        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Ofertas y lanzamientos en una vista mas visual', 'flux-press')));
+        $manualCards = $this->extractManualCardsFromBlock($block, 'sage/promo-card');
+        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Promociones destacadas', 'sage')));
+        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Ofertas y lanzamientos en una vista mas visual', 'sage')));
         $limit = max(1, min(6, (int) ($attributes['limit'] ?? 2)));
 
         return $this->renderLivewireSection('ecommerce-home-promos', [
@@ -2008,8 +2022,8 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
      */
     public function renderHomeSectionsCarouselBlock(array $attributes = []): string
     {
-        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Carrusel de secciones', 'flux-press')));
-        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Mueve, activa y reagrupa secciones ecommerce', 'flux-press')));
+        $title = sanitize_text_field((string) ($attributes['title'] ?? __('Carrusel de secciones', 'sage')));
+        $subtitle = sanitize_text_field((string) ($attributes['subtitle'] ?? __('Mueve, activa y reagrupa secciones ecommerce', 'sage')));
         $sections = $this->sanitizeEcommerceSectionList((string) ($attributes['sections'] ?? 'categories,brands,promos'));
         $autoplay = (bool) ($attributes['autoplay'] ?? true);
         $interval = max(2500, min(20000, (int) ($attributes['interval'] ?? 6500)));
@@ -2236,7 +2250,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             }
 
             $fallbackLabel = ucwords(str_replace('-', ' ', $key));
-            $choices[$key] = is_string($label) && $label !== '' ? __($label, 'flux-press') : __($fallbackLabel, 'flux-press');
+            $choices[$key] = is_string($label) && $label !== '' ? __($label, 'sage') : __($fallbackLabel, 'sage');
         }
 
         return $choices;
@@ -2262,7 +2276,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             }
 
             $fallbackLabel = ucwords(str_replace('-', ' ', $key));
-            $choices[$key] = is_string($label) && $label !== '' ? __($label, 'flux-press') : __($fallbackLabel, 'flux-press');
+            $choices[$key] = is_string($label) && $label !== '' ? __($label, 'sage') : __($fallbackLabel, 'sage');
         }
 
         return $choices;
@@ -2313,7 +2327,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2339,7 +2353,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2348,7 +2362,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $data = is_array($_POST['data'] ?? []) ? $_POST['data'] : [];
 
         if (empty($sectionId)) {
-            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+            wp_send_json_error(__('Section ID requerido.', 'sage'));
 
             return;
         }
@@ -2357,9 +2371,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $result = $service->updateSection($sectionId, $data);
 
         if ($result) {
-            wp_send_json_success(['message' => __('Secci\u00f3n actualizada.', 'flux-press')]);
+            wp_send_json_success(['message' => __('Secci\u00f3n actualizada.', 'sage')]);
         } else {
-            wp_send_json_error(__('Error al actualizar.', 'flux-press'));
+            wp_send_json_error(__('Error al actualizar.', 'sage'));
         }
     }
 
@@ -2371,7 +2385,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2379,7 +2393,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $sectionId = sanitize_text_field($_POST['section_id'] ?? '');
 
         if (empty($sectionId)) {
-            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+            wp_send_json_error(__('Section ID requerido.', 'sage'));
 
             return;
         }
@@ -2388,9 +2402,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $result = $service->deleteSection($sectionId);
 
         if ($result) {
-            wp_send_json_success(['message' => __('Secci\u00f3n eliminada.', 'flux-press')]);
+            wp_send_json_success(['message' => __('Secci\u00f3n eliminada.', 'sage')]);
         } else {
-            wp_send_json_error(__('Error al eliminar.', 'flux-press'));
+            wp_send_json_error(__('Error al eliminar.', 'sage'));
         }
     }
 
@@ -2402,7 +2416,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2410,7 +2424,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $order = is_array($_POST['order'] ?? []) ? array_map('sanitize_text_field', $_POST['order']) : [];
 
         if (empty($order)) {
-            wp_send_json_error(__('Orden requerido.', 'flux-press'));
+            wp_send_json_error(__('Orden requerido.', 'sage'));
 
             return;
         }
@@ -2419,9 +2433,9 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $result = $service->reorderSections($order);
 
         if ($result) {
-            wp_send_json_success(['message' => __('Orden actualizado.', 'flux-press')]);
+            wp_send_json_success(['message' => __('Orden actualizado.', 'sage')]);
         } else {
-            wp_send_json_error(__('Error al reordenar.', 'flux-press'));
+            wp_send_json_error(__('Error al reordenar.', 'sage'));
         }
     }
 
@@ -2433,7 +2447,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2442,7 +2456,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $enabled = isset($_POST['enabled']) ? (bool) $_POST['enabled'] : true;
 
         if (empty($sectionId)) {
-            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+            wp_send_json_error(__('Section ID requerido.', 'sage'));
 
             return;
         }
@@ -2453,7 +2467,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         if ($result) {
             wp_send_json_success(['enabled' => $enabled]);
         } else {
-            wp_send_json_error(__('Error al cambiar visibilidad.', 'flux-press'));
+            wp_send_json_error(__('Error al cambiar visibilidad.', 'sage'));
         }
     }
 
@@ -2465,7 +2479,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2494,14 +2508,14 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'nonce' => wp_create_nonce('flux_home_sections_nonce'),
             'sectionTypes' => HomeSectionBlocksService::SECTION_TYPES,
             'strings' => [
-                'addSection' => __('Add Section', 'flux-press'),
-                'editSection' => __('Edit', 'flux-press'),
-                'deleteSection' => __('Delete', 'flux-press'),
-                'confirmDelete' => __('Are you sure you want to delete this section?', 'flux-press'),
-                'saved' => __('Saved!', 'flux-press'),
-                'error' => __('Error', 'flux-press'),
-                'exportSections' => __('Export', 'flux-press'),
-                'importSections' => __('Import', 'flux-press'),
+                'addSection' => __('Add Section', 'sage'),
+                'editSection' => __('Edit', 'sage'),
+                'deleteSection' => __('Delete', 'sage'),
+                'confirmDelete' => __('Are you sure you want to delete this section?', 'sage'),
+                'saved' => __('Saved!', 'sage'),
+                'error' => __('Error', 'sage'),
+                'exportSections' => __('Export', 'sage'),
+                'importSections' => __('Import', 'sage'),
             ],
         ]);
 
@@ -2521,7 +2535,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2531,7 +2545,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
 
         wp_send_json_success([
             'json' => $json,
-            'filename' => 'flux-press-sections-'.date('Y-m-d').'.json',
+            'filename' => 'sage-sections-'.date('Y-m-d').'.json',
         ]);
     }
 
@@ -2543,7 +2557,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         check_ajax_referer('flux_home_sections_nonce', 'nonce');
 
         if (! current_user_can('edit_theme_options')) {
-            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+            wp_send_json_error(__('No tienes permisos.', 'sage'));
 
             return;
         }
@@ -2551,7 +2565,7 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $json = $_POST['json'] ?? '';
 
         if (empty($json)) {
-            wp_send_json_error(__('JSON requerido.', 'flux-press'));
+            wp_send_json_error(__('JSON requerido.', 'sage'));
 
             return;
         }

@@ -317,29 +317,29 @@ class WooCommerceComposer extends Composer
         $result = [];
 
         foreach ((array) ($current['categories'] ?? []) as $slug) {
-            $result[] = sprintf(__('Categoria: %s', 'flux-press'), (string) $slug);
+            $result[] = sprintf(__('Categoria: %s', 'sage'), (string) $slug);
         }
 
         foreach ((array) ($current['brands'] ?? []) as $slug) {
-            $result[] = sprintf(__('Marca: %s', 'flux-press'), (string) $slug);
+            $result[] = sprintf(__('Marca: %s', 'sage'), (string) $slug);
         }
 
         foreach ((array) ($current['vendors'] ?? []) as $slug) {
-            $result[] = sprintf(__('Vendedor: %s', 'flux-press'), (string) $slug);
+            $result[] = sprintf(__('Vendedor: %s', 'sage'), (string) $slug);
         }
 
         $price = (string) ($current['price'] ?? '');
         if ($price !== '') {
-            $result[] = sprintf(__('Rango: %s', 'flux-press'), $price);
+            $result[] = sprintf(__('Rango: %s', 'sage'), $price);
         }
 
         $rating = (int) ($current['rating'] ?? 0);
         if ($rating > 0) {
-            $result[] = sprintf(__('Valoracion >= %d', 'flux-press'), $rating);
+            $result[] = sprintf(__('Valoracion >= %d', 'sage'), $rating);
         }
 
         if ((bool) ($current['on_sale'] ?? false)) {
-            $result[] = __('Solo ofertas', 'flux-press');
+            $result[] = __('Solo ofertas', 'sage');
         }
 
         return $result;

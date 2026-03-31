@@ -48,7 +48,7 @@ class Post extends Composer
     {
         return wp_link_pages([
             'echo' => 0,
-            'before' => '<p>'.__('Pages:', 'flux-press'),
+            'before' => '<p>'.__('Pages:', 'sage'),
             'after' => '</p>',
         ]);
     }

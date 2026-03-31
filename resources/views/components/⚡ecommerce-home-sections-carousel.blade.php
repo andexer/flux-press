@@ -54,9 +54,9 @@ new class extends Component
     public function slides(): array
     {
         $labels = [
-            'categories' => __('Categorias destacadas', 'flux-press'),
-            'brands'     => __('Marcas destacadas', 'flux-press'),
-            'promos'     => __('Promociones destacadas', 'flux-press'),
+            'categories' => __('Categorias destacadas', 'sage'),
+            'brands'     => __('Marcas destacadas', 'sage'),
+            'promos'     => __('Promociones destacadas', 'sage'),
         ];
 
         $slides = [];
@@ -73,8 +73,8 @@ new class extends Component
 
 @php
     $slides = $this->slides;
-    $resolvedTitle = $title !== '' ? $title : __('Carrusel de secciones', 'flux-press');
-    $resolvedSubtitle = $subtitle !== '' ? $subtitle : __('Activa, mueve y reagrupa categorias, marcas y promos desde Gutenberg o shortcode.', 'flux-press');
+    $resolvedTitle = $title !== '' ? $title : __('Carrusel de secciones', 'sage');
+    $resolvedSubtitle = $subtitle !== '' ? $subtitle : __('Activa, mueve y reagrupa categorias, marcas y promos desde Gutenberg o shortcode.', 'sage');
 @endphp
 
 @if(! empty($slides))
@@ -121,7 +121,7 @@ new class extends Component
                             type="button"
                             x-on:click="prev()"
                             class="inline-flex size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 hover:text-accent-600 transition-colors"
-                            aria-label="{{ esc_attr__('Slide anterior', 'flux-press') }}"
+                            aria-label="{{ esc_attr__('Slide anterior', 'sage') }}"
                         >
                             <flux:icon.chevron-left class="size-5" />
                         </button>
@@ -129,7 +129,7 @@ new class extends Component
                             type="button"
                             x-on:click="next()"
                             class="inline-flex size-10 items-center justify-center rounded-full border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 text-zinc-600 dark:text-zinc-300 hover:border-accent-400 hover:text-accent-600 transition-colors"
-                            aria-label="{{ esc_attr__('Siguiente slide', 'flux-press') }}"
+                            aria-label="{{ esc_attr__('Siguiente slide', 'sage') }}"
                         >
                             <flux:icon.chevron-right class="size-5" />
                         </button>
@@ -176,7 +176,7 @@ new class extends Component
                             x-on:click="goTo({{ $index }})"
                             class="h-2.5 rounded-full transition-all"
                             :class="active === {{ $index }} ? 'w-8 bg-accent-600' : 'w-2.5 bg-zinc-300 dark:bg-zinc-700'"
-                            aria-label="{{ esc_attr(sprintf(__('Ir a %s', 'flux-press'), $slide['label'])) }}"
+                            aria-label="{{ esc_attr(sprintf(__('Ir a %s', 'sage'), $slide['label'])) }}"
                         ></button>
                     @endforeach
                 </div>

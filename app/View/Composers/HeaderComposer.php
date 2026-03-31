@@ -44,7 +44,7 @@ class HeaderComposer extends Composer
     protected function ctaData(): array
     {
         return [
-            'label' => get_theme_mod('header_cta_label', __('Empezar', 'flux-press')),
+            'label' => get_theme_mod('header_cta_label', __('Empezar', 'sage')),
             'url'   => get_theme_mod('header_cta_url', '#'),
             'show'  => (bool) get_theme_mod('header_cta_show', true),
         ];
@@ -94,7 +94,7 @@ class HeaderComposer extends Composer
             'top_rated_limit'    => max(1, min(20, (int) get_theme_mod('header_megamenu_top_rated_limit', config('theme-interface.header.mega_menu.top_rated_limit', 4)))),
             'best_selling_limit' => max(1, min(20, (int) get_theme_mod('header_megamenu_best_selling_limit', config('theme-interface.header.mega_menu.best_selling_limit', 4)))),
             'pages_limit'        => max(1, min(20, (int) get_theme_mod('header_megamenu_pages_limit', config('theme-interface.header.mega_menu.pages_limit', 6)))),
-            'featured_item_text' => (string) get_theme_mod('header_megamenu_featured_item_text', config('theme-interface.header.mega_menu.featured_item_text', __('Descubrir', 'flux-press'))),
+            'featured_item_text' => (string) get_theme_mod('header_megamenu_featured_item_text', config('theme-interface.header.mega_menu.featured_item_text', __('Descubrir', 'sage'))),
         ];
     }
 }

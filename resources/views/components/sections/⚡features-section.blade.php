@@ -19,14 +19,14 @@ new class extends Component {
     <flux:main class="py-24 bg-white dark:bg-zinc-950">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="text-center max-w-3xl mx-auto mb-16">
-                <flux:badge color="accent" class="mb-4">{{ __('Características Premium', 'flux-press') }}</flux:badge>
+                <flux:badge color="accent" class="mb-4">{{ __('Características Premium', 'sage') }}</flux:badge>
                 <flux:heading size="4xl" class="mb-4 tracking-tight !font-bold">
-                    {{ __('Diseñado para Diferenciarte', 'flux-press') }}
+                    {{ __('Diseñado para Diferenciarte', 'sage') }}
                 </flux:heading>
                 <flux:subheading size="lg" class="text-zinc-500 dark:text-zinc-400">
                     {{ __('Todo lo que necesitas para tu proyecto ') }} 
                     <span class="capitalize font-semibold text-accent-600 dark:text-accent-400">{{ $demo }}</span>
-                    {{ __(', compilado con precisión y máxima velocidad.', 'flux-press') }}
+                    {{ __(', compilado con precisión y máxima velocidad.', 'sage') }}
                 </flux:subheading>
             </div>
 
@@ -34,24 +34,24 @@ new class extends Component {
                 @php
                     $features = [
                         'red-social' => [
-                            ['icon' => 'users', 'title' => __('Comunidad Viva', 'flux-press'), 'desc' => __('Conecta con miles de usuarios en tiempo real.', 'flux-press')],
-                            ['icon' => 'chat-bubble-left-right', 'title' => __('Mensajería', 'flux-press'), 'desc' => __('Chat instantáneo con cifrado de extremo a extremo.', 'flux-press')],
-                            ['icon' => 'share', 'title' => __('Viralidad', 'flux-press'), 'desc' => __('Algoritmos diseñados para potenciar tu contenido.', 'flux-press')],
+                            ['icon' => 'users', 'title' => __('Comunidad Viva', 'sage'), 'desc' => __('Conecta con miles de usuarios en tiempo real.', 'sage')],
+                            ['icon' => 'chat-bubble-left-right', 'title' => __('Mensajería', 'sage'), 'desc' => __('Chat instantáneo con cifrado de extremo a extremo.', 'sage')],
+                            ['icon' => 'share', 'title' => __('Viralidad', 'sage'), 'desc' => __('Algoritmos diseñados para potenciar tu contenido.', 'sage')],
                         ],
                         'ecommerce' => [
-                            ['icon' => 'shopping-cart', 'title' => __('Pago Seguro', 'flux-press'), 'desc' => __('Pasarelas de pago integradas y certificadas.', 'flux-press')],
-                            ['icon' => 'truck', 'title' => __('Envíos Rápidos', 'flux-press'), 'desc' => __('Seguimiento en tiempo real de todos tus pedidos.', 'flux-press')],
-                            ['icon' => 'archive-box', 'title' => __('Stock Infinito', 'flux-press'), 'desc' => __('Gestión de inventario automatizada y escalable.', 'flux-press')],
+                            ['icon' => 'shopping-cart', 'title' => __('Pago Seguro', 'sage'), 'desc' => __('Pasarelas de pago integradas y certificadas.', 'sage')],
+                            ['icon' => 'truck', 'title' => __('Envíos Rápidos', 'sage'), 'desc' => __('Seguimiento en tiempo real de todos tus pedidos.', 'sage')],
+                            ['icon' => 'archive-box', 'title' => __('Stock Infinito', 'sage'), 'desc' => __('Gestión de inventario automatizada y escalable.', 'sage')],
                         ],
                         'corporate' => [
-                            ['icon' => 'building-office', 'title' => __('Soluciones Enterprise', 'flux-press'), 'desc' => __('Infraestructura robusta para grandes organizaciones.', 'flux-press')],
-                            ['icon' => 'shield-check', 'title' => __('Seguridad Total', 'flux-press'), 'desc' => __('Cumplimiento de estándares internacionales de datos.', 'flux-press')],
-                            ['icon' => 'presentation-chart-line', 'title' => __('Analítica Avanzada', 'flux-press'), 'desc' => __('Reportes detallados para decisiones estratégicas.', 'flux-press')],
+                            ['icon' => 'building-office', 'title' => __('Soluciones Enterprise', 'sage'), 'desc' => __('Infraestructura robusta para grandes organizaciones.', 'sage')],
+                            ['icon' => 'shield-check', 'title' => __('Seguridad Total', 'sage'), 'desc' => __('Cumplimiento de estándares internacionales de datos.', 'sage')],
+                            ['icon' => 'presentation-chart-line', 'title' => __('Analítica Avanzada', 'sage'), 'desc' => __('Reportes detallados para decisiones estratégicas.', 'sage')],
                         ],
                         'default' => [
-                            ['icon' => 'bolt', 'title' => __('Rendimiento SPA', 'flux-press'), 'desc' => __('Navegaciones instantáneas sin recargas de página.', 'flux-press')],
-                            ['icon' => 'sparkles', 'title' => __('Componentes Flux', 'flux-press'), 'desc' => __('Suite increíble de componentes UI preconstruidos.', 'flux-press')],
-                            ['icon' => 'swatch', 'title' => __('Múltiples Demos', 'flux-press'), 'desc' => __('Adapta el tema instantáneamente a tu negocio.', 'flux-press')],
+                            ['icon' => 'bolt', 'title' => __('Rendimiento SPA', 'sage'), 'desc' => __('Navegaciones instantáneas sin recargas de página.', 'sage')],
+                            ['icon' => 'sparkles', 'title' => __('Componentes Flux', 'sage'), 'desc' => __('Suite increíble de componentes UI preconstruidos.', 'sage')],
+                            ['icon' => 'swatch', 'title' => __('Múltiples Demos', 'sage'), 'desc' => __('Adapta el tema instantáneamente a tu negocio.', 'sage')],
                         ]
                     ];
                     $currentFeatures = $features[$demo] ?? $features['default'];

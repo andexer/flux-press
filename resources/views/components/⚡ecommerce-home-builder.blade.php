@@ -53,43 +53,43 @@ new class extends Component
     @forelse($this->sections as $section)
         @switch($section)
             @case('hero')
-                <livewire:ecommerce-home-hero :key="'ecommerce-home-hero'" />
+                <livewire:ecommerce-home-hero :key="'ecommerce-home-hero-'.$refreshTick" />
                 @break
 
             @case('categories')
-                <livewire:ecommerce-home-categories :key="'ecommerce-home-categories'" />
+                <livewire:ecommerce-home-categories :key="'ecommerce-home-categories-'.$refreshTick" />
                 @break
 
             @case('best_sellers')
-                <livewire:ecommerce-home-best-sellers :key="'ecommerce-home-best-sellers'" />
+                <livewire:ecommerce-home-best-sellers :key="'ecommerce-home-best-sellers-'.$refreshTick" />
                 @break
 
             @case('top_rated')
-                <livewire:ecommerce-home-top-rated :key="'ecommerce-home-top-rated'" />
+                <livewire:ecommerce-home-top-rated :key="'ecommerce-home-top-rated-'.$refreshTick" />
                 @break
 
             @case('brands')
-                <livewire:ecommerce-home-brands :key="'ecommerce-home-brands'" />
+                <livewire:ecommerce-home-brands :key="'ecommerce-home-brands-'.$refreshTick" />
                 @break
 
             @case('promos')
-                <livewire:ecommerce-home-promos :key="'ecommerce-home-promos'" />
+                <livewire:ecommerce-home-promos :key="'ecommerce-home-promos-'.$refreshTick" />
                 @break
 
             @case('newsletter')
-                <livewire:ecommerce-home-newsletter :key="'ecommerce-home-newsletter'" />
+                <livewire:ecommerce-home-newsletter :key="'ecommerce-home-newsletter-'.$refreshTick" />
                 @break
 
             @case('blog')
-                <livewire:ecommerce-home-blog :key="'ecommerce-home-blog'" />
+                <livewire:ecommerce-home-blog :key="'ecommerce-home-blog-'.$refreshTick" />
                 @break
         @endswitch
     @empty
         <section class="py-10 sm:py-14">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <flux:callout color="amber" icon="information-circle">
-                    <flux:callout.heading>{{ __('No hay secciones activas para el Home ecommerce.', 'flux-press') }}</flux:callout.heading>
-                    <flux:callout.text>{{ __('Activa secciones desde Apariencia > Personalizar > Flux Press: Home Ecommerce.', 'flux-press') }}</flux:callout.text>
+                    <flux:callout.heading>{{ __('No hay secciones activas para el Home ecommerce.', 'sage') }}</flux:callout.heading>
+                    <flux:callout.text>{{ __('Activa secciones desde Apariencia > Personalizar > Flux Press: Home Ecommerce.', 'sage') }}</flux:callout.text>
                 </flux:callout>
             </div>
         </section>

@@ -44,7 +44,7 @@ class FooterComposer extends Composer
             $links[] = [
                 'url'   => $websiteUrl,
                 'icon'  => 'globe-alt',
-                'label' => __('Sitio web', 'flux-press'),
+                'label' => __('Sitio web', 'sage'),
             ];
         }
 
@@ -52,7 +52,7 @@ class FooterComposer extends Composer
             $links[] = [
                 'url'   => 'mailto:' . $email,
                 'icon'  => 'envelope',
-                'label' => __('Correo', 'flux-press'),
+                'label' => __('Correo', 'sage'),
             ];
         }
 

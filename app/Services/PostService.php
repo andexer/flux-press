@@ -57,7 +57,7 @@ class PostService extends BaseService
                 return get_the_title($home);
             }
 
-            return __('Latest Posts', 'flux-press');
+            return __('Latest Posts', 'sage');
         }
 
         if (is_archive()) {
@@ -67,13 +67,13 @@ class PostService extends BaseService
         if (is_search()) {
             return sprintf(
                 /* translators: %s is replaced with the search query */
-                __('Search Results for %s', 'flux-press'),
+                __('Search Results for %s', 'sage'),
                 get_search_query()
             );
         }
 
         if (is_404()) {
-            return __('Not Found', 'flux-press');
+            return __('Not Found', 'sage');
         }
 
         return get_the_title();

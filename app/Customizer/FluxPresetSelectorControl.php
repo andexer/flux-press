@@ -47,20 +47,20 @@ class FluxPresetSelectorControl extends WP_Customize_Control
         ];
 
         $categoryLabels = [
-            'business' => __('Negocios', 'flux-press'),
-            'ecommerce' => __('Ecommerce', 'flux-press'),
-            'marketing' => __('Marketing', 'flux-press'),
-            'news' => __('Noticias', 'flux-press'),
-            'portfolio' => __('Portfolio', 'flux-press'),
-            'dark' => __('Dark Mode', 'flux-press'),
-            'gaming' => __('Gaming', 'flux-press'),
-            'social' => __('Social', 'flux-press'),
-            'general' => __('General', 'flux-press'),
+            'business' => __('Negocios', 'sage'),
+            'ecommerce' => __('Ecommerce', 'sage'),
+            'marketing' => __('Marketing', 'sage'),
+            'news' => __('Noticias', 'sage'),
+            'portfolio' => __('Portfolio', 'sage'),
+            'dark' => __('Dark Mode', 'sage'),
+            'gaming' => __('Gaming', 'sage'),
+            'social' => __('Social', 'sage'),
+            'general' => __('General', 'sage'),
         ];
         ?>
         <div class="flux-preset-selector-control">
             <p class="description" style="margin-bottom: 1rem;">
-                <?php esc_html_e('Aplica una plantilla predefinida para configurar rápidamente el tema completo. Se guardará un backup de tu configuración actual.', 'flux-press'); ?>
+                <?php esc_html_e('Aplica una plantilla predefinida para configurar rápidamente el tema completo. Se guardará un backup de tu configuración actual.', 'sage'); ?>
             </p>
 
             <div class="flux-preset-grid">
@@ -86,7 +86,7 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                     <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
                                 </svg>
-                                <?php esc_html_e('Activo', 'flux-press'); ?>
+                                <?php esc_html_e('Activo', 'sage'); ?>
                             </div>
                         <?php } ?>
                     </div>
@@ -103,8 +103,8 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                             </div>
                         </div>
                         <div class="flux-preset-info">
-                            <h4><?php esc_html_e('Configuración Personal', 'flux-press'); ?></h4>
-                            <p><?php esc_html_e('Has personalizado la configuración del tema.', 'flux-press'); ?></p>
+                            <h4><?php esc_html_e('Configuración Personal', 'sage'); ?></h4>
+                            <p><?php esc_html_e('Has personalizado la configuración del tema.', 'sage'); ?></p>
                         </div>
                     </div>
                 <?php } ?>
@@ -112,7 +112,7 @@ class FluxPresetSelectorControl extends WP_Customize_Control
 
             <div class="flux-preset-actions" style="margin-top: 1rem; display: flex; gap: 0.5rem; justify-content: flex-end;">
                 <button type="button" class="button" id="flux-preset-export">
-                    <?php esc_html_e('Exportar Configuración', 'flux-press'); ?>
+                    <?php esc_html_e('Exportar Configuración', 'sage'); ?>
                 </button>
             </div>
 
@@ -127,9 +127,9 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                 var presetKey = $(this).data('preset-key');
                 var presetName = $(this).find('h4').text();
                 
-                if (confirm('<?php esc_html_e('¿Aplicar esta plantilla?', 'flux-press'); ?>\n\n' + 
-                           '<?php printf(esc_attr__('¿Estás seguro de que quieres aplicar la plantilla "%s"?', 'flux-press'), ''); ?>'.replace('%s', presetName) +
-                           '\n\n<?php esc_html_e('Se guardará un backup de tu configuración actual.', 'flux-press'); ?>')) {
+                if (confirm('<?php esc_html_e('¿Aplicar esta plantilla?', 'sage'); ?>\n\n' + 
+                           '<?php printf(esc_attr__('¿Estás seguro de que quieres aplicar la plantilla "%s"?', 'sage'), ''); ?>'.replace('%s', presetName) +
+                           '\n\n<?php esc_html_e('Se guardará un backup de tu configuración actual.', 'sage'); ?>')) {
                     
                     $.ajax({
                         url: ajaxurl,
@@ -143,7 +143,7 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                             $('#flux-preset-message')
                                 .removeClass('notice-success notice-error')
                                 .addClass('notice-warning')
-                                .html('<span class="spinner is-active"></span> <?php esc_html_e('Aplicando plantilla...', 'flux-press'); ?>')
+                                .html('<span class="spinner is-active"></span> <?php esc_html_e('Aplicando plantilla...', 'sage'); ?>')
                                 .show();
                         },
                         success: function(response) {
@@ -169,7 +169,7 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                             $('#flux-preset-message')
                                 .removeClass('notice-warning')
                                 .addClass('notice-error')
-                                .html('<p><?php esc_html_e('Error al aplicar la plantilla.', 'flux-press'); ?></p>')
+                                .html('<p><?php esc_html_e('Error al aplicar la plantilla.', 'sage'); ?></p>')
                                 .show();
                         }
                     });
@@ -190,7 +190,7 @@ class FluxPresetSelectorControl extends WP_Customize_Control
                             var url = URL.createObjectURL(blob);
                             var a = document.createElement('a');
                             a.href = url;
-                            a.download = 'flux-press-config-<?php echo date('Y-m-d-His'); ?>.json';
+                            a.download = 'sage-config-<?php echo date('Y-m-d-His'); ?>.json';
                             document.body.appendChild(a);
                             a.click();
                             document.body.removeChild(a);

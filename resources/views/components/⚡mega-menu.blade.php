@@ -29,7 +29,7 @@ new class extends Component
             'top_rated_limit'    => max(1, min(20, (int) ($this->config['top_rated_limit'] ?? 4))),
             'best_selling_limit' => max(1, min(20, (int) ($this->config['best_selling_limit'] ?? 4))),
             'pages_limit'        => max(1, min(20, (int) ($this->config['pages_limit'] ?? 6))),
-            'featured_item_text' => (string) ($this->config['featured_item_text'] ?? __('Descubrir', 'flux-press')),
+            'featured_item_text' => (string) ($this->config['featured_item_text'] ?? __('Descubrir', 'sage')),
         ];
     }
 
@@ -419,7 +419,7 @@ new class extends Component
         },
     }"
     role="navigation"
-    aria-label="{{ __('Mega menu principal', 'flux-press') }}"
+    aria-label="{{ __('Mega menu principal', 'sage') }}"
     @keydown.escape.window="closeAll()"
     @click.outside="closeAll()"
 >
@@ -445,16 +445,16 @@ new class extends Component
                 $panelSections = [];
 
                 if (! empty($smartCategories)) {
-                    $panelSections[] = ['key' => 'categories', 'label' => __('Categorias', 'flux-press'), 'icon' => 'squares-2x2'];
+                    $panelSections[] = ['key' => 'categories', 'label' => __('Categorias', 'sage'), 'icon' => 'squares-2x2'];
                 }
                 if (! empty($smartTopRated)) {
-                    $panelSections[] = ['key' => 'top_rated', 'label' => __('Mejor valorados', 'flux-press'), 'icon' => 'star'];
+                    $panelSections[] = ['key' => 'top_rated', 'label' => __('Mejor valorados', 'sage'), 'icon' => 'star'];
                 }
                 if (! empty($smartBestSelling)) {
-                    $panelSections[] = ['key' => 'best_selling', 'label' => __('Mas vendidos', 'flux-press'), 'icon' => 'bolt'];
+                    $panelSections[] = ['key' => 'best_selling', 'label' => __('Mas vendidos', 'sage'), 'icon' => 'bolt'];
                 }
                 if (! empty($smartPages)) {
-                    $panelSections[] = ['key' => 'pages', 'label' => __('Paginas', 'flux-press'), 'icon' => 'document-text'];
+                    $panelSections[] = ['key' => 'pages', 'label' => __('Paginas', 'sage'), 'icon' => 'document-text'];
                 }
 
                 $panelDefaultSection = ! empty($panelSections) ? $panelSections[0]['key'] : 'menu';
@@ -491,7 +491,7 @@ new class extends Component
                     x-transition:leave-end="opacity-0 translate-y-2 scale-[0.99]"
                     class="absolute left-1/2 top-full z-[60] -translate-x-1/2 {{ $isCenteredLayout ? 'pt-6' : 'pt-4' }}"
                     role="dialog"
-                    aria-label="{{ __('Panel de navegacion', 'flux-press') }}"
+                    aria-label="{{ __('Panel de navegacion', 'sage') }}"
                 >
                     <div class="{{ $isCenteredLayout ? 'flux-mega-menu-centered-panel' : 'w-[76rem] max-w-[calc(100vw-3rem)] rounded-[2rem] border border-zinc-200/80 bg-white/95 p-6 shadow-2xl shadow-zinc-900/10 backdrop-blur-3xl dark:border-zinc-700/80 dark:bg-zinc-900/95 dark:shadow-black/40' }}">
                         <div class="{{ $isCenteredLayout ? 'mb-8 flex flex-col gap-5 border-b border-zinc-200/60 pb-6 dark:border-zinc-700/60 xl:flex-row xl:items-end xl:justify-between' : 'mb-5 flex items-center justify-between border-b border-zinc-200/60 pb-3 dark:border-zinc-700/60' }}">
@@ -502,15 +502,15 @@ new class extends Component
                                 </span>
                                 @if($isCenteredLayout)
                                     <h3 class="mt-3 text-3xl font-black tracking-tighter text-zinc-950 dark:text-zinc-50 xl:text-[2rem]">
-                                        {{ __('Descubre este espacio', 'flux-press') }}
+                                        {{ __('Descubre este espacio', 'sage') }}
                                     </h3>
                                     <p class="mt-2.5 max-w-xl text-sm leading-relaxed text-zinc-500 dark:text-zinc-400">
-                                        {{ __('Explora secciones, categorías y productos destacados en un panel compacto guiado paso a paso.', 'flux-press') }}
+                                        {{ __('Explora secciones, categorías y productos destacados en un panel compacto guiado paso a paso.', 'sage') }}
                                     </p>
                                 @endif
                             </div>
                             <a href="{{ $item['url'] }}" wire:navigate class="group inline-flex items-center gap-2 {{ $isCenteredLayout ? 'rounded-full bg-zinc-950 px-5 py-2.5 text-sm font-bold text-white transition-all hover:bg-zinc-800 dark:bg-white dark:text-zinc-950 dark:hover:bg-zinc-100' : 'text-[11px] font-bold text-accent-600 dark:text-accent-400 hover:text-accent-700' }}">
-                                {{ __('Ver todo', 'flux-press') }}
+                                {{ __('Ver todo', 'sage') }}
                                 <flux:icon.arrow-right class="size-3.5 transition-transform group-hover:translate-x-1" />
                             </a>
                         </div>
@@ -518,7 +518,7 @@ new class extends Component
                         <div class="{{ $isCenteredLayout ? 'grid gap-6 xl:grid-cols-[19rem_minmax(0,1fr)] 2xl:gap-8' : 'grid grid-cols-12 gap-6' }}">
                             <section class="{{ $isCenteredLayout ? 'space-y-4' : 'col-span-4 space-y-3' }}">
                                 <div class="rounded-[1.75rem] border border-zinc-200/60 bg-zinc-100/30 p-5 dark:border-zinc-800/60 dark:bg-zinc-800/20">
-                                    <h3 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Navegación Paso a Paso', 'flux-press') }}</h3>
+                                    <h3 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Navegación Paso a Paso', 'sage') }}</h3>
                                     <div class="mt-4 space-y-2">
                                         @foreach($panelSections as $section)
                                             <button
@@ -546,7 +546,7 @@ new class extends Component
                                     </div>
 
                                     <div class="mt-6 border-t border-zinc-200/60 pt-5 dark:border-zinc-800/60">
-                                        <h4 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Accesos Rápidos', 'flux-press') }}</h4>
+                                        <h4 class="text-[9px] font-black uppercase tracking-[0.2em] text-zinc-400">{{ __('Accesos Rápidos', 'sage') }}</h4>
                                         <div class="mt-3 space-y-1.5">
                                             @if(! empty($item['children']))
                                                 @foreach($item['children'] as $child)
@@ -557,7 +557,7 @@ new class extends Component
                                                 @endforeach
                                             @else
                                                 <a href="{{ $item['url'] }}" wire:navigate class="group flex items-center justify-between rounded-lg px-2 py-1.5 text-[13px] font-bold text-zinc-600 transition-all hover:bg-accent-50 hover:text-accent-700 dark:text-zinc-400 dark:hover:bg-accent-500/5 dark:hover:text-accent-300">
-                                                    <span>{{ __('Ver sección', 'flux-press') }}</span>
+                                                    <span>{{ __('Ver sección', 'sage') }}</span>
                                                     <flux:icon.arrow-up-right class="size-3 opacity-0 transition-all group-hover:opacity-100" />
                                                 </a>
                                             @endif
@@ -583,7 +583,7 @@ new class extends Component
                                                 <div>
                                                     <span class="block text-base font-black tracking-tight text-zinc-900 dark:text-zinc-100">{{ $category['name'] }}</span>
                                                     <span class="mt-1.5 inline-flex items-center gap-1.5 text-[11px] font-bold text-zinc-500 dark:text-zinc-400">
-                                                        {{ sprintf(_n('%d producto', '%d productos', $category['count'], 'flux-press'), $category['count']) }}
+                                                        {{ sprintf(_n('%d producto', '%d productos', $category['count'], 'sage'), $category['count']) }}
                                                         <flux:icon.arrow-right class="size-3 opacity-0 transition-all group-hover:translate-x-1 group-hover:opacity-100" />
                                                     </span>
                                                 </div>
@@ -647,7 +647,7 @@ new class extends Component
                                                         <p class="text-[13px] font-black text-accent-600 dark:text-accent-400">{!! $product['price'] !!}</p>
                                                         @if($product['total_sales'] > 0)
                                                             <span class="rounded-full bg-accent-50 px-2 py-0.5 text-[9px] font-black uppercase tracking-tight text-accent-700 dark:bg-accent-500/10 dark:text-accent-400">
-                                                                {{ sprintf(_n('%d vta', '%d vtas', $product['total_sales'], 'flux-press'), $product['total_sales']) }}
+                                                                {{ sprintf(_n('%d vta', '%d vtas', $product['total_sales'], 'sage'), $product['total_sales']) }}
                                                             </span>
                                                         @endif
                                                     </div>

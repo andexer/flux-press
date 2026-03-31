@@ -222,7 +222,7 @@
             </flux:text>
 
             @if(! empty($legalItems))
-                <nav aria-label="{{ esc_attr__('Legal', 'flux-press') }}" class="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
+                <nav aria-label="{{ esc_attr__('Legal', 'sage') }}" class="flex flex-wrap items-center justify-center gap-3 sm:gap-5">
                     @foreach($legalItems as $item)
                         <a href="{{ esc_url((string) $item['url']) }}" class="text-sm text-zinc-500 hover:text-zinc-200 transition-colors">
                             {{ $item['label'] }}

@@ -70,13 +70,13 @@ new class extends Component
     public function applyPreset(string $key): void
     {
         if (! current_user_can('edit_theme_options')) {
-            $this->statusMessage = __('No tienes permisos para aplicar presets.', 'flux-press');
+            $this->statusMessage = __('No tienes permisos para aplicar presets.', 'sage');
 
             return;
         }
 
         $this->isApplying = true;
-        $this->statusMessage = __('Aplicando preset...', 'flux-press');
+        $this->statusMessage = __('Aplicando preset...', 'sage');
 
         $result = $this->presetService->applyPreset($key);
 
@@ -97,14 +97,14 @@ new class extends Component
     public function exportCurrentConfig(): void
     {
         if (! current_user_can('edit_theme_options')) {
-            $this->statusMessage = __('No tienes permisos para exportar.', 'flux-press');
+            $this->statusMessage = __('No tienes permisos para exportar.', 'sage');
 
             return;
         }
 
         $config = $this->presetService->exportCurrentConfig();
         $json = wp_json_encode($config, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE);
-        $filename = 'flux-press-export-'.wp_date('Y-m-d-His').'.json';
+        $filename = 'sage-export-'.wp_date('Y-m-d-His').'.json';
 
         header('Content-Type: application/json');
         header('Content-Disposition: attachment; filename="'.$filename.'"');
@@ -135,13 +135,13 @@ new class extends Component
     protected function getCategoryLabel(string $category): string
     {
         $labels = [
-            'business' => __('Negocios', 'flux-press'),
-            'ecommerce' => __('Ecommerce', 'flux-press'),
-            'marketing' => __('Marketing', 'flux-press'),
-            'news' => __('Noticias', 'flux-press'),
-            'portfolio' => __('Portfolio', 'flux-press'),
-            'dark' => __('Dark Mode', 'flux-press'),
-            'general' => __('General', 'flux-press'),
+            'business' => __('Negocios', 'sage'),
+            'ecommerce' => __('Ecommerce', 'sage'),
+            'marketing' => __('Marketing', 'sage'),
+            'news' => __('Noticias', 'sage'),
+            'portfolio' => __('Portfolio', 'sage'),
+            'dark' => __('Dark Mode', 'sage'),
+            'general' => __('General', 'sage'),
         ];
 
         return $labels[$category] ?? ucfirst($category);
@@ -188,16 +188,16 @@ new class extends Component
                 <div class="notice notice-success is-dismissible">
                     <p><?php echo esc_html($statusMessage); ?></p>
                     <button type="button" class="notice-dismiss" @click="show = false">
-                        <span class="screen-reader-text"><?php _e('Dismiss', 'flux-press'); ?></span>
+                        <span class="screen-reader-text"><?php _e('Dismiss', 'sage'); ?></span>
                     </button>
                 </div>
             </div>
         <?php } ?>
 
         <div class="flux-preset-header">
-            <h3><?php esc_html_e('Plantillas del Tema', 'flux-press'); ?></h3>
+            <h3><?php esc_html_e('Plantillas del Tema', 'sage'); ?></h3>
             <p class="description">
-                <?php esc_html_e('Aplica una plantilla predefinida para configurar rapidamente el tema completo.', 'flux-press'); ?>
+                <?php esc_html_e('Aplica una plantilla predefinida para configurar rapidamente el tema completo.', 'sage'); ?>
             </p>
         </div>
 
@@ -230,7 +230,7 @@ new class extends Component
                             <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 20 20">
                                 <path fill-rule="evenodd" d="M10 18a8 8 0 1 0 0-16 8 8 0 0 0 0 16Zm3.857-9.809a.75.75 0 0 0-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 1 0-1.06 1.061l2.5 2.5a.75.75 0 0 0 1.137-.089l4-5.5Z" clip-rule="evenodd" />
                             </svg>
-                            <?php esc_html_e('Activo', 'flux-press'); ?>
+                            <?php esc_html_e('Activo', 'sage'); ?>
                         </div>
                     <?php } ?>
                 </div>
@@ -247,8 +247,8 @@ new class extends Component
                         </div>
                     </div>
                     <div class="flux-preset-info">
-                        <h4><?php esc_html_e('Configuración Personal', 'flux-press'); ?></h4>
-                        <p><?php esc_html_e('Has personalizado la configuración del tema.', 'flux-press'); ?></p>
+                        <h4><?php esc_html_e('Configuración Personal', 'sage'); ?></h4>
+                        <p><?php esc_html_e('Has personalizado la configuración del tema.', 'sage'); ?></p>
                     </div>
                 </div>
             <?php } ?>
@@ -256,18 +256,18 @@ new class extends Component
 
         <div class="flux-preset-actions">
             <flux:button variant="outline" icon="arrow-down-tray" wire:click="exportCurrentConfig">
-                <?php esc_html_e('Exportar Configuración', 'flux-press'); ?>
+                <?php esc_html_e('Exportar Configuración', 'sage'); ?>
             </flux:button>
         </div>
 
         <?php if ($showConfirmModal && $pendingPresetKey) { ?>
             <div class="flux-preset-modal-overlay" x-data="{ show: true }" x-show="show" x-transition.opacity @click.self="show = false">
                 <div class="flux-preset-modal" x-show="show" x-transition>
-                    <h3><?php esc_html_e('¿Aplicar esta plantilla?', 'flux-press'); ?></h3>
+                    <h3><?php esc_html_e('¿Aplicar esta plantilla?', 'sage'); ?></h3>
                     <p>
                         <?php
                         printf(
-                            esc_html__('¿Estás seguro de que quieres aplicar la plantilla "%s"? Se guardará un backup de tu configuración actual.', 'flux-press'),
+                            esc_html__('¿Estás seguro de que quieres aplicar la plantilla "%s"? Se guardará un backup de tu configuración actual.', 'sage'),
                             esc_html($this->presets[$pendingPresetKey]['name'] ?? '')
                         );
             ?>
@@ -276,14 +276,14 @@ new class extends Component
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" width="16" height="16">
                             <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126ZM12 15.75h.007v.008H12v-.008Z" />
                         </svg>
-                        <?php esc_html_e('Esta acción puede sobrescribir algunos ajustes existentes.', 'flux-press'); ?>
+                        <?php esc_html_e('Esta acción puede sobrescribir algunos ajustes existentes.', 'sage'); ?>
                     </p>
                     <div class="flux-preset-modal-actions">
                         <flux:button variant="ghost" wire:click="cancelApply">
-                            <?php esc_html_e('Cancelar', 'flux-press'); ?>
+                            <?php esc_html_e('Cancelar', 'sage'); ?>
                         </flux:button>
                         <flux:button variant="primary" wire:click="applyPreset('<?php echo esc_js($pendingPresetKey); ?>')" :disabled="$isApplying">
-                            <?php esc_html_e('Aplicar Plantilla', 'flux-press'); ?>
+                            <?php esc_html_e('Aplicar Plantilla', 'sage'); ?>
                         </flux:button>
                     </div>
                 </div>

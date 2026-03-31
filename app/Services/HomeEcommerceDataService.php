@@ -221,11 +221,11 @@ class HomeEcommerceDataService
                     'title'           => $title,
                     'subtitle'        => '',
                     'content_html'    => implode('', $contentParts),
-                    'badge'           => __('Mas vendido', 'flux-press'),
+                    'badge'           => __('Mas vendido', 'sage'),
                     'image_url'       => $image,
-                    'primary_label'   => __('Ver producto', 'flux-press'),
+                    'primary_label'   => __('Ver producto', 'sage'),
                     'primary_url'     => $url,
-                    'secondary_label' => function_exists('wc_get_page_permalink') ? __('Ir a tienda', 'flux-press') : '',
+                    'secondary_label' => function_exists('wc_get_page_permalink') ? __('Ir a tienda', 'sage') : '',
                     'secondary_url'   => function_exists('wc_get_page_permalink') ? esc_url_raw((string) wc_get_page_permalink('shop')) : '',
                     'source'          => 'product',
                 ];
@@ -379,10 +379,10 @@ class HomeEcommerceDataService
 
                 $fallbackCards[] = [
                     'id'          => 'sale-' . (string) ($product['id'] ?? $fallbackIndex),
-                    'eyebrow'     => __('Oferta activa', 'flux-press'),
+                    'eyebrow'     => __('Oferta activa', 'sage'),
                     'title'       => (string) ($product['name'] ?? ''),
                     'description' => (string) ($product['description'] ?? ''),
-                    'cta_label'   => __('Ver producto', 'flux-press'),
+                    'cta_label'   => __('Ver producto', 'sage'),
                     'cta_url'     => esc_url_raw((string) ($product['url'] ?? '')),
                     'image_url'   => esc_url_raw((string) ($product['image'] ?? '')),
                     'theme'       => $fallbackIndex % 2 === 0 ? 'light' : 'dark',
@@ -707,7 +707,7 @@ class HomeEcommerceDataService
                     'count' => (int) $term->count,
                     'image' => $this->resolveBrandTermImage($term),
                     'logo'  => $this->resolveBrandTermLogo($term),
-                    'badge' => __('Marca afiliada', 'flux-press'),
+                    'badge' => __('Marca afiliada', 'sage'),
                 ];
             }
 
@@ -1041,7 +1041,7 @@ class HomeEcommerceDataService
 
             $image = $this->resolveReferenceImage((string) ($row['image_url'] ?? ($row['image'] ?? '')));
             $logo = $this->resolveReferenceImage((string) ($row['logo_url'] ?? ($row['logo'] ?? '')));
-            $badge = sanitize_text_field((string) ($row['badge'] ?? __('Marca afiliada', 'flux-press')));
+            $badge = sanitize_text_field((string) ($row['badge'] ?? __('Marca afiliada', 'sage')));
 
             $result[] = [
                 'id'     => (string) ($row['id'] ?? md5($name . $url)),
@@ -1084,7 +1084,7 @@ class HomeEcommerceDataService
                 'eyebrow'     => sanitize_text_field((string) ($row['eyebrow'] ?? '')),
                 'title'       => $title,
                 'description' => sanitize_textarea_field((string) ($row['description'] ?? '')),
-                'cta_label'   => sanitize_text_field((string) ($row['cta_label'] ?? __('Ver mas', 'flux-press'))),
+                'cta_label'   => sanitize_text_field((string) ($row['cta_label'] ?? __('Ver mas', 'sage'))),
                 'cta_url'     => esc_url_raw((string) ($row['cta_url'] ?? '')),
                 'image_url'   => $this->resolveReferenceImage((string) ($row['image_url'] ?? '')),
                 'theme'       => $theme,
@@ -1162,14 +1162,14 @@ class HomeEcommerceDataService
             : (string) home_url('/');
 
         return [
-            ['name' => __('Tecnologia', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-tecnologia.jpg', 'badge' => __('Tendencia', 'flux-press')],
-            ['name' => __('Hogar', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-hogar.jpg', 'badge' => __('Popular', 'flux-press')],
-            ['name' => __('Moda', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-moda.jpg', 'badge' => __('Nuevo', 'flux-press')],
-            ['name' => __('Deportes', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-deportes.jpg', 'badge' => __('Top', 'flux-press')],
-            ['name' => __('Belleza', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-belleza.jpg', 'badge' => __('Destacado', 'flux-press')],
-            ['name' => __('Accesorios', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-accesorios.jpg', 'badge' => __('Seleccion', 'flux-press')],
-            ['name' => __('Calzado', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-calzado.jpg', 'badge' => __('Essentials', 'flux-press')],
-            ['name' => __('Outlet', 'flux-press'), 'url' => $shopUrl, 'image_url' => 'category-outlet.jpg', 'badge' => __('Oferta', 'flux-press')],
+            ['name' => __('Tecnologia', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-tecnologia.jpg', 'badge' => __('Tendencia', 'sage')],
+            ['name' => __('Hogar', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-hogar.jpg', 'badge' => __('Popular', 'sage')],
+            ['name' => __('Moda', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-moda.jpg', 'badge' => __('Nuevo', 'sage')],
+            ['name' => __('Deportes', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-deportes.jpg', 'badge' => __('Top', 'sage')],
+            ['name' => __('Belleza', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-belleza.jpg', 'badge' => __('Destacado', 'sage')],
+            ['name' => __('Accesorios', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-accesorios.jpg', 'badge' => __('Seleccion', 'sage')],
+            ['name' => __('Calzado', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-calzado.jpg', 'badge' => __('Essentials', 'sage')],
+            ['name' => __('Outlet', 'sage'), 'url' => $shopUrl, 'image_url' => 'category-outlet.jpg', 'badge' => __('Oferta', 'sage')],
         ];
     }
 
@@ -1183,14 +1183,14 @@ class HomeEcommerceDataService
             : (string) home_url('/');
 
         return [
-            ['name' => 'Adidas', 'url' => $shopUrl, 'image_url' => 'brand-adidas.jpg', 'logo_url' => 'brand-adidas-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Michael Kors', 'url' => $shopUrl, 'image_url' => 'brand-michael-kors.jpg', 'logo_url' => 'brand-michael-kors-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Coach Outlet', 'url' => $shopUrl, 'image_url' => 'brand-coach.jpg', 'logo_url' => 'brand-coach-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Clarks', 'url' => $shopUrl, 'image_url' => 'brand-clarks.jpg', 'logo_url' => 'brand-clarks-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Hugo Boss', 'url' => $shopUrl, 'image_url' => 'brand-hugo-boss.jpg', 'logo_url' => 'brand-hugo-boss-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Nike', 'url' => $shopUrl, 'image_url' => 'brand-nike.jpg', 'logo_url' => 'brand-nike-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'Tommy Hilfiger', 'url' => $shopUrl, 'image_url' => 'brand-tommy.jpg', 'logo_url' => 'brand-tommy-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
-            ['name' => 'MCM', 'url' => $shopUrl, 'image_url' => 'brand-mcm.jpg', 'logo_url' => 'brand-mcm-logo.png', 'badge' => __('Marca afiliada', 'flux-press')],
+            ['name' => 'Adidas', 'url' => $shopUrl, 'image_url' => 'brand-adidas.jpg', 'logo_url' => 'brand-adidas-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Michael Kors', 'url' => $shopUrl, 'image_url' => 'brand-michael-kors.jpg', 'logo_url' => 'brand-michael-kors-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Coach Outlet', 'url' => $shopUrl, 'image_url' => 'brand-coach.jpg', 'logo_url' => 'brand-coach-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Clarks', 'url' => $shopUrl, 'image_url' => 'brand-clarks.jpg', 'logo_url' => 'brand-clarks-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Hugo Boss', 'url' => $shopUrl, 'image_url' => 'brand-hugo-boss.jpg', 'logo_url' => 'brand-hugo-boss-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Nike', 'url' => $shopUrl, 'image_url' => 'brand-nike.jpg', 'logo_url' => 'brand-nike-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'Tommy Hilfiger', 'url' => $shopUrl, 'image_url' => 'brand-tommy.jpg', 'logo_url' => 'brand-tommy-logo.png', 'badge' => __('Marca afiliada', 'sage')],
+            ['name' => 'MCM', 'url' => $shopUrl, 'image_url' => 'brand-mcm.jpg', 'logo_url' => 'brand-mcm-logo.png', 'badge' => __('Marca afiliada', 'sage')],
         ];
     }
 
@@ -1205,19 +1205,19 @@ class HomeEcommerceDataService
 
         return [
             [
-                'eyebrow' => __('Live now', 'flux-press'),
-                'title' => __('Novedades y lanzamientos', 'flux-press'),
-                'description' => __('Descubre productos nuevos para elevar tu estilo diario.', 'flux-press'),
-                'cta_label' => __('Explorar todo', 'flux-press'),
+                'eyebrow' => __('Live now', 'sage'),
+                'title' => __('Novedades y lanzamientos', 'sage'),
+                'description' => __('Descubre productos nuevos para elevar tu estilo diario.', 'sage'),
+                'cta_label' => __('Explorar todo', 'sage'),
                 'cta_url' => $shopUrl,
                 'image_url' => 'promo-launches.jpg',
                 'theme' => 'light',
             ],
             [
-                'eyebrow' => __('Oferta flash', 'flux-press'),
-                'title' => __('Ofertas relampago', 'flux-press'),
-                'description' => __('Descuentos por tiempo limitado en productos seleccionados.', 'flux-press'),
-                'cta_label' => __('Ver ofertas', 'flux-press'),
+                'eyebrow' => __('Oferta flash', 'sage'),
+                'title' => __('Ofertas relampago', 'sage'),
+                'description' => __('Descuentos por tiempo limitado en productos seleccionados.', 'sage'),
+                'cta_label' => __('Ver ofertas', 'sage'),
                 'cta_url' => $shopUrl,
                 'image_url' => 'promo-flash.jpg',
                 'theme' => 'dark',

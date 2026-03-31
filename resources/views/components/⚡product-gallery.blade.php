@@ -68,7 +68,7 @@ new class extends Component
 
         $alt = trim((string) get_post_meta($attachmentId, '_wp_attachment_image_alt', true));
         if ($alt === '') {
-            $alt = $fallbackAlt !== '' ? $fallbackAlt : __('Imagen del producto', 'flux-press');
+            $alt = $fallbackAlt !== '' ? $fallbackAlt : __('Imagen del producto', 'sage');
         }
 
         return [
@@ -92,7 +92,7 @@ new class extends Component
             'thumb' => wc_placeholder_img_src('woocommerce_thumbnail'),
             'large' => $placeholder,
             'full' => $placeholder,
-            'alt' => $fallbackAlt !== '' ? $fallbackAlt : __('Producto sin imagen', 'flux-press'),
+            'alt' => $fallbackAlt !== '' ? $fallbackAlt : __('Producto sin imagen', 'sage'),
         ];
     }
 };
@@ -100,12 +100,12 @@ new class extends Component
 
 @php
     $galleryImages = array_values($images);
-    $galleryLabel = __('Galeria del producto', 'flux-press');
-    $previewLabel = __('Vista previa del producto', 'flux-press');
-    $zoomLabel = __('Alternar zoom', 'flux-press');
-    $fullImageLabel = __('Abrir imagen completa', 'flux-press');
-    $focusModeLabel = __('Modo enfoque', 'flux-press');
-    $closeFocusModeLabel = __('Cerrar enfoque', 'flux-press');
+    $galleryLabel = __('Galeria del producto', 'sage');
+    $previewLabel = __('Vista previa del producto', 'sage');
+    $zoomLabel = __('Alternar zoom', 'sage');
+    $fullImageLabel = __('Abrir imagen completa', 'sage');
+    $focusModeLabel = __('Modo enfoque', 'sage');
+    $closeFocusModeLabel = __('Cerrar enfoque', 'sage');
 @endphp
 
 <div
@@ -204,7 +204,7 @@ new class extends Component
 
             <div class="flex items-center justify-between gap-3">
                 <flux:text class="text-xs uppercase tracking-[0.25em] text-zinc-500 dark:text-zinc-400">
-                    {{ __('Contenido visual (clic para zoom)', 'flux-press') }}
+                    {{ __('Contenido visual (clic para zoom)', 'sage') }}
                 </flux:text>
 
                 <div class="flex items-center gap-2">
@@ -228,15 +228,15 @@ new class extends Component
         <div class="relative flex h-full flex-col">
             <div class="absolute inset-x-0 top-0 z-20 flex items-center justify-between gap-3 bg-linear-to-b from-black/60 to-transparent px-4 py-3 sm:px-6">
                 <div class="min-w-0">
-                    <p class="text-xs uppercase tracking-[0.28em] text-zinc-400">{{ __('Enfoque', 'flux-press') }}</p>
+                    <p class="text-xs uppercase tracking-[0.28em] text-zinc-400">{{ __('Enfoque', 'sage') }}</p>
                     <h3 class="mt-1 truncate text-sm font-semibold text-white sm:text-base" x-text="currentImage.alt"></h3>
                 </div>
 
                 <div class="flex items-center gap-2">
-                    <button type="button" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 p-2.5 text-white transition-colors hover:bg-white/20" x-on:click="previous()" aria-label="{{ __('Anterior', 'flux-press') }}">
+                    <button type="button" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 p-2.5 text-white transition-colors hover:bg-white/20" x-on:click="previous()" aria-label="{{ __('Anterior', 'sage') }}">
                         <flux:icon.chevron-left class="size-4" />
                     </button>
-                    <button type="button" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 p-2.5 text-white transition-colors hover:bg-white/20" x-on:click="next()" aria-label="{{ __('Siguiente', 'flux-press') }}">
+                    <button type="button" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 p-2.5 text-white transition-colors hover:bg-white/20" x-on:click="next()" aria-label="{{ __('Siguiente', 'sage') }}">
                         <flux:icon.chevron-right class="size-4" />
                     </button>
                     <button type="button" class="inline-flex items-center justify-center rounded-full border border-white/20 bg-white/10 p-2.5 text-white transition-colors hover:bg-white/20" x-on:click="toggleZoom()" aria-label="{{ $zoomLabel }}">

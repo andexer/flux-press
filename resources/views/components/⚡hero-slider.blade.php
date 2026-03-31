@@ -88,15 +88,15 @@ new class extends Component
             <div class="mt-10 flex flex-wrap justify-center items-center gap-6 text-zinc-400 text-sm">
                 <div class="flex items-center gap-2">
                     <flux:icon.shield-check class="size-5 text-green-400" />
-                    {{ __('Seguro & Rápido', 'flux-press') }}
+                    {{ __('Seguro & Rápido', 'sage') }}
                 </div>
                 <div class="flex items-center gap-2">
                     <flux:icon.bolt class="size-5 text-yellow-400" />
-                    {{ __('Alto Rendimiento', 'flux-press') }}
+                    {{ __('Alto Rendimiento', 'sage') }}
                 </div>
                 <div class="flex items-center gap-2">
                     <flux:icon.code-bracket class="size-5 text-accent-400" />
-                    {{ __('Open Source', 'flux-press') }}
+                    {{ __('Open Source', 'sage') }}
                 </div>
             </div>
         </div>

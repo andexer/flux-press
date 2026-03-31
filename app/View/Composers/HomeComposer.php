@@ -75,14 +75,14 @@ class HomeComposer extends Composer
         }
 
         $blockToSection = [
-            'flux-press/featured-categories' => 'categories',
-            'flux-press/featured-brands' => 'brands',
-            'flux-press/featured-promos' => 'promos',
-            'flux-press/home-hero' => 'hero',
-            'flux-press/home-best-sellers' => 'best_sellers',
-            'flux-press/home-top-rated' => 'top_rated',
-            'flux-press/home-newsletter' => 'newsletter',
-            'flux-press/home-blog' => 'blog',
+            'sage/featured-categories' => 'categories',
+            'sage/featured-brands' => 'brands',
+            'sage/featured-promos' => 'promos',
+            'sage/home-hero' => 'hero',
+            'sage/home-best-sellers' => 'best_sellers',
+            'sage/home-top-rated' => 'top_rated',
+            'sage/home-newsletter' => 'newsletter',
+            'sage/home-blog' => 'blog',
         ];
 
         $found = [];
@@ -94,7 +94,7 @@ class HomeComposer extends Composer
                 }
 
                 $name = (string) ($block['blockName'] ?? '');
-                if ($name === 'flux-press/home-sections-carousel') {
+                if ($name === 'sage/home-sections-carousel') {
                     foreach ($this->parseSectionsList((string) ($block['attrs']['sections'] ?? 'categories,brands,promos')) as $section) {
                         $found[$section] = true;
                     }
