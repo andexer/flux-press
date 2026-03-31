@@ -13,7 +13,7 @@
         <flux:icon.check-circle class="size-6 text-emerald-600 dark:text-emerald-400 mt-0.5" />
         <div>
             <flux:heading size="sm" class="text-emerald-800 dark:text-emerald-300 mb-1">
-                {{ __('Pedido confirmado', 'flux-press') }}
+                {{ __('Order Confirmed', 'sage') }}
             </flux:heading>
             <p class="woocommerce-notice woocommerce-notice--success woocommerce-thankyou-order-received !mb-0 !border-none !bg-transparent !p-0 text-sm text-emerald-800 dark:text-emerald-200">
                 {!! $message !!}

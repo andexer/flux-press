@@ -5,7 +5,7 @@
 
 @section('sub_navigation')
     <div class="px-3 mb-2 mt-2 lg:mt-0">
-        <flux:heading size="sm" class="text-zinc-400 dark:text-zinc-500 font-semibold uppercase tracking-widest text-[10px]">{{ __('Mi Cuenta', 'flux-press') }}</flux:heading>
+        <flux:heading size="sm" class="text-zinc-400 dark:text-zinc-500 font-semibold uppercase tracking-widest text-[10px]">{{ __('My Account', 'sage') }}</flux:heading>
     </div>
 @endsection
 
@@ -34,10 +34,10 @@
 
                 <div class="relative z-10">
                     <flux:heading size="xl" level="1" class="mb-2 font-black tracking-tight text-zinc-900 dark:text-zinc-50">
-                        {{ __('Hola de nuevo,', 'flux-press') }} <span class="text-accent-600 dark:text-accent-400">{{ $current_user->display_name }}</span>
+                        {{ __('Welcome back,', 'sage') }} <span class="text-accent-600 dark:text-accent-400">{{ $current_user->display_name }}</span>
                     </flux:heading>
                     <flux:text class="text-zinc-500 dark:text-zinc-400 text-base max-w-xl leading-relaxed">
-                        {{ __('Bienvenido a tu área personal. Desde aquí tienes control total sobre tus pedidos, direcciones y la seguridad de tu cuenta.', 'flux-press') }}
+                        {{ __('Welcome to your personal area. From here you have full control over your orders, addresses and account security.', 'sage') }}
                     </flux:text>
                 </div>
             </div>
@@ -68,7 +68,7 @@
                                     <flux:icon :name="$icon" class="size-8 text-accent-600 dark:text-accent-400" />
                                 </div>
                                 <span class="text-base font-black text-zinc-900 dark:text-zinc-100 mb-1 relative z-10 uppercase tracking-wide">{{ $label }}</span>
-                                <span class="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-[0.2em] relative z-10">{{ __('Gestionar', 'flux-press') }}</span>
+                                <span class="text-[10px] text-zinc-500 dark:text-zinc-400 font-bold uppercase tracking-[0.2em] relative z-10">{{ __('Manage', 'sage') }}</span>
                             </a>
                         @endif
                     @endforeach

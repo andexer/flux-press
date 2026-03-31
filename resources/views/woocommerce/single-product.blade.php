@@ -5,7 +5,7 @@
   <div class="mb-6">
     <flux:breadcrumbs>
         <flux:breadcrumbs.item href="{{ home_url('/') }}" icon="home" wire:navigate />
-        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'flux-press') }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Shop', 'sage') }}</flux:breadcrumbs.item>
 
         @php
             global $post;

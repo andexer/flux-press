@@ -43,10 +43,10 @@
 
     if (empty($highlightLinks)) {
         $highlightLinks = [
-            (object) ['title' => __('Categorias', 'flux-press'), 'url' => home_url('/shop/')],
-            (object) ['title' => __('Novedades', 'flux-press'), 'url' => home_url('/shop/?orderby=date')],
-            (object) ['title' => __('Ofertas', 'flux-press'), 'url' => home_url('/shop/?on_sale=1')],
-            (object) ['title' => __('Top ventas', 'flux-press'), 'url' => home_url('/shop/?orderby=popularity')],
+            (object) ['title' => __('Categories', 'sage'), 'url' => home_url('/shop/')],
+            (object) ['title' => __('New Arrivals', 'sage'), 'url' => home_url('/shop/?orderby=date')],
+            (object) ['title' => __('Clearance', 'sage'), 'url' => home_url('/shop/?on_sale=1')],
+            (object) ['title' => __('Top Sellers', 'sage'), 'url' => home_url('/shop/?orderby=popularity')],
         ];
     }
 
@@ -61,9 +61,9 @@
 
     if (empty($utilityLeftLinks)) {
         $utilityLeftLinks = [
-            ['title' => __('Daily Deals', 'flux-press'), 'url' => home_url('/shop/?on_sale=1')],
-            ['title' => __('Gift Cards', 'flux-press'), 'url' => home_url('/shop/')],
-            ['title' => __('Sell on Store', 'flux-press'), 'url' => home_url('/vender/')],
+            ['title' => __('Daily Deals', 'sage'), 'url' => home_url('/shop/?on_sale=1')],
+            ['title' => __('Gift Cards', 'sage'), 'url' => home_url('/shop/')],
+            ['title' => __('Sell on Store', 'sage'), 'url' => home_url('/vender/')],
         ];
     }
 
@@ -78,9 +78,9 @@
 
     if (empty($utilityRightLinks)) {
         $utilityRightLinks = [
-            ['title' => __('Help Center', 'flux-press'), 'url' => home_url('/ayuda/')],
-            ['title' => __('Track Order', 'flux-press'), 'url' => home_url('/mi-cuenta/orders/')],
-            ['title' => __('EN / USD', 'flux-press'), 'url' => '#'],
+            ['title' => __('Help Center', 'sage'), 'url' => home_url('/ayuda/')],
+            ['title' => __('Track Order', 'sage'), 'url' => home_url('/mi-cuenta/orders/')],
+            ['title' => __('EN / USD', 'sage'), 'url' => '#'],
         ];
     }
 
@@ -145,7 +145,7 @@
                                 size="sm"
                                 icon="bars-3-bottom-left"
                                 class="lg:hidden"
-                                aria-label="{{ esc_attr__('Abrir menu principal', 'flux-press') }}"
+                                aria-label="{{ esc_attr__('Open main menu', 'sage') }}"
                             />
                         </flux:modal.trigger>
                     @endif
@@ -183,7 +183,7 @@
                         ])
                     @elseif($isWooCommerce)
                         <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
-                            {{ __('Tienda', 'flux-press') }}
+                            {{ __('Shop', 'sage') }}
                         </flux:button>
                     @endif
 
@@ -208,18 +208,18 @@
                             <flux:profile avatar="{{ $avatarUrl }}" name="{{ $currentUser->display_name }}" />
 
                             <flux:menu class="w-64">
-                                <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Perfil', 'flux-press') }}</flux:menu.item>
+                                <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Profile', 'sage') }}</flux:menu.item>
                                 @if($isWooCommerce)
-                                    <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('Mi Cuenta', 'flux-press') }}</flux:menu.item>
+                                    <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('My Account', 'sage') }}</flux:menu.item>
                                 @endif
                                 <flux:menu.separator />
                                 <flux:menu.item icon="arrow-right-start-on-rectangle" variant="danger" href="{{ wp_logout_url(home_url('/')) }}">
-                                    {{ __('Cerrar Sesion', 'flux-press') }}
+                                    {{ __('Sign Out', 'sage') }}
                                 </flux:menu.item>
                             </flux:menu>
                         </flux:dropdown>
                     @else
-                        <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">{{ __('Acceder', 'flux-press') }}</flux:button>
+                        <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">{{ __('Sign In', 'sage') }}</flux:button>
                     @endif
                 </div>
             </div>
@@ -272,7 +272,7 @@
                 </a>
 
                 <flux:modal.close>
-                    <flux:button variant="ghost" icon="x-mark" size="sm" aria-label="{{ esc_attr__('Cerrar menu', 'flux-press') }}" />
+                    <flux:button variant="ghost" icon="x-mark" size="sm" aria-label="{{ esc_attr__('Close menu', 'sage') }}" />
                 </flux:modal.close>
             </div>
 
@@ -334,7 +334,7 @@
 
                     <div class="mt-2">
                         <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="w-full justify-center">
-                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
+                            {{ $isLoggedIn ? __('Account', 'sage') : __('Sign In', 'sage') }}
                         </flux:button>
                     </div>
                 @else
@@ -345,11 +345,11 @@
                     ])>
                         @if($isWooCommerce)
                             <flux:button href="{{ $shopUrl }}" wire:navigate variant="ghost" icon="building-storefront" class="justify-center">
-                                {{ __('Tienda', 'flux-press') }}
+                                {{ __('Shop', 'sage') }}
                             </flux:button>
                         @endif
                         <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="justify-center">
-                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
+                            {{ $isLoggedIn ? __('Account', 'sage') : __('Sign In', 'sage') }}
                         </flux:button>
                     </div>
                 @endif

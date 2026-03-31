@@ -5,14 +5,14 @@
         <div class="max-w-3xl">
             <flux:badge color="zinc" class="mb-6 border-zinc-300 dark:border-zinc-700">🚀 {!! wp_get_theme()->get('Name') !!} 1.0</flux:badge>
             <flux:heading size="6xl" class="mb-6 tracking-tight !font-extrabold text-zinc-900 dark:text-white">
-                El Futuro de los Temas en <span class="bg-gradient-to-r from-accent-600 to-indigo-500 text-transparent bg-clip-text">WordPress</span>
+                {{ __('The Future of Themes in', 'sage') }} <span class="bg-gradient-to-r from-accent-600 to-indigo-500 text-transparent bg-clip-text">WordPress</span>
             </flux:heading>
             <flux:subheading size="xl" class="mb-10 text-balance text-zinc-600 dark:text-zinc-400">
-                Lleva tu presencia web al siguiente nivel con nuestro constructor reactivo de última generación en tiempo real.
+                {{ __('Take your web presence to the next level with our next-generation real-time reactive builder.', 'sage') }}
             </flux:subheading>
             <div class="flex flex-wrap gap-4">
-                <flux:button size="base" variant="primary" icon="rocket-launch">Empezar Ahora</flux:button>
-                <flux:button size="base" variant="subtle" icon="book-open">Leer Documentación</flux:button>
+                <flux:button size="base" variant="primary" icon="rocket-launch">{{ __('Get Started', 'sage') }}</flux:button>
+                <flux:button size="base" variant="subtle" icon="book-open">{{ __('Read Documentation', 'sage') }}</flux:button>
             </div>
         </div>
     </div>

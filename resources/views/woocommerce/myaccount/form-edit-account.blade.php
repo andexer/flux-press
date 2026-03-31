@@ -7,7 +7,7 @@
     $ordersCount = function_exists('wc_get_customer_order_count') ? (int) wc_get_customer_order_count($currentUserId) : 0;
     $registeredAtRaw = (string) get_the_author_meta('user_registered', $currentUserId);
     $registeredAtTs = $registeredAtRaw !== '' ? strtotime($registeredAtRaw) : false;
-    $registeredAt = $registeredAtTs ? wp_date(get_option('date_format'), $registeredAtTs) : __('Not available', 'flux-press');
+    $registeredAt = $registeredAtTs ? wp_date(get_option('date_format'), $registeredAtTs) : __('Not available', 'sage');
     $editAddressUrl = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('edit-address') : '';
     $ordersUrl = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('orders') : '';
     $downloadsUrl = function_exists('wc_get_account_endpoint_url') ? wc_get_account_endpoint_url('downloads') : '';
@@ -20,12 +20,12 @@
         </div>
 
         <div class="flux-account-edit-hero__content">
-            <p class="flux-account-edit-hero__kicker">{{ __('Social Profile', 'flux-press') }}</p>
+            <p class="flux-account-edit-hero__kicker">{{ __('Social Profile', 'sage') }}</p>
             <h1 class="flux-account-edit-hero__title">{{ esc_html($user->display_name) }}</h1>
             <p class="flux-account-edit-hero__subtitle">{{ esc_html($user->user_email) }}</p>
             <div class="flux-account-edit-hero__chips">
-                <span>{{ sprintf(_n('%d order', '%d orders', $ordersCount, 'flux-press'), $ordersCount) }}</span>
-                <span>{{ __('Member since', 'flux-press') }} {{ esc_html($registeredAt) }}</span>
+                <span>{{ sprintf(_n('%d order', '%d orders', $ordersCount, 'sage'), $ordersCount) }}</span>
+                <span>{{ __('Member since', 'sage') }} {{ esc_html($registeredAt) }}</span>
             </div>
         </div>
     </header>
@@ -36,38 +36,36 @@
         <div class="flux-edit-account-grid">
             <aside class="flux-edit-account-aside">
                 <section class="flux-edit-card flux-edit-card--profile">
-                    <p class="flux-edit-card__kicker">{{ __('Profile', 'flux-press') }}</p>
-                    <h2 class="flux-edit-card__title">{{ esc_html($user->display_name) }}</h2>
-                    <p class="flux-edit-card__text">{{ esc_html($user->user_email) }}</p>
-
+                    <p class="flux-edit-card__kicker">{{ __('Profile', 'sage') }}</p>
+                    
                     <dl class="flux-edit-meta-grid">
                         <div>
-                            <dt>{{ __('Username', 'flux-press') }}</dt>
+                            <dt>{{ __('Username', 'sage') }}</dt>
                             <dd>{{ esc_html($user->user_login) }}</dd>
                         </div>
                         <div>
-                            <dt>{{ __('Orders', 'flux-press') }}</dt>
+                            <dt>{{ __('Orders', 'sage') }}</dt>
                             <dd>{{ esc_html((string) $ordersCount) }}</dd>
                         </div>
                         <div>
-                            <dt>{{ __('Member', 'flux-press') }}</dt>
+                            <dt>{{ __('Member', 'sage') }}</dt>
                             <dd>{{ esc_html($registeredAt) }}</dd>
                         </div>
                         <div>
-                            <dt>{{ __('Status', 'flux-press') }}</dt>
-                            <dd>{{ __('Active', 'flux-press') }}</dd>
+                            <dt>{{ __('Status', 'sage') }}</dt>
+                            <dd>{{ __('Active', 'sage') }}</dd>
                         </div>
                     </dl>
 
                     <div class="flux-edit-shortcuts">
                         @if($ordersUrl !== '')
-                            <a href="{{ esc_url($ordersUrl) }}" class="flux-edit-shortcut-link">{{ __('View orders', 'flux-press') }}</a>
+                            <a href="{{ esc_url($ordersUrl) }}" class="flux-edit-shortcut-link">{{ __('View orders', 'sage') }}</a>
                         @endif
                         @if($editAddressUrl !== '')
-                            <a href="{{ esc_url($editAddressUrl) }}" class="flux-edit-shortcut-link">{{ __('Edit addresses', 'flux-press') }}</a>
+                            <a href="{{ esc_url($editAddressUrl) }}" class="flux-edit-shortcut-link">{{ __('Edit addresses', 'sage') }}</a>
                         @endif
                         @if($downloadsUrl !== '')
-                            <a href="{{ esc_url($downloadsUrl) }}" class="flux-edit-shortcut-link">{{ __('My downloads', 'flux-press') }}</a>
+                            <a href="{{ esc_url($downloadsUrl) }}" class="flux-edit-shortcut-link">{{ __('My downloads', 'sage') }}</a>
                         @endif
                     </div>
                 </section>
@@ -78,8 +76,8 @@
                     <div class="flux-edit-card__header">
                         <flux:icon.user class="size-5 text-accent-600 dark:text-accent-400" />
                         <div>
-                            <h3>{{ __('Public profile', 'flux-press') }}</h3>
-                            <p>{{ __('Name shown in your account and reviews.', 'flux-press') }}</p>
+                            <h3>{{ __('Public profile', 'sage') }}</h3>
+                            <p>{{ __('Name shown in your account and reviews.', 'sage') }}</p>
                         </div>
                     </div>
 
@@ -106,8 +104,8 @@
                     <div class="flux-edit-card__header">
                         <flux:icon.envelope class="size-5 text-accent-600 dark:text-accent-400" />
                         <div>
-                            <h3>{{ __('Contact', 'flux-press') }}</h3>
-                            <p>{{ __('Manage your email and extra account fields.', 'flux-press') }}</p>
+                            <h3>{{ __('Contact', 'sage') }}</h3>
+                            <p>{{ __('Manage your email and extra account fields.', 'sage') }}</p>
                         </div>
                     </div>
 
@@ -130,8 +128,8 @@
                     <div class="flux-edit-card__header">
                         <flux:icon.shield-check class="size-5 text-accent-600 dark:text-accent-400" />
                         <div>
-                            <h3>{{ __('Security', 'flux-press') }}</h3>
-                            <p>{{ __('Leave password fields empty if you do not want to change it.', 'flux-press') }}</p>
+                            <h3>{{ __('Security', 'sage') }}</h3>
+                            <p>{{ __('Leave password fields empty if you do not want to change it.', 'sage') }}</p>
                         </div>
                     </div>
 

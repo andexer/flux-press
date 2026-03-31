@@ -7,18 +7,18 @@
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 w-full">
         <div class="grid lg:grid-cols-2 gap-12 items-center">
             <div>
-                <flux:badge color="orange" size="sm" class="mb-6 uppercase tracking-widest font-bold">{{ __('Última Hora', 'flux-press') }}</flux:badge>
+                <flux:badge color="orange" size="sm" class="mb-6 uppercase tracking-widest font-bold">{{ __('Breaking News', 'sage') }}</flux:badge>
                 <flux:heading size="6xl" class="mb-6 leading-tight !font-black !text-zinc-900 dark:!text-white">
-                    {{ __('Información Real para un Mundo Digital.', 'flux-press') }}
+                    {{ __('Real Information for a Digital World.', 'sage') }}
                 </flux:heading>
                 <flux:subheading size="xl" class="mb-8 text-zinc-600 dark:text-zinc-400 leading-relaxed">
-                    {{ __('Tu fuente confiable de noticias sobre tecnología, cultura y negocios. Actualizado al minuto por periodistas expertos.', 'flux-press') }}
+                    {{ __('Your trusted source for technology, culture and business news. Updated minute by minute by expert journalists.', 'sage') }}
                 </flux:subheading>
                 <div class="flex flex-wrap gap-4">
                     <flux:button variant="primary" size="base" icon="newspaper" class="shadow-lg shadow-orange-500/20">
-                        {{ __('Leer Portada', 'flux-press') }}
+                        {{ __('Read Headlines', 'sage') }}
                     </flux:button>
-                    <flux:button variant="ghost" size="base">{{ __('Suscribirse', 'flux-press') }}</flux:button>
+                    <flux:button variant="ghost" size="base">{{ __('Subscribe', 'sage') }}</flux:button>
                 </div>
             </div>
             <div class="lg:block hidden">

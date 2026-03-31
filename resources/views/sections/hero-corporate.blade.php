@@ -9,18 +9,18 @@
         <div class="max-w-3xl">
             <div class="w-16 h-1.5 bg-zinc-900 dark:bg-white mb-10"></div>
             <flux:heading size="6xl" class="mb-8 !font-bold !text-zinc-900 dark:!text-white uppercase tracking-tight leading-tight">
-                {{ __('Soluciones de Negocio para la Nueva Era.', 'flux-press') }}
+                {{ __('Business Solutions for the New Era.', 'sage') }}
             </flux:heading>
             <flux:subheading size="xl" class="mb-12 text-zinc-600 dark:text-zinc-400 !font-light leading-relaxed max-w-2xl">
-                {{ __('Aceleramos la transformación digital de organizaciones gubernamentales y privadas con tecnología de vanguardia y consultoría estratégica.', 'flux-press') }}
+                {{ __('We accelerate the digital transformation of government and private organizations with cutting-edge technology and strategic consulting.', 'sage') }}
             </flux:subheading>
             
             <div class="flex flex-col sm:flex-row gap-6">
                 <flux:button variant="primary" size="base" class="bg-zinc-900 dark:bg-white text-white dark:text-zinc-950 rounded-none px-10 border-none">
-                    {{ __('Nuestros Servicios', 'flux-press') }}
+                    {{ __('Our Services', 'sage') }}
                 </flux:button>
                 <flux:button variant="ghost" size="base" class="border-2 border-zinc-900 dark:border-white rounded-none px-10">
-                    {{ __('Contactar Ventas', 'flux-press') }}
+                    {{ __('Contact Sales', 'sage') }}
                 </flux:button>
             </div>
         </div>

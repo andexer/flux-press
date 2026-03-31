@@ -49,7 +49,7 @@
         x-init="init()"
         x-on:hashchange.window="syncFromHash()"
     >
-        <div class="flex flex-wrap gap-2" role="tablist" aria-label="{{ esc_attr__('Paneles del producto', 'flux-press') }}">
+        <div class="flex flex-wrap gap-2" role="tablist" aria-label="{{ esc_attr__('Product Panels', 'sage') }}">
             @foreach($productTabs as $key => $productTab)
                 <flux:button
                     type="button"

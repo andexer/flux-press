@@ -31,7 +31,7 @@
       {{-- Read more --}}
       <div class="mt-6 pt-6 border-t border-zinc-100 dark:border-zinc-800/50 flex items-center justify-between">
         <a href="{{ get_permalink() }}" class="inline-flex items-center gap-2 text-sm font-medium text-accent-600 dark:text-accent-400 hover:text-accent-700 dark:hover:text-accent-300 transition-colors group/link" wire:navigate>
-          {{ __('Leer artículo completo', 'flux-press') }}
+          {{ __('Read full article', 'sage') }}
           <flux:icon.arrow-right class="size-4 transition-transform duration-300 group-hover/link:translate-x-1" />
         </a>
       </div>

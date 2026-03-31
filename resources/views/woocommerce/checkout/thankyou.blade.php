@@ -13,10 +13,10 @@
                         <flux:icon.x-circle class="size-6 text-red-500 mt-0.5" />
                         <div>
                             <flux:heading size="sm" class="text-red-700 dark:text-red-300 mb-1">
-                                {{ __('No pudimos procesar tu pedido', 'flux-press') }}
+                                {{ __('We could not process your order', 'sage') }}
                             </flux:heading>
                             <flux:text class="text-red-700/90 dark:text-red-200 text-sm">
-                                {{ __('La transaccion fue rechazada por el banco o proveedor de pago. Puedes intentarlo de nuevo.', 'flux-press') }}
+                                {{ __('The transaction was rejected by the bank or payment provider. You can try again.', 'sage') }}
                             </flux:text>
                         </div>
                     </div>

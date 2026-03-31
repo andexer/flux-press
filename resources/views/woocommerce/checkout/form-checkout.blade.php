@@ -14,17 +14,17 @@
         <div class="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
             <div>
                 <flux:heading size="xl" level="1" class="font-black tracking-tight text-zinc-900 dark:text-zinc-100">
-                    {{ __('Finalizar compra', 'flux-press') }}
+                    {{ __('Complete Purchase', 'sage') }}
                 </flux:heading>
                 <flux:text class="mt-2 text-zinc-500 dark:text-zinc-400">
-                    {{ __('Completa tus datos, confirma tu pedido y realiza el pago de forma segura.', 'flux-press') }}
+                    {{ __('Complete your details, confirm your order and pay securely.', 'sage') }}
                 </flux:text>
             </div>
 
             <ol class="grid grid-cols-3 gap-2 sm:gap-3 min-w-0 w-full lg:w-auto">
-                <li class="rounded-xl border border-accent-300/60 bg-accent-50 dark:bg-accent-500/10 px-3 py-2 text-xs font-semibold text-accent-700 dark:text-accent-400 text-center">{{ __('Datos', 'flux-press') }}</li>
-                <li class="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 text-center">{{ __('Revision', 'flux-press') }}</li>
-                <li class="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 text-center">{{ __('Pago', 'flux-press') }}</li>
+                <li class="rounded-xl border border-accent-300/60 bg-accent-50 dark:bg-accent-500/10 px-3 py-2 text-xs font-semibold text-accent-700 dark:text-accent-400 text-center">{{ __('Details', 'sage') }}</li>
+                <li class="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 text-center">{{ __('Review', 'sage') }}</li>
+                <li class="rounded-xl border border-zinc-200 dark:border-zinc-700 px-3 py-2 text-xs font-semibold text-zinc-600 dark:text-zinc-300 text-center">{{ __('Payment', 'sage') }}</li>
             </ol>
         </div>
     </div>
@@ -44,7 +44,7 @@
                 <div class="col-1 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
                     <div class="mb-5 flex items-center gap-2">
                         <flux:icon.user-circle class="size-5 text-accent-600 dark:text-accent-400" />
-                        <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ __('Informacion de facturacion', 'flux-press') }}</flux:heading>
+                        <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ __('Billing Information', 'sage') }}</flux:heading>
                     </div>
                     @php do_action('woocommerce_checkout_billing'); @endphp
                 </div>
@@ -52,7 +52,7 @@
                 <div class="col-2 mt-2 sm:mt-3 lg:mt-0 rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-7 shadow-sm">
                     <div class="mb-5 flex items-center gap-2">
                         <flux:icon.map-pin class="size-5 text-accent-600 dark:text-accent-400" />
-                        <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ __('Envio y entrega', 'flux-press') }}</flux:heading>
+                        <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400">{{ __('Shipping & Delivery', 'sage') }}</flux:heading>
                     </div>
                     @php do_action('woocommerce_checkout_shipping'); @endphp
                 </div>

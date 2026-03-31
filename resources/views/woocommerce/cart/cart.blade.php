@@ -11,16 +11,16 @@
         <div class="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
             <div>
                 <flux:heading size="xl" level="1" class="font-black tracking-tight text-zinc-900 dark:text-zinc-100">
-                    {{ __('Tu carrito', 'flux-press') }}
+                    {{ __('Your Cart', 'sage') }}
                 </flux:heading>
                 <flux:text class="mt-2 text-zinc-500 dark:text-zinc-400">
-                    {{ __('Revisa tus productos antes de finalizar la compra.', 'flux-press') }}
+                    {{ __('Review your products before completing your purchase.', 'sage') }}
                 </flux:text>
             </div>
 
             <div class="flex items-center gap-2 sm:gap-3">
                 <span class="inline-flex items-center rounded-xl border border-zinc-200 dark:border-zinc-700 bg-zinc-50 dark:bg-zinc-800 px-3 py-2 text-xs sm:text-sm font-semibold text-zinc-700 dark:text-zinc-200">
-                    {{ sprintf(_n('%d producto', '%d productos', $cartItemsCount, 'flux-press'), $cartItemsCount) }}
+                    {{ sprintf(_n('%d product', '%d products', $cartItemsCount, 'sage'), $cartItemsCount) }}
                 </span>
                 @if($cartSubtotal !== '')
                     <span class="inline-flex items-center rounded-xl bg-accent-600/10 text-accent-700 dark:text-accent-400 px-3 py-2 text-xs sm:text-sm font-semibold">
@@ -143,9 +143,9 @@
                                                 <button type="button" class="flux-cart-qty-btn flux-cart-qty-btn--plus" data-direction="plus" aria-label="%4$s">+</button>
                                             </div>',
                                             esc_attr($cart_item_key),
-                                            esc_attr__('Decrease quantity', 'flux-press'),
+                                            esc_attr__('Decrease quantity', 'sage'),
                                             $quantityMarkup,
-                                            esc_attr__('Increase quantity', 'flux-press')
+                                            esc_attr__('Increase quantity', 'sage')
                                         ) !!}
                                     @endif
                                 </td>
@@ -194,10 +194,10 @@
         <aside class="flux-wc-cart-sidebar min-w-0 space-y-5">
             <div class="rounded-3xl border border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-900 p-5 sm:p-6 shadow-sm">
                 <flux:heading size="sm" class="uppercase tracking-wider text-zinc-500 dark:text-zinc-400 mb-3">
-                    {{ __('Resumen de compra', 'flux-press') }}
+                    {{ __('Order Summary', 'sage') }}
                 </flux:heading>
                 <flux:text class="text-sm text-zinc-500 dark:text-zinc-400">
-                    {{ __('Confirma cantidades, aplica cupones y continua al checkout cuando este todo listo.', 'flux-press') }}
+                    {{ __('Confirm quantities, apply coupons and proceed to checkout when ready.', 'sage') }}
                 </flux:text>
             </div>
 

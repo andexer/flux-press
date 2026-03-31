@@ -45,8 +45,8 @@
         <section class="py-12 sm:py-14 border-b border-zinc-200 dark:border-zinc-800 bg-white dark:bg-zinc-950">
             <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                 <flux:callout color="amber" icon="pencil-square">
-                    <flux:callout.heading>{{ __('Modo Editor activo pero no hay bloques publicados.', 'flux-press') }}</flux:callout.heading>
-                    <flux:callout.text>{{ __('Edita la pagina de inicio con Gutenberg o Elementor y publica contenido para mostrarlo aqui.', 'flux-press') }}</flux:callout.text>
+                    <flux:callout.heading>{{ __('Editor mode active but no blocks published.', 'sage') }}</flux:callout.heading>
+                    <flux:callout.text>{{ __('Edit the home page with Gutenberg or Elementor and publish content to display it here.', 'sage') }}</flux:callout.text>
                 </flux:callout>
             </div>
         </section>

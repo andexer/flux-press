@@ -10,22 +10,22 @@
 
             {{-- Tagline --}}
             <flux:subheading class="max-w-md text-base leading-relaxed text-balance">
-                {{ __('Construido con tecnología de vanguardia para sitios web excepcionales y de máxima velocidad.', 'flux-press') }}
+                {{ __('Built with cutting-edge technology for exceptional high-speed websites.', 'sage') }}
             </flux:subheading>
 
             <flux:separator class="!w-16 my-2" />
 
             {{-- Enlaces legales en línea --}}
             <div class="flex flex-wrap justify-center items-center gap-2 sm:gap-4">
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Privacidad', 'flux-press') }}</flux:button>
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Términos', 'flux-press') }}</flux:button>
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Contacto', 'flux-press') }}</flux:button>
-                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Sitemap', 'flux-press') }}</flux:button>
+                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Privacy', 'sage') }}</flux:button>
+                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Terms', 'sage') }}</flux:button>
+                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Contact', 'sage') }}</flux:button>
+                <flux:button variant="ghost" size="sm" href="#" wire:navigate class="!text-zinc-500 hover:!text-accent-600 dark:hover:!text-accent-400">{{ __('Sitemap', 'sage') }}</flux:button>
             </div>
 
             {{-- Copyright --}}
             <flux:text class="text-zinc-400 dark:text-zinc-600 mt-8">
-                &copy; {{ $currentYear }} {!! $siteName !!}. {{ __('Todos los derechos reservados.', 'flux-press') }}
+                &copy; {{ $currentYear }} {!! $siteName !!}. {{ __('All rights reserved.', 'sage') }}
             </flux:text>
         </div>
     </div>

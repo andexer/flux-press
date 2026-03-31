@@ -28,9 +28,9 @@
 
     if (empty($highlightLinks)) {
         $highlightLinks = [
-            (object) ['title' => __('Hot Deals', 'flux-press'), 'url' => home_url('/shop/?on_sale=1')],
-            (object) ['title' => __('Whats New', 'flux-press'), 'url' => home_url('/shop/?orderby=date')],
-            (object) ['title' => __('Best Sellers', 'flux-press'), 'url' => home_url('/shop/?orderby=popularity')],
+            (object) ['title' => __('Hot Deals', 'sage'), 'url' => home_url('/shop/?on_sale=1')],
+            (object) ['title' => __('Whats New', 'sage'), 'url' => home_url('/shop/?orderby=date')],
+            (object) ['title' => __('Best Sellers', 'sage'), 'url' => home_url('/shop/?orderby=popularity')],
         ];
     }
 
@@ -67,7 +67,7 @@
 
             @if(! $isAccountSidebarContext && ! empty($topMenuItems))
                 <flux:modal.trigger name="minimal-mobile-menu">
-                    <flux:button variant="ghost" size="sm" icon="bars-3" class="lg:hidden" aria-label="{{ esc_attr__('Abrir menu', 'flux-press') }}" />
+                    <flux:button variant="ghost" size="sm" icon="bars-3" class="lg:hidden" aria-label="{{ esc_attr__('Open menu', 'sage') }}" />
                 </flux:modal.trigger>
             @endif
 
@@ -93,7 +93,7 @@
                     ])
                 @elseif($isWooCommerce)
                     <flux:button variant="ghost" size="sm" href="{{ $shopUrl }}" wire:navigate icon="building-storefront" class="hidden xl:inline-flex">
-                        {{ __('Tienda', 'flux-press') }}
+                        {{ __('Shop', 'sage') }}
                     </flux:button>
                 @endif
 
@@ -117,19 +117,19 @@
                     <flux:dropdown position="bottom" align="end">
                         <flux:profile avatar="{{ $avatarUrl }}" name="{{ $currentUser->display_name }}" />
                         <flux:menu class="w-64">
-                            <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Perfil', 'flux-press') }}</flux:menu.item>
+                            <flux:menu.item icon="user-circle" href="{{ admin_url('profile.php') }}">{{ __('Profile', 'sage') }}</flux:menu.item>
                             @if($isWooCommerce)
-                                <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('Mi Cuenta', 'flux-press') }}</flux:menu.item>
+                                <flux:menu.item icon="user" href="{{ $accountUrl }}" wire:navigate>{{ __('My Account', 'sage') }}</flux:menu.item>
                             @endif
                             <flux:menu.separator />
                             <flux:menu.item icon="arrow-right-start-on-rectangle" variant="danger" href="{{ wp_logout_url(home_url('/')) }}">
-                                {{ __('Cerrar Sesion', 'flux-press') }}
+                                {{ __('Sign Out', 'sage') }}
                             </flux:menu.item>
                         </flux:menu>
                     </flux:dropdown>
                 @else
                     <flux:button variant="primary" size="sm" href="{{ $loginUrl }}" icon="user">
-                        {{ __('Acceder', 'flux-press') }}
+                        {{ __('Sign In', 'sage') }}
                     </flux:button>
                 @endif
             </div>
@@ -174,7 +174,7 @@
     <flux:modal name="minimal-mobile-menu" variant="flyout" class="max-w-sm w-full !p-0">
         <div class="flex h-full flex-col bg-white dark:bg-zinc-900">
             <div class="flex items-center justify-between border-b border-zinc-200 dark:border-zinc-800 px-4 py-4">
-                <span class="text-sm font-black tracking-wide text-zinc-900 dark:text-zinc-100">{{ __('Navegacion', 'flux-press') }}</span>
+                <span class="text-sm font-black tracking-wide text-zinc-900 dark:text-zinc-100">{{ __('Navigation', 'sage') }}</span>
                 <flux:modal.close>
                     <flux:button variant="ghost" size="sm" icon="x-mark" />
                 </flux:modal.close>
@@ -219,7 +219,7 @@
 
                     <div class="mt-2">
                         <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="w-full justify-center">
-                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
+                            {{ $isLoggedIn ? __('Account', 'sage') : __('Sign In', 'sage') }}
                         </flux:button>
                     </div>
                 @else
@@ -230,11 +230,11 @@
                     ])>
                         @if($isWooCommerce)
                             <flux:button href="{{ $shopUrl }}" wire:navigate variant="ghost" icon="building-storefront" class="justify-center">
-                                {{ __('Tienda', 'flux-press') }}
+                                {{ __('Shop', 'sage') }}
                             </flux:button>
                         @endif
                         <flux:button href="{{ $isLoggedIn ? $accountUrl : $loginUrl }}" wire:navigate variant="primary" icon="user" class="justify-center">
-                            {{ $isLoggedIn ? __('Cuenta', 'flux-press') : __('Acceder', 'flux-press') }}
+                            {{ $isLoggedIn ? __('Account', 'sage') : __('Sign In', 'sage') }}
                         </flux:button>
                     </div>
                 @endif

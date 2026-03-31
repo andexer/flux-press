@@ -14,14 +14,14 @@
     if ($product->is_on_sale() && $regularPrice > 0 && $salePrice > 0 && $salePrice < $regularPrice) {
         $discountLabel = '-' . max(1, (int) round((($regularPrice - $salePrice) / $regularPrice) * 100)) . '%';
     } elseif ($product->is_on_sale()) {
-        $discountLabel = __('Oferta', 'flux-press');
+        $discountLabel = __('Sale', 'sage');
     }
 
     $reviewCount = (int) $product->get_review_count();
     $sku = (string) $product->get_sku();
     $stockLabel = $product->is_in_stock()
-        ? ($product->backorders_allowed() ? __('Disponible bajo pedido', 'flux-press') : __('Disponible', 'flux-press'))
-        : __('Agotado', 'flux-press');
+        ? ($product->backorders_allowed() ? __('Available on backorder', 'sage') : __('In stock', 'sage'))
+        : __('Out of stock', 'sage');
     $stockClasses = $product->is_in_stock()
         ? 'bg-emerald-50 text-emerald-700 ring-emerald-200 dark:bg-emerald-950/40 dark:text-emerald-300 dark:ring-emerald-800'
         : 'bg-red-50 text-red-700 ring-red-200 dark:bg-red-950/40 dark:text-red-300 dark:ring-red-800';
@@ -37,21 +37,21 @@
 
     $summaryStats = array_values(array_filter([
         [
-            'label' => __('Estado', 'flux-press'),
+            'label' => __('Status', 'sage'),
             'value' => $stockLabel,
         ],
         [
-            'label' => __('SKU', 'flux-press'),
-            'value' => $sku !== '' ? $sku : __('No disponible', 'flux-press'),
+            'label' => __('SKU', 'sage'),
+            'value' => $sku !== '' ? $sku : __('Not available', 'sage'),
         ],
         [
-            'label' => __('Resenas', 'flux-press'),
+            'label' => __('Reviews', 'sage'),
             'value' => $reviewCount > 0
                 ? sprintf(
-                    _n('%d resena', '%d resenas', $reviewCount, 'flux-press'),
+                    _n('%d review', '%d reviews', $reviewCount, 'sage'),
                     $reviewCount
                 )
-                : __('Sin resenas', 'flux-press'),
+                : __('No reviews', 'sage'),
         ],
     ], static fn ($item) => is_array($item) && ($item['value'] ?? '') !== ''));
 
@@ -98,10 +98,10 @@
                     <div class="mb-4 flex items-start justify-between gap-3">
                         <div class="min-w-0">
                             <flux:text class="text-[11px] uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">
-                                {{ __('Galeria', 'flux-press') }}
+                                {{ __('Gallery', 'sage') }}
                             </flux:text>
                             <flux:heading size="lg" class="mt-2 !font-black tracking-tight text-zinc-900 dark:text-zinc-100">
-                                {{ __('Vista del producto', 'flux-press') }}
+                                {{ __('Product View', 'sage') }}
                             </flux:heading>
                         </div>
 
@@ -171,13 +171,13 @@
                                     <div class="flex items-start justify-between gap-3">
                                         <div class="min-w-0">
                                             <flux:text class="text-[11px] uppercase tracking-[0.3em] text-zinc-500 dark:text-zinc-400">
-                                                {{ __('Compra', 'flux-press') }}
+                                                {{ __('Purchase', 'sage') }}
                                             </flux:text>
                                             <div class="flux-single-purchase-price mt-3 text-3xl font-black leading-none text-zinc-900 dark:text-zinc-100">
                                                 {!! $product->get_price_html() !!}
                                             </div>
                                             <flux:text class="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
-                                                {{ __('Selecciona cantidad y agrega al carrito al instante.', 'flux-press') }}
+                                                {{ __('Select quantity and add to cart instantly.', 'sage') }}
                                             </flux:text>
                                         </div>
 
@@ -188,7 +188,7 @@
 
                                     @if($discountLabel !== '')
                                         <div class="inline-flex items-center rounded-full bg-red-50 px-3 py-1 text-xs font-semibold text-red-700 ring-1 ring-inset ring-red-200 dark:bg-red-950/40 dark:text-red-300 dark:ring-red-800">
-                                            {{ sprintf(__('Ahorra %s', 'flux-press'), $discountLabel) }}
+                                            {{ sprintf(__('Save %s', 'sage'), $discountLabel) }}
                                         </div>
                                     @endif
 

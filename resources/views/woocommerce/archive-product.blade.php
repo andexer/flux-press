@@ -46,7 +46,7 @@
       @if(is_shop())
         <flux:breadcrumbs.item>{{ woocommerce_page_title(false) }}</flux:breadcrumbs.item>
       @elseif(is_product_category() || is_product_tag())
-        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Tienda', 'flux-press') }}</flux:breadcrumbs.item>
+        <flux:breadcrumbs.item href="{{ wc_get_page_permalink('shop') }}" wire:navigate>{{ __('Shop', 'sage') }}</flux:breadcrumbs.item>
         <flux:breadcrumbs.item>{{ single_term_title('', false) }}</flux:breadcrumbs.item>
       @else
         <flux:breadcrumbs.item>{{ woocommerce_page_title(false) }}</flux:breadcrumbs.item>
@@ -92,7 +92,7 @@
 
         <div class="lg:col-span-5 bg-zinc-100 dark:bg-zinc-800 min-h-[220px] sm:min-h-[260px] lg:min-h-full">
           @if(($shopBanner['image_url'] ?? '') !== '')
-            <img src="{{ $shopBanner['image_url'] }}" alt="{{ $shopBanner['title'] ?? __('Banner tienda', 'flux-press') }}" class="h-full w-full object-cover" loading="lazy" />
+            <img src="{{ $shopBanner['image_url'] }}" alt="{{ $shopBanner['title'] ?? __('Store Banner', 'sage') }}" class="h-full w-full object-cover" loading="lazy" />
           @else
             <div class="h-full w-full flex items-center justify-center">
               <flux:icon.photo class="size-14 text-zinc-400" />
@@ -109,8 +109,8 @@
     <aside class="self-start lg:sticky lg:top-24">
       <div class="rounded-2xl border border-zinc-200 dark:border-zinc-800 bg-zinc-50 dark:bg-zinc-900/50 p-4 sm:p-4">
         <div class="mb-4">
-          <flux:heading size="base" class="!font-black tracking-tight">{{ __('Filtros', 'flux-press') }}</flux:heading>
-          <flux:text class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{{ __('Refina por precio, categoria y rating.', 'flux-press') }}</flux:text>
+          <flux:heading size="base" class="!font-black tracking-tight">{{ __('Filters', 'sage') }}</flux:heading>
+          <flux:text class="mt-1 text-xs text-zinc-600 dark:text-zinc-400">{{ __('Refine by price, category and rating.', 'sage') }}</flux:text>
         </div>
 
         @if(! empty($activeFilters))
@@ -130,9 +130,9 @@
 
           <div class="space-y-3">
             <div>
-              <label for="fp_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Rango', 'flux-press') }}</label>
+              <label for="fp_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Range', 'sage') }}</label>
               <select id="fp_price" name="fp_price" class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200">
-                <option value="">{{ __('Todos', 'flux-press') }}</option>
+                <option value="">{{ __('All', 'sage') }}</option>
                 @foreach($priceRanges as $range)
                   <option value="{{ $range['key'] }}" @selected($selectedPrice === $range['key'])>{{ $range['label'] }}</option>
                 @endforeach
@@ -140,22 +140,22 @@
             </div>
 
             <div>
-              <label for="fp_rating" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Rating', 'flux-press') }}</label>
+              <label for="fp_rating" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Rating', 'sage') }}</label>
               <select id="fp_rating" name="fp_rating" class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200">
-                <option value="0">{{ __('Cualquiera', 'flux-press') }}</option>
+                <option value="0">{{ __('Any', 'sage') }}</option>
                 @for($rate = 5; $rate >= 1; $rate--)
-                  <option value="{{ $rate }}" @selected($selectedRating === $rate)>{{ sprintf(__('Desde %d estrellas', 'flux-press'), $rate) }}</option>
+                  <option value="{{ $rate }}" @selected($selectedRating === $rate)>{{ sprintf(__('From %d stars', 'sage'), $rate) }}</option>
                 @endfor
               </select>
             </div>
 
             <div class="grid grid-cols-2 gap-2">
               <div>
-                <label for="min_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Min', 'flux-press') }}</label>
+                <label for="min_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Min', 'sage') }}</label>
                 <input id="min_price" type="number" min="0" step="0.01" name="min_price" value="{{ $currentMinPrice }}" class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200" />
               </div>
               <div>
-                <label for="max_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Max', 'flux-press') }}</label>
+                <label for="max_price" class="mb-1 block text-xs font-semibold uppercase tracking-widest text-zinc-500 dark:text-zinc-400">{{ __('Max', 'sage') }}</label>
                 <input id="max_price" type="number" min="0" step="0.01" name="max_price" value="{{ $currentMaxPrice }}" class="w-full rounded-xl border border-zinc-200 dark:border-zinc-700 bg-white dark:bg-zinc-900 px-3 py-2 text-sm text-zinc-700 dark:text-zinc-200" />
               </div>
             </div>
@@ -163,7 +163,7 @@
 
           @if(! empty($filterCategories))
             <fieldset class="rounded-xl border border-zinc-200 dark:border-zinc-700 p-3 bg-white dark:bg-zinc-900">
-              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Categorias', 'flux-press') }}</legend>
+              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Categories', 'sage') }}</legend>
               <div class="mt-2 max-h-44 overflow-auto space-y-1.5 pr-1">
                 @foreach($filterCategories as $category)
                   <label class="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
@@ -180,7 +180,7 @@
 
           @if(! empty($filterBrands))
             <fieldset class="rounded-xl border border-zinc-200 dark:border-zinc-700 p-3 bg-white dark:bg-zinc-900">
-              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Marcas', 'flux-press') }}</legend>
+              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Brands', 'sage') }}</legend>
               <div class="mt-2 max-h-40 overflow-auto space-y-1.5 pr-1">
                 @foreach($filterBrands as $brand)
                   <label class="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
@@ -197,7 +197,7 @@
 
           @if(! empty($filterVendors))
             <fieldset class="rounded-xl border border-zinc-200 dark:border-zinc-700 p-3 bg-white dark:bg-zinc-900">
-              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Vendedores', 'flux-press') }}</legend>
+              <legend class="px-1 text-[11px] uppercase tracking-widest font-semibold text-zinc-500 dark:text-zinc-400">{{ __('Vendors', 'sage') }}</legend>
               <div class="mt-2 max-h-40 overflow-auto space-y-1.5 pr-1">
                 @foreach($filterVendors as $vendor)
                   <label class="flex items-start gap-2 text-sm text-zinc-700 dark:text-zinc-300">
@@ -214,15 +214,15 @@
 
           <label class="inline-flex items-center gap-2 text-sm font-medium text-zinc-700 dark:text-zinc-300">
             <input type="checkbox" name="on_sale" value="1" @checked($selectedOnSale) class="rounded border-zinc-300 dark:border-zinc-600 text-accent-600 focus:ring-accent-500" />
-            {{ __('Solo oferta', 'flux-press') }}
+            {{ __('On Sale Only', 'sage') }}
           </label>
 
           <div class="grid grid-cols-1 gap-2 pt-1">
             <flux:button type="submit" variant="primary" icon="funnel" class="w-full justify-center">
-              {{ __('Aplicar filtros', 'flux-press') }}
+              {{ __('Apply Filters', 'sage') }}
             </flux:button>
             <a href="{{ $clearFiltersUrl }}" class="inline-flex items-center justify-center rounded-xl border border-zinc-300 dark:border-zinc-700 px-3 py-2 text-sm font-medium text-zinc-700 dark:text-zinc-300 hover:border-red-400 hover:text-red-600 transition-colors">
-              {{ __('Reset', 'flux-press') }}
+              {{ __('Reset', 'sage') }}
             </a>
           </div>
         </form>
@@ -251,16 +251,16 @@
               </div>
 
               <div class="hidden lg:flex items-center gap-1.5 border-l border-zinc-200 dark:border-zinc-700 pl-3">
-                <button type="button" x-on:click="view = 'v2'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v2' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('Vista 2 columnas', 'flux-press') }}">
+                <button type="button" x-on:click="view = 'v2'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v2' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('2 column view', 'sage') }}">
                   <span class="text-[11px] font-semibold">2</span>
                 </button>
-                <button type="button" x-on:click="view = 'v3'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v3' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('Vista 3 columnas', 'flux-press') }}">
+                <button type="button" x-on:click="view = 'v3'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v3' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('3 column view', 'sage') }}">
                   <span class="text-[11px] font-semibold">3</span>
                 </button>
-                <button type="button" x-on:click="view = 'v4'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v4' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('Vista 4 columnas', 'flux-press') }}">
+                <button type="button" x-on:click="view = 'v4'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v4' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('4 column view', 'sage') }}">
                   <span class="text-[11px] font-semibold">4</span>
                 </button>
-                <button type="button" x-on:click="view = 'v5'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v5' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('Vista 5 columnas', 'flux-press') }}">
+                <button type="button" x-on:click="view = 'v5'" class="inline-flex items-center justify-center rounded-md border px-2 py-1 transition-colors" :class="view === 'v5' ? 'border-accent-500 text-accent-700 dark:text-accent-400 bg-white dark:bg-zinc-900' : 'border-zinc-200 dark:border-zinc-700 text-zinc-500 dark:text-zinc-400 hover:border-zinc-300 dark:hover:border-zinc-600'" aria-label="{{ __('5 column view', 'sage') }}">
                   <span class="text-[11px] font-semibold">5</span>
                 </button>
               </div>

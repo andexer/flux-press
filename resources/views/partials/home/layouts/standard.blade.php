@@ -1,78 +1,78 @@
 @php
     $homeThemes = [
             'corporate' => [
-                'badge' => __('Corporativo', 'flux-press'),
+                'badge' => __('Corporate', 'sage'),
                 'badge_color' => 'sky',
                 'hero_bg' => 'bg-gradient-to-br from-slate-50 via-white to-sky-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-slate-900',
-                'hero_title' => __('Soluciones digitales para equipos exigentes', 'flux-press'),
-                'hero_text' => __('Estructura, velocidad y experiencia premium para empresas que necesitan resultados medibles.', 'flux-press'),
+                'hero_title' => __('Digital solutions for demanding teams', 'sage'),
+                'hero_text' => __('Structure, speed and premium experience for businesses that need measurable results.', 'sage'),
                 'features' => [
-                    ['icon' => 'briefcase', 'title' => __('Operacion estable', 'flux-press'), 'text' => __('Arquitectura preparada para crecimiento sin friccion.', 'flux-press')],
-                    ['icon' => 'shield-check', 'title' => __('Seguridad real', 'flux-press'), 'text' => __('Buenas practicas de seguridad en cada capa del sitio.', 'flux-press')],
-                    ['icon' => 'chart-bar', 'title' => __('KPIs claros', 'flux-press'), 'text' => __('Metricas accionables para decidir con datos.', 'flux-press')],
+                    ['icon' => 'briefcase', 'title' => __('Stable operation', 'sage'), 'text' => __('Architecture prepared for frictionless growth.', 'sage')],
+                    ['icon' => 'shield-check', 'title' => __('Real security', 'sage'), 'text' => __('Good security practices at every layer of the site.', 'sage')],
+                    ['icon' => 'chart-bar', 'title' => __('Clear KPIs', 'sage'), 'text' => __('Actionable metrics for data-driven decisions.', 'sage')],
                 ],
                 'stats' => [
-                    ['value' => '99.9%', 'label' => __('Disponibilidad', 'flux-press')],
-                    ['value' => '42%', 'label' => __('Mejora de conversion', 'flux-press')],
-                    ['value' => '3x', 'label' => __('Velocidad de entrega', 'flux-press')],
-                    ['value' => '24/7', 'label' => __('Soporte', 'flux-press')],
+                    ['value' => '99.9%', 'label' => __('Uptime', 'sage')],
+                    ['value' => '42%', 'label' => __('Conversion improvement', 'sage')],
+                    ['value' => '3x', 'label' => __('Delivery speed', 'sage')],
+                    ['value' => '24/7', 'label' => __('Support', 'sage')],
                 ],
                 'cta_bg' => 'bg-slate-900 dark:bg-black',
             ],
             'marketing' => [
-                'badge' => __('Marketing', 'flux-press'),
+                'badge' => __('Marketing', 'sage'),
                 'badge_color' => 'lime',
                 'hero_bg' => 'bg-gradient-to-br from-amber-50 via-white to-lime-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
-                'hero_title' => __('Landing enfocada en conversiones', 'flux-press'),
-                'hero_text' => __('Estructura orientada a campanas, captacion y venta con una narrativa clara.', 'flux-press'),
+                'hero_title' => __('Conversion-focused landing', 'sage'),
+                'hero_text' => __('Structure oriented to campaigns, lead generation and sales with a clear narrative.', 'sage'),
                 'features' => [
-                    ['icon' => 'megaphone', 'title' => __('Mensajes que convierten', 'flux-press'), 'text' => __('Contenido pensado para intencion comercial.', 'flux-press')],
-                    ['icon' => 'cursor-arrow-rays', 'title' => __('CTAs visibles', 'flux-press'), 'text' => __('Acciones destacadas y bien distribuidas.', 'flux-press')],
-                    ['icon' => 'sparkles', 'title' => __('Diseno memorable', 'flux-press'), 'text' => __('Identidad visual clara sin sobrecarga.', 'flux-press')],
+                    ['icon' => 'megaphone', 'title' => __('Messages that convert', 'sage'), 'text' => __('Content designed for commercial intent.', 'sage')],
+                    ['icon' => 'cursor-arrow-rays', 'title' => __('Visible CTAs', 'sage'), 'text' => __('Highlighted and well-distributed actions.', 'sage')],
+                    ['icon' => 'sparkles', 'title' => __('Memorable design', 'sage'), 'text' => __('Clear visual identity without overload.', 'sage')],
                 ],
                 'stats' => [
-                    ['value' => '+31%', 'label' => __('Leads', 'flux-press')],
-                    ['value' => '2.8x', 'label' => __('ROAS promedio', 'flux-press')],
-                    ['value' => '14d', 'label' => __('Iteracion de campanas', 'flux-press')],
-                    ['value' => '87%', 'label' => __('Retencion de mensaje', 'flux-press')],
+                    ['value' => '+31%', 'label' => __('Leads', 'sage')],
+                    ['value' => '2.8x', 'label' => __('Average ROAS', 'sage')],
+                    ['value' => '14d', 'label' => __('Campaign iteration', 'sage')],
+                    ['value' => '87%', 'label' => __('Message retention', 'sage')],
                 ],
                 'cta_bg' => 'bg-lime-600 dark:bg-lime-700',
             ],
             'news' => [
-                'badge' => __('Noticias', 'flux-press'),
+                'badge' => __('News', 'sage'),
                 'badge_color' => 'orange',
                 'hero_bg' => 'bg-gradient-to-br from-zinc-50 via-white to-orange-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
-                'hero_title' => __('Portada editorial clara y ordenada', 'flux-press'),
-                'hero_text' => __('Prioriza contenido, lectura y navegacion para medios y publicaciones digitales.', 'flux-press'),
+                'hero_title' => __('Clear and ordered editorial cover', 'sage'),
+                'hero_text' => __('Prioritizes content, reading and navigation for media and digital publications.', 'sage'),
                 'features' => [
-                    ['icon' => 'newspaper', 'title' => __('Portada inteligente', 'flux-press'), 'text' => __('Contenido relevante en primer nivel visual.', 'flux-press')],
-                    ['icon' => 'funnel', 'title' => __('Filtrado por temas', 'flux-press'), 'text' => __('Navegacion clara por secciones y etiquetas.', 'flux-press')],
-                    ['icon' => 'clock', 'title' => __('Actualizacion constante', 'flux-press'), 'text' => __('Publica y ordena informacion en tiempo real.', 'flux-press')],
+                    ['icon' => 'newspaper', 'title' => __('Smart cover', 'sage'), 'text' => __('Relevant content at top visual level.', 'sage')],
+                    ['icon' => 'funnel', 'title' => __('Topic filtering', 'sage'), 'text' => __('Clear navigation by sections and tags.', 'sage')],
+                    ['icon' => 'clock', 'title' => __('Constant updates', 'sage'), 'text' => __('Publish and organize information in real time.', 'sage')],
                 ],
                 'stats' => [
-                    ['value' => '5m', 'label' => __('Tiempo medio lectura', 'flux-press')],
-                    ['value' => '74%', 'label' => __('Usuarios recurrentes', 'flux-press')],
-                    ['value' => '120+', 'label' => __('Notas semanales', 'flux-press')],
-                    ['value' => '4.7/5', 'label' => __('Valoracion editorial', 'flux-press')],
+                    ['value' => '5m', 'label' => __('Avg reading time', 'sage')],
+                    ['value' => '74%', 'label' => __('Returning users', 'sage')],
+                    ['value' => '120+', 'label' => __('Weekly posts', 'sage')],
+                    ['value' => '4.7/5', 'label' => __('Editorial rating', 'sage')],
                 ],
                 'cta_bg' => 'bg-orange-600 dark:bg-orange-700',
             ],
             'profile' => [
-                'badge' => __('Perfil profesional', 'flux-press'),
+                'badge' => __('Professional Profile', 'sage'),
                 'badge_color' => 'cyan',
                 'hero_bg' => 'bg-gradient-to-br from-cyan-50 via-white to-blue-50 dark:from-zinc-950 dark:via-zinc-900 dark:to-zinc-900',
-                'hero_title' => __('Presentacion personal con enfoque profesional', 'flux-press'),
-                'hero_text' => __('Ideal para marca personal, portafolio y captacion de clientes de alto valor.', 'flux-press'),
+                'hero_title' => __('Personal presentation with professional focus', 'sage'),
+                'hero_text' => __('Ideal for personal brand, portfolio and high-value client acquisition.', 'sage'),
                 'features' => [
-                    ['icon' => 'user-circle', 'title' => __('Marca personal', 'flux-press'), 'text' => __('Posiciona tu perfil con claridad y personalidad.', 'flux-press')],
-                    ['icon' => 'folder-open', 'title' => __('Portafolio', 'flux-press'), 'text' => __('Muestra casos y resultados en formato visual.', 'flux-press')],
-                    ['icon' => 'envelope', 'title' => __('Contacto directo', 'flux-press'), 'text' => __('Reduce friccion entre visita y oportunidad.', 'flux-press')],
+                    ['icon' => 'user-circle', 'title' => __('Personal brand', 'sage'), 'text' => __('Position your profile with clarity and personality.', 'sage')],
+                    ['icon' => 'folder-open', 'title' => __('Portfolio', 'sage'), 'text' => __('Show cases and results in visual format.', 'sage')],
+                    ['icon' => 'envelope', 'title' => __('Direct contact', 'sage'), 'text' => __('Reduce friction between visit and opportunity.', 'sage')],
                 ],
                 'stats' => [
-                    ['value' => '12+', 'label' => __('Anos de experiencia', 'flux-press')],
-                    ['value' => '180+', 'label' => __('Proyectos completados', 'flux-press')],
-                    ['value' => '95%', 'label' => __('Clientes recurrentes', 'flux-press')],
-                    ['value' => '48h', 'label' => __('Tiempo de respuesta', 'flux-press')],
+                    ['value' => '12+', 'label' => __('Years of experience', 'sage')],
+                    ['value' => '180+', 'label' => __('Completed projects', 'sage')],
+                    ['value' => '95%', 'label' => __('Returning clients', 'sage')],
+                    ['value' => '48h', 'label' => __('Response time', 'sage')],
                 ],
                 'cta_bg' => 'bg-cyan-700 dark:bg-cyan-800',
             ],
@@ -137,9 +137,9 @@
                 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div class="mb-8 flex items-end justify-between gap-6">
                         <div>
-                            <flux:badge color="sky" class="mb-3">{{ __('Entradas recientes', 'flux-press') }}</flux:badge>
+                            <flux:badge color="sky" class="mb-3">{{ __('Recent Posts', 'sage') }}</flux:badge>
                             <flux:heading size="4xl" class="tracking-tight !font-black">
-                                {{ sprintf(__('Landing: %s', 'flux-press'), $layoutLabel) }}
+                                {{ sprintf(__('Landing: %s', 'sage'), $layoutLabel) }}
                             </flux:heading>
                         </div>
                     </div>
@@ -165,8 +165,8 @@
                         </div>
                     @else
                         <flux:callout color="zinc" icon="document-text">
-                            <flux:callout.heading>{{ __('Aun no hay entradas publicadas', 'flux-press') }}</flux:callout.heading>
-                            <flux:callout.text>{{ __('Publica articulos para mostrar esta seccion en el Home.', 'flux-press') }}</flux:callout.text>
+                            <flux:callout.heading>{{ __('No posts published yet', 'sage') }}</flux:callout.heading>
+                            <flux:callout.text>{{ __('Publish articles to show this section on the Home.', 'sage') }}</flux:callout.text>
                         </flux:callout>
                     @endif
                 </div>
@@ -177,17 +177,17 @@
             <flux:main class="py-14 sm:py-16 {{ $theme['cta_bg'] }} border-b border-white/10">
                 <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
                     <flux:heading size="5xl" class="!font-black !text-white tracking-tight">
-                        {{ __('Tu home ya no debe verse improvisado', 'flux-press') }}
+                        {{ __('Your home should no longer look improvised', 'sage') }}
                     </flux:heading>
                     <flux:text class="mt-4 text-white/80 text-lg">
-                        {{ __('Activa o desactiva secciones desde el Customizer y adapta esta portada a cada objetivo.', 'flux-press') }}
+                        {{ __('Activate or deactivate sections from the Customizer and adapt this landing to each objective.', 'sage') }}
                     </flux:text>
                     <div class="mt-8 flex flex-col sm:flex-row justify-center gap-3">
                         <flux:button size="base" variant="filled" href="{{ admin_url('customize.php') }}" icon="cog-6-tooth">
-                            {{ __('Personalizar Home', 'flux-press') }}
+                            {{ __('Customize Home', 'sage') }}
                         </flux:button>
                         <flux:button size="base" variant="ghost" href="{{ home_url('/contacto') }}" icon="chat-bubble-left-right" class="!text-white hover:!bg-white/10" wire:navigate>
-                            {{ __('Hablar con ventas', 'flux-press') }}
+                            {{ __('Talk to Sales', 'sage') }}
                         </flux:button>
                     </div>
                 </div>

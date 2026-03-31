@@ -48,7 +48,7 @@
 
                     @if($isVerifiedOwner)
                         <span class="flux-review-item__badge">
-                            {{ __('Compra verificada', 'flux-press') }}
+                            {{ __('Verified Purchase', 'sage') }}
                         </span>
                     @endif
                 </div>
@@ -61,12 +61,12 @@
             <div class="flux-review-item__rating">
                 @if($rating > 0)
                     {!! wc_get_rating_html($rating) !!}
-                    <span class="flux-review-item__rating-label">{{ sprintf(__('%s de 5', 'flux-press'), $rating) }}</span>
+                    <span class="flux-review-item__rating-label">{{ sprintf(__('%s out of 5', 'sage'), $rating) }}</span>
                 @else
                     <div class="star-rating" aria-hidden="true">
                         <span style="width:0%"></span>
                     </div>
-                    <span class="flux-review-item__rating-label">{{ __('Sin puntuacion', 'flux-press') }}</span>
+                    <span class="flux-review-item__rating-label">{{ __('No rating', 'sage') }}</span>
                 @endif
             </div>
 

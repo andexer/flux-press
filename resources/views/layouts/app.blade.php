@@ -50,7 +50,7 @@
             <flux:sidebar.header class="flux-account-sidebar-header">
                 <div class="in-data-flux-sidebar-collapsed-desktop:hidden min-w-0">
                     <flux:heading size="sm" class="text-zinc-500 dark:text-zinc-400 font-semibold uppercase tracking-widest text-[10px]">
-                        {{ __('Mi cuenta', 'flux-press') }}
+                        {{ __('My account', 'sage') }}
                     </flux:heading>
                 </div>
 

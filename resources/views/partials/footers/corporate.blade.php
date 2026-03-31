@@ -19,9 +19,9 @@
 
     if (empty($quickItems)) {
         $quickItems = [
-            ['title' => __('Inicio', 'flux-press'), 'url' => $homeUrl],
-            ['title' => __('Tienda', 'flux-press'), 'url' => $shopUrl],
-            ['title' => __('Blog', 'flux-press'), 'url' => $blogUrl],
+            ['title' => __('Home', 'sage'), 'url' => $homeUrl],
+            ['title' => __('Shop', 'sage'), 'url' => $shopUrl],
+            ['title' => __('Blog', 'sage'), 'url' => $blogUrl],
         ];
     }
 
@@ -61,9 +61,9 @@
     $cookiesUrl = (string) apply_filters('flux_footer_cookies_url', (string) home_url('/cookies'));
 
     $legalItems = array_values(array_filter([
-        ['label' => __('Privacidad', 'flux-press'), 'url' => $privacyUrl],
-        ['label' => __('Terminos', 'flux-press'), 'url' => $termsUrl],
-        ['label' => __('Cookies', 'flux-press'), 'url' => $cookiesUrl],
+        ['label' => __('Privacy', 'sage'), 'url' => $privacyUrl],
+        ['label' => __('Terms', 'sage'), 'url' => $termsUrl],
+        ['label' => __('Cookies', 'sage'), 'url' => $cookiesUrl],
     ], static fn (array $item): bool => (string) ($item['url'] ?? '') !== ''));
 @endphp
 
@@ -84,7 +84,7 @@
                 </div>
 
                 <flux:text class="text-zinc-400 max-w-sm leading-relaxed">
-                    {{ __('Tema premium de alto rendimiento con tecnologia Laravel, Livewire y componentes Flux UI.', 'flux-press') }}
+                    {{ __('Premium high-performance theme with Laravel, Livewire and Flux UI components.', 'sage') }}
                 </flux:text>
 
                 @if(! empty($socialItems))
@@ -95,7 +95,7 @@
                                 size="sm"
                                 icon="{{ $social['icon'] ?? 'link' }}"
                                 href="{{ $social['url'] }}"
-                                aria-label="{{ esc_attr((string) ($social['label'] ?? __('Red social', 'flux-press'))) }}"
+                                aria-label="{{ esc_attr((string) ($social['label'] ?? __('Social network', 'sage'))) }}"
                                 class="!text-zinc-400 hover:!text-white"
                             />
                         @endforeach
@@ -104,7 +104,7 @@
             </div>
 
             <div class="hidden lg:block min-w-0">
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Enlaces rapidos', 'flux-press') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Quick Links', 'sage') }}</flux:heading>
                 <ul class="space-y-2.5">
                     @foreach($quickItems as $item)
                         <li>
@@ -117,7 +117,7 @@
             </div>
 
             <div class="hidden lg:block min-w-0">
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Recursos', 'flux-press') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Resources', 'sage') }}</flux:heading>
                 <ul class="space-y-2.5">
                     @foreach($resourceItems as $item)
                         <li>
@@ -130,29 +130,29 @@
             </div>
 
             <div class="hidden lg:block min-w-0">
-                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Newsletter', 'flux-press') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white mb-4 uppercase tracking-wider">{{ __('Newsletter', 'sage') }}</flux:heading>
                 <flux:text class="text-zinc-400 mb-4 leading-relaxed">
-                    {{ __('Suscribete a nuestro boletin para recibir novedades y lanzamientos.', 'flux-press') }}
+                    {{ __('Subscribe to our newsletter for news and releases.', 'sage') }}
                 </flux:text>
 
                 <form action="{{ esc_url($newsletterAction) }}" method="{{ esc_attr($newsletterMethod) }}" class="flex gap-2">
-                    <label for="footer-newsletter-email-desktop" class="sr-only">{{ __('Correo electronico', 'flux-press') }}</label>
+                    <label for="footer-newsletter-email-desktop" class="sr-only">{{ __('Email', 'sage') }}</label>
                     <input
                         id="footer-newsletter-email-desktop"
                         name="email"
                         type="email"
                         required
-                        placeholder="{{ esc_attr__('tu@email.com', 'flux-press') }}"
+                        placeholder="{{ esc_attr__('your@email.com', 'sage') }}"
                         class="min-w-0 flex-1 rounded-xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 px-3 py-2.5 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40"
                     />
-                    <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Suscribirme', 'flux-press') }}" />
+                    <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Subscribe', 'sage') }}" />
                 </form>
             </div>
 
             <div class="lg:hidden col-span-full mt-1 border-t border-zinc-800/80 divide-y divide-zinc-800/80">
                 <details class="group py-3" open>
                     <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
-                        {{ __('Enlaces rapidos', 'flux-press') }}
+                        {{ __('Quick Links', 'sage') }}
                         <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
                     <ul class="mt-3 space-y-2">
@@ -168,7 +168,7 @@
 
                 <details class="group py-3">
                     <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
-                        {{ __('Recursos', 'flux-press') }}
+                        {{ __('Resources', 'sage') }}
                         <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
                     <ul class="mt-3 space-y-2">
@@ -184,21 +184,21 @@
 
                 <details class="group py-3">
                     <summary class="list-none cursor-pointer flex items-center justify-between gap-4 text-sm font-semibold text-zinc-100">
-                        {{ __('Newsletter', 'flux-press') }}
+                        {{ __('Newsletter', 'sage') }}
                         <flux:icon.chevron-down class="size-4 text-zinc-400 transition-transform duration-200 group-open:rotate-180" />
                     </summary>
                     <div class="mt-3">
                         <form action="{{ esc_url($newsletterAction) }}" method="{{ esc_attr($newsletterMethod) }}" class="flex gap-2">
-                            <label for="footer-newsletter-email-mobile" class="sr-only">{{ __('Correo electronico', 'flux-press') }}</label>
+                            <label for="footer-newsletter-email-mobile" class="sr-only">{{ __('Email', 'sage') }}</label>
                             <input
                                 id="footer-newsletter-email-mobile"
                                 name="email"
                                 type="email"
                                 required
-                                placeholder="{{ esc_attr__('tu@email.com', 'flux-press') }}"
+                                placeholder="{{ esc_attr__('your@email.com', 'sage') }}"
                                 class="min-w-0 flex-1 rounded-xl border border-zinc-700 bg-zinc-900/80 text-zinc-100 px-3 py-2.5 text-sm placeholder:text-zinc-500 focus:outline-none focus:ring-2 focus:ring-accent-500/40"
                             />
-                            <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Suscribirme', 'flux-press') }}" />
+                            <flux:button type="submit" icon="paper-airplane" aria-label="{{ esc_attr__('Subscribe', 'sage') }}" />
                         </form>
                     </div>
                 </details>
@@ -207,7 +207,7 @@
 
         @if ($footerWidgets)
             <section class="mt-10 sm:mt-12 pt-8 border-t border-zinc-800/80">
-                <flux:heading size="sm" class="!text-white uppercase tracking-wider">{{ __('Mas contenido', 'flux-press') }}</flux:heading>
+                <flux:heading size="sm" class="!text-white uppercase tracking-wider">{{ __('More Content', 'sage') }}</flux:heading>
                 <div class="flux-footer-widgets mt-5 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 sm:gap-5">
                     @php(dynamic_sidebar('sidebar-footer'))
                 </div>
@@ -218,7 +218,7 @@
     <div class="border-t border-zinc-800/90 bg-black/35">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5 flex flex-col md:flex-row items-center justify-between gap-3">
             <flux:text class="text-zinc-500 text-center md:text-left">
-                &copy; {{ $currentYear }} <span class="text-zinc-200 font-medium">{!! $siteName !!}</span>. {{ __('Todos los derechos reservados.', 'flux-press') }}
+                &copy; {{ $currentYear }} <span class="text-zinc-200 font-medium">{!! $siteName !!}</span>. {{ __('All rights reserved.', 'sage') }}
             </flux:text>
 
             @if(! empty($legalItems))
