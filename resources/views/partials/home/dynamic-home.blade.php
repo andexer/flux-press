@@ -8,3 +8,11 @@
 @else
     @include('partials.home.layouts.standard')
 @endif
+
+@if(!empty($homeCustomSections) && is_array($homeCustomSections))
+    @foreach($homeCustomSections as $section)
+        @if($section['enabled'] ?? true)
+            @includeIf('partials.home.custom-sections.' . $section['type'], ['sectionData' => $section['data'] ?? []])
+        @endif
+    @endforeach
+@endif

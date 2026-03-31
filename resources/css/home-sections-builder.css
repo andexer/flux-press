@@ -1,0 +1,212 @@
+.flux-home-sections-builder {
+    margin: 20px 0;
+}
+
+.flux-home-sections-builder h2 {
+    margin-bottom: 15px;
+}
+
+#flux-home-sections-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.flux-section-card {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 15px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+}
+
+.flux-section-disabled {
+    opacity: 0.5;
+}
+
+.flux-section-drag {
+    cursor: move;
+    color: #888;
+}
+
+.flux-section-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    background: #f0f0f0;
+    border-radius: 4px;
+}
+
+.flux-section-icon .dashicons {
+    font-size: 20px;
+    width: 20px;
+    height: 20px;
+}
+
+.flux-section-info {
+    flex: 1;
+}
+
+.flux-section-info h4 {
+    margin: 0;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.flux-section-id {
+    font-size: 11px;
+    color: #666;
+}
+
+.flux-section-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.flux-section-actions .button {
+    padding: 4px 10px;
+    font-size: 12px;
+}
+
+.flux-no-sections {
+    padding: 30px;
+    text-align: center;
+    background: #f9f9f9;
+    border: 2px dashed #ddd;
+    border-radius: 4px;
+    color: #666;
+}
+
+/* Modal Styles */
+.flux-modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 99999;
+    display: none;
+}
+
+.flux-modal-open .flux-modal-overlay {
+    display: block;
+}
+
+.flux-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 6px;
+    box-shadow: 0 5px 30px rgba(0,0,0,0.3);
+    z-index: 100000;
+    display: none;
+}
+
+.flux-modal-open .flux-modal {
+    display: block;
+}
+
+.flux-modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.flux-modal-header h3 {
+    margin: 0;
+}
+
+.flux-close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #666;
+    padding: 0;
+    line-height: 1;
+}
+
+.flux-modal-body {
+    padding: 20px;
+}
+
+.flux-modal-footer {
+    padding: 15px 20px;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+/* Form Styles */
+#section-type-select {
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+#section-fields-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+#section-fields-container p {
+    margin-bottom: 15px;
+}
+
+#section-fields-container label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+#section-fields-container input,
+#section-fields-container select,
+#section-fields-container textarea {
+    width: 100%;
+}
+
+.flux-items-field {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.flux-item-row {
+    position: relative;
+    padding: 10px;
+    background: #f9f9f9;
+    margin-bottom: 10px;
+    border-radius: 4px;
+}
+
+.flux-item-row p {
+    margin-bottom: 10px;
+}
+
+.flux-remove-item {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    color: #d00;
+}
+
+.flux-add-item {
+    margin-top: 10px;
+}

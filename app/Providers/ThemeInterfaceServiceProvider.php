@@ -5,13 +5,14 @@ namespace App\Providers;
 use App\Customizer\FluxPresetSelectorControl;
 use App\Services\FluxThemePresetService;
 use App\Services\HomeEcommerceDataService;
+use App\Services\HomeSectionBlocksService;
 use App\Traits\SanitizesCustomizerValues;
 use App\View\Composers\AppComposer;
 use App\View\Composers\FooterComposer;
 use App\View\Composers\HeaderComposer;
 use App\View\Composers\HomeComposer;
-use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Vite;
 use Illuminate\Support\ServiceProvider;
 use Livewire\Livewire;
 use WP_Customize_Cropped_Image_Control;
@@ -69,6 +70,86 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         add_action('wp_ajax_flux_apply_preset', [$this, 'ajaxApplyPreset']);
         add_action('wp_ajax_flux_export_config', [$this, 'ajaxExportConfig']);
         add_action('wp_ajax_flux_restore_backup', [$this, 'ajaxRestoreBackup']);
+
+        // AJAX handlers para secciones personalizadas del Home.
+        add_action('wp_ajax_flux_home_add_section', [$this, 'ajaxAddHomeSection']);
+        add_action('wp_ajax_flux_home_update_section', [$this, 'ajaxUpdateHomeSection']);
+        add_action('wp_ajax_flux_home_delete_section', [$this, 'ajaxDeleteHomeSection']);
+        add_action('wp_ajax_flux_home_reorder_sections', [$this, 'ajaxReorderHomeSections']);
+        add_action('wp_ajax_flux_home_toggle_section', [$this, 'ajaxToggleHomeSection']);
+        add_action('wp_ajax_flux_home_get_sections', [$this, 'ajaxGetHomeSections']);
+        add_action('wp_ajax_flux_home_export_sections', [$this, 'ajaxExportHomeSections']);
+        add_action('wp_ajax_flux_home_import_sections', [$this, 'ajaxImportHomeSections']);
+
+        // Enqueue assets for home section builder
+        add_action('customize_controls_enqueue_scripts', [$this, 'enqueueHomeSectionBuilderAssets']);
+
+        // Enqueue assets for home section builder
+        add_action('customize_controls_enqueue_scripts', [$this, 'enqueueHomeSectionBuilderAssets']);
+    }
+
+    /**
+     * Disable Livewire's automatic script injection when using custom Alpine.
+     */
+    public function disableLivewireAssetInjection(): void
+    {
+        $isFluxBuilder = is_user_logged_in()
+            && current_user_can('edit_theme_options')
+            && isset($_GET['flux_builder'])
+            && (string) $_GET['flux_builder'] !== '0';
+
+        $isAdminBuilder = $this->isFluxVisualBuilderAdminPage();
+
+        if (! $isFluxBuilder && ! $isAdminBuilder) {
+            return;
+        }
+
+        // Disable Livewire's built-in asset injection
+        if (class_exists(Livewire::class)) {
+            Livewire::setAssetInjectionEnabled(false);
+        }
+    }
+
+    /**
+     * Enqueue Alpine.js when Flux Builder is active on frontend.
+     */
+    public function enqueueAlpineForBuilder(): void
+    {
+        $isFluxBuilder = is_user_logged_in()
+            && current_user_can('edit_theme_options')
+            && isset($_GET['flux_builder'])
+            && (string) $_GET['flux_builder'] !== '0';
+
+        if (! $isFluxBuilder) {
+            return;
+        }
+
+        // Enqueue Alpine.js first so it's available before Livewire
+        wp_enqueue_script(
+            'alpine-js',
+            get_theme_file_uri('public/alpine.js'),
+            [],
+            '3.13.10',
+            true
+        );
+    }
+
+    /**
+     * Enqueue Alpine.js for admin pages with Livewire components.
+     */
+    public function enqueueAlpineForAdmin(): void
+    {
+        if (! $this->isFluxVisualBuilderAdminPage()) {
+            return;
+        }
+
+        wp_enqueue_script(
+            'alpine-js',
+            get_theme_file_uri('public/alpine.js'),
+            [],
+            '3.13.10',
+            true
+        );
     }
 
     /**
@@ -608,6 +689,21 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
             'type' => 'checkbox',
         ]);
 
+        $wp_customize->add_setting('home_sections_order', [
+            'default' => config('theme-interface.home.sections.order', 'hero,features,stats,posts,cta,widgets'),
+            'sanitize_callback' => [$this, 'sanitizeHomeSectionsOrder'],
+            'transport' => 'refresh',
+        ]);
+
+        $wp_customize->add_control('home_sections_order', [
+            'label' => __('Orden de secciones', 'flux-press'),
+            'description' => __('Orden en que aparecen las secciones. Usa: hero,features,stats,posts,cta,widgets', 'flux-press'),
+            'section' => 'flux_home_section',
+            'type' => 'text',
+        ]);
+
+        $this->registerHomeEditableContentSettings($wp_customize);
+        $this->registerHomeCustomSectionsSettings($wp_customize);
         $this->registerHomeEcommerceCustomizerSettings($wp_customize);
     }
 
@@ -1112,6 +1208,51 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
     }
 
     /**
+     * Sanitizar orden de secciones del Home.
+     */
+    public function sanitizeHomeSectionsOrder($value): string
+    {
+        $raw = strtolower((string) $value);
+        $parts = array_map('trim', explode(',', $raw));
+        $allowed = ['hero', 'features', 'stats', 'posts', 'cta', 'widgets'];
+        $resolved = [];
+
+        foreach ($parts as $part) {
+            if ($part === '' || ! in_array($part, $allowed, true) || in_array($part, $resolved, true)) {
+                continue;
+            }
+
+            $resolved[] = $part;
+        }
+
+        foreach ($allowed as $fallback) {
+            if (! in_array($fallback, $resolved, true)) {
+                $resolved[] = $fallback;
+            }
+        }
+
+        return implode(',', $resolved);
+    }
+
+    /**
+     * Registrar sección de Secciones Personalizadas del Home.
+     */
+    protected function registerHomeCustomSectionsSettings(\WP_Customize_Manager $wp_customize): void
+    {
+        $wp_customize->add_section('flux_home_custom_sections', [
+            'title' => __('Flux Press: Secciones Personalizadas', 'flux-press'),
+            'description' => __('Crea y organiza secciones personalizadas para tu Home con el builder visual.', 'flux-press'),
+            'priority' => 34,
+        ]);
+
+        $wp_customize->add_setting('home_custom_sections_json', [
+            'default' => '[]',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'postMessage',
+        ]);
+    }
+
+    /**
      * Sanitizar orden de secciones ecommerce en formato CSV.
      */
     public function sanitizeHomeEcommerceSectionOrder($value): string
@@ -1310,6 +1451,302 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         $encoded = wp_json_encode($sanitized, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 
         return is_string($encoded) ? $encoded : '[]';
+    }
+
+    /**
+     * Registrar campos editables de contenido para el Home.
+     * Permite al cliente editar textos sin tocar código.
+     */
+    protected function registerHomeEditableContentSettings(\WP_Customize_Manager $wp_customize): void
+    {
+        $wp_customize->add_section('flux_home_content_section', [
+            'title' => __('Flux Press: Contenido del Home', 'flux-press'),
+            'description' => __('Personaliza los textos de cada sección. Deja vacío para usar los valores por defecto del layout.', 'flux-press'),
+            'priority' => 32.5,
+        ]);
+
+        // === HERO SECTION ===
+        $wp_customize->add_setting('home_hero_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_hero_title', [
+            'label' => __('Titulo del Hero', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_hero_subtitle', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_hero_subtitle', [
+            'label' => __('Subtitulo del Hero', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'textarea',
+        ]);
+
+        $wp_customize->add_setting('home_hero_badge', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_hero_badge', [
+            'label' => __('Badge del Hero', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_hero_badge_color', [
+            'default' => 'sky',
+            'sanitize_callback' => [$this, 'sanitizeBadgeColor'],
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_hero_badge_color', [
+            'label' => __('Color del Badge', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'select',
+            'choices' => [
+                'sky' => __('Sky (Azul)', 'flux-press'),
+                'lime' => __('Lime (Verde)', 'flux-press'),
+                'orange' => __('Orange (Naranja)', 'flux-press'),
+                'cyan' => __('Cyan', 'flux-press'),
+                'violet' => __('Violet', 'flux-press'),
+                'rose' => __('Rose (Rosa)', 'flux-press'),
+            ],
+        ]);
+
+        // === FEATURES SECTION ===
+        $wp_customize->add_setting('home_features_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_features_title', [
+            'label' => __('Titulo de Features', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        // Feature 1
+        $wp_customize->add_setting('home_feature_1_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_1_title', [
+            'label' => __('Feature 1 - Titulo', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_feature_1_text', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_1_text', [
+            'label' => __('Feature 1 - Descripcion', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'textarea',
+        ]);
+
+        $wp_customize->add_setting('home_feature_1_icon', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_1_icon', [
+            'label' => __('Feature 1 - Icono (nombre)', 'flux-press'),
+            'description' => __('Icono de Heroicons: briefcase, shield-check, chart-bar, megaphone, etc.', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        // Feature 2
+        $wp_customize->add_setting('home_feature_2_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_2_title', [
+            'label' => __('Feature 2 - Titulo', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_feature_2_text', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_2_text', [
+            'label' => __('Feature 2 - Descripcion', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'textarea',
+        ]);
+
+        $wp_customize->add_setting('home_feature_2_icon', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_2_icon', [
+            'label' => __('Feature 2 - Icono (nombre)', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        // Feature 3
+        $wp_customize->add_setting('home_feature_3_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_3_title', [
+            'label' => __('Feature 3 - Titulo', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_feature_3_text', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_3_text', [
+            'label' => __('Feature 3 - Descripcion', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'textarea',
+        ]);
+
+        $wp_customize->add_setting('home_feature_3_icon', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_feature_3_icon', [
+            'label' => __('Feature 3 - Icono (nombre)', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        // === STATS SECTION ===
+        $wp_customize->add_setting('home_stats_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_stats_title', [
+            'label' => __('Titulo de Stats', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        // Stats items
+        for ($i = 1; $i <= 4; $i++) {
+            $wp_customize->add_setting("home_stat_{$i}_value", [
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport' => 'refresh',
+            ]);
+            $wp_customize->add_control("home_stat_{$i}_value", [
+                'label' => sprintf(__('Stat %d - Valor', 'flux-press'), $i),
+                'section' => 'flux_home_content_section',
+                'type' => 'text',
+            ]);
+
+            $wp_customize->add_setting("home_stat_{$i}_label", [
+                'default' => '',
+                'sanitize_callback' => 'sanitize_text_field',
+                'transport' => 'refresh',
+            ]);
+            $wp_customize->add_control("home_stat_{$i}_label", [
+                'label' => sprintf(__('Stat %d - Etiqueta', 'flux-press'), $i),
+                'section' => 'flux_home_content_section',
+                'type' => 'text',
+            ]);
+        }
+
+        // === CTA SECTION ===
+        $wp_customize->add_setting('home_cta_title', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_cta_title', [
+            'label' => __('Titulo del CTA', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_cta_description', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_textarea_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_cta_description', [
+            'label' => __('Descripcion del CTA', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'textarea',
+        ]);
+
+        $wp_customize->add_setting('home_cta_button_text', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_cta_button_text', [
+            'label' => __('Texto del boton CTA', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'text',
+        ]);
+
+        $wp_customize->add_setting('home_cta_button_url', [
+            'default' => '',
+            'sanitize_callback' => 'esc_url_raw',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_cta_button_url', [
+            'label' => __('URL del boton CTA', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'url',
+        ]);
+
+        $wp_customize->add_setting('home_cta_bg_color', [
+            'default' => '',
+            'sanitize_callback' => 'sanitize_text_field',
+            'transport' => 'refresh',
+        ]);
+        $wp_customize->add_control('home_cta_bg_color', [
+            'label' => __('Color de fondo del CTA', 'flux-press'),
+            'description' => __('Deja vacío para usar el color por defecto del layout', 'flux-press'),
+            'section' => 'flux_home_content_section',
+            'type' => 'select',
+            'choices' => [
+                '' => __('Por defecto del layout', 'flux-press'),
+                'bg-slate-900' => __('Negro', 'flux-press'),
+                'bg-lime-600' => __('Verde Lima', 'flux-press'),
+                'bg-orange-600' => __('Naranja', 'flux-press'),
+                'bg-cyan-700' => __('Cyan Oscuro', 'flux-press'),
+                'bg-violet-600' => __('Violeta', 'flux-press'),
+                'bg-rose-600' => __('Rosa', 'flux-press'),
+                'bg-emerald-600' => __('Esmeralda', 'flux-press'),
+            ],
+        ]);
+    }
+
+    /**
+     * Sanitizar color del badge.
+     */
+    public function sanitizeBadgeColor($value): string
+    {
+        $allowed = ['sky', 'lime', 'orange', 'cyan', 'violet', 'rose'];
+        $color = sanitize_key((string) $value);
+
+        return in_array($color, $allowed, true) ? $color : 'sky';
     }
 
     public function registerHomeEcommerceBlocksAndShortcodes(): void
@@ -1862,5 +2299,270 @@ class ThemeInterfaceServiceProvider extends ServiceProvider
         }
 
         return $int;
+    }
+
+    // ================================================================
+    // AJAX Handlers for Custom Home Sections
+    // ================================================================
+
+    /**
+     * AJAX: Add a new custom section to the Home.
+     */
+    public function ajaxAddHomeSection(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $type = sanitize_key($_POST['type'] ?? '');
+        $data = is_array($_POST['data'] ?? []) ? $_POST['data'] : [];
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->addSection($type, $data);
+
+        if ($result['success']) {
+            wp_send_json_success($result['section']);
+        } else {
+            wp_send_json_error($result['message']);
+        }
+    }
+
+    /**
+     * AJAX: Update an existing custom section.
+     */
+    public function ajaxUpdateHomeSection(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $sectionId = sanitize_text_field($_POST['section_id'] ?? '');
+        $data = is_array($_POST['data'] ?? []) ? $_POST['data'] : [];
+
+        if (empty($sectionId)) {
+            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->updateSection($sectionId, $data);
+
+        if ($result) {
+            wp_send_json_success(['message' => __('Secci\u00f3n actualizada.', 'flux-press')]);
+        } else {
+            wp_send_json_error(__('Error al actualizar.', 'flux-press'));
+        }
+    }
+
+    /**
+     * AJAX: Delete a custom section.
+     */
+    public function ajaxDeleteHomeSection(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $sectionId = sanitize_text_field($_POST['section_id'] ?? '');
+
+        if (empty($sectionId)) {
+            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->deleteSection($sectionId);
+
+        if ($result) {
+            wp_send_json_success(['message' => __('Secci\u00f3n eliminada.', 'flux-press')]);
+        } else {
+            wp_send_json_error(__('Error al eliminar.', 'flux-press'));
+        }
+    }
+
+    /**
+     * AJAX: Reorder custom sections.
+     */
+    public function ajaxReorderHomeSections(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $order = is_array($_POST['order'] ?? []) ? array_map('sanitize_text_field', $_POST['order']) : [];
+
+        if (empty($order)) {
+            wp_send_json_error(__('Orden requerido.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->reorderSections($order);
+
+        if ($result) {
+            wp_send_json_success(['message' => __('Orden actualizado.', 'flux-press')]);
+        } else {
+            wp_send_json_error(__('Error al reordenar.', 'flux-press'));
+        }
+    }
+
+    /**
+     * AJAX: Toggle section visibility.
+     */
+    public function ajaxToggleHomeSection(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $sectionId = sanitize_text_field($_POST['section_id'] ?? '');
+        $enabled = isset($_POST['enabled']) ? (bool) $_POST['enabled'] : true;
+
+        if (empty($sectionId)) {
+            wp_send_json_error(__('Section ID requerido.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->toggleSection($sectionId, $enabled);
+
+        if ($result) {
+            wp_send_json_success(['enabled' => $enabled]);
+        } else {
+            wp_send_json_error(__('Error al cambiar visibilidad.', 'flux-press'));
+        }
+    }
+
+    /**
+     * AJAX: Get all custom sections.
+     */
+    public function ajaxGetHomeSections(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $sections = $service->getSections();
+
+        wp_send_json_success($sections);
+    }
+
+    /**
+     * Registrar script y localization para el builder de secciones.
+     */
+    public function enqueueHomeSectionBuilderAssets(): void
+    {
+        wp_enqueue_script(
+            'flux-home-sections-builder',
+            get_theme_file_uri('resources/js/home-sections-builder.js'),
+            ['jquery'],
+            wp_get_theme()->get('Version'),
+            true
+        );
+
+        wp_localize_script('flux-home-sections-builder', 'fluxHomeSections', [
+            'ajaxUrl' => admin_url('admin-ajax.php'),
+            'nonce' => wp_create_nonce('flux_home_sections_nonce'),
+            'sectionTypes' => HomeSectionBlocksService::SECTION_TYPES,
+            'strings' => [
+                'addSection' => __('Add Section', 'flux-press'),
+                'editSection' => __('Edit', 'flux-press'),
+                'deleteSection' => __('Delete', 'flux-press'),
+                'confirmDelete' => __('Are you sure you want to delete this section?', 'flux-press'),
+                'saved' => __('Saved!', 'flux-press'),
+                'error' => __('Error', 'flux-press'),
+                'exportSections' => __('Export', 'flux-press'),
+                'importSections' => __('Import', 'flux-press'),
+            ],
+        ]);
+
+        wp_enqueue_style(
+            'flux-home-sections-builder',
+            get_theme_file_uri('resources/css/home-sections-builder.css'),
+            [],
+            wp_get_theme()->get('Version')
+        );
+    }
+
+    /**
+     * AJAX: Export sections to JSON.
+     */
+    public function ajaxExportHomeSections(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $json = $service->exportSections();
+
+        wp_send_json_success([
+            'json' => $json,
+            'filename' => 'flux-press-sections-'.date('Y-m-d').'.json',
+        ]);
+    }
+
+    /**
+     * AJAX: Import sections from JSON.
+     */
+    public function ajaxImportHomeSections(): void
+    {
+        check_ajax_referer('flux_home_sections_nonce', 'nonce');
+
+        if (! current_user_can('edit_theme_options')) {
+            wp_send_json_error(__('No tienes permisos.', 'flux-press'));
+
+            return;
+        }
+
+        $json = $_POST['json'] ?? '';
+
+        if (empty($json)) {
+            wp_send_json_error(__('JSON requerido.', 'flux-press'));
+
+            return;
+        }
+
+        $service = new HomeSectionBlocksService;
+        $result = $service->importSections($json);
+
+        if ($result['success']) {
+            wp_send_json_success($result);
+        } else {
+            wp_send_json_error($result['message']);
+        }
     }
 }
