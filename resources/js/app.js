@@ -366,11 +366,11 @@ window.addEventListener('flux-home-builder:reload', () => {
   window.location.reload();
 });
 
-window.addEventListener('flux-home-builder:refresh', () => {
+const handleFluxHomeBuilderRefresh = () => {
   refreshHomeBuilderLivewireComponents();
+};
 
-  if (window.Livewire && typeof window.Livewire.dispatch === 'function') {
-    window.Livewire.dispatch('flux-home-builder-refresh');
-    window.Livewire.dispatch('fluxHomeBuilderRefresh');
-  }
+window.addEventListener('flux-home-builder:refresh', handleFluxHomeBuilderRefresh);
+window.addEventListener('fluxHomeBuilderRefresh', () => {
+  window.dispatchEvent(new CustomEvent('flux-home-builder:refresh'));
 });

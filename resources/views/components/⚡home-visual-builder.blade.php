@@ -733,10 +733,15 @@ new class extends Component
             </header>
 
             <div class="flex-1 space-y-4 overflow-y-auto p-4">
+                <flux:callout color="accent" icon="arrow-path" wire:loading.flex>
+                    <flux:callout.heading>{{ __('Guardando cambios...', 'sage') }}</flux:callout.heading>
+                    <flux:callout.text>{{ __('Aplicando ajustes al preview en vivo.', 'sage') }}</flux:callout.text>
+                </flux:callout>
+
                 @if ($statusMessage !== '')
-                    <flux:callout color="zinc" icon="check-circle">
+                    <flux:callout color="{{ $statusState === 'error' ? 'rose' : 'zinc' }}" icon="{{ $statusState === 'error' ? 'exclamation-triangle' : 'check-circle' }}">
                         <flux:callout.heading>{{ $statusMessage }}</flux:callout.heading>
-                        @if ($lastSavedAt > 0)
+                        @if ($statusState !== 'error' && $lastSavedAt > 0)
                             <flux:callout.text>
                                 {{ sprintf(__('Ultima actualizacion: %s', 'sage'), wp_date('H:i:s', $lastSavedAt)) }}
                             </flux:callout.text>
